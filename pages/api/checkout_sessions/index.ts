@@ -15,6 +15,17 @@ export default async function handler(
 ) {
   if (req.method === 'POST') {
     const amount: number = req.body.amount
+    const name: string = req.body.name ?? ''
+    const email: string = req.body.email || null
+    const anonymous: string = req.body.anonymous ?? false
+    const line_items: [{}] = req.body.line_items ?? [
+      {
+        name: 'Custom amount donation',
+        amount: formatAmountForStripe(amount, CURRENCY),
+        currency: CURRENCY,
+        quantity: 1,
+      },
+    ];
     try {
       // Validate the amount that was passed from the client.
       if (!(amount >= MIN_AMOUNT && amount <= MAX_AMOUNT)) {
@@ -22,16 +33,15 @@ export default async function handler(
       }
       // Create Checkout Sessions from body params.
       const params: Stripe.Checkout.SessionCreateParams = {
+        metadata: {
+          name: name,
+          anonymous: anonymous,
+          email: email
+        },
+        ...(email && {customer_email: email}),
         submit_type: 'donate',
         payment_method_types: ['card'],
-        line_items: [
-          {
-            name: 'Custom amount donation',
-            amount: formatAmountForStripe(amount, CURRENCY),
-            currency: CURRENCY,
-            quantity: 1,
-          },
-        ],
+        line_items: line_items,
         success_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${req.headers.origin}/donate-with-checkout`,
       }
