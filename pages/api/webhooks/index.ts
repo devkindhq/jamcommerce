@@ -1,6 +1,11 @@
 import { buffer } from 'micro'
 import Cors from 'micro-cors'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 import Stripe from 'stripe'
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -21,6 +26,21 @@ const cors = Cors({
   allowMethods: ['POST', 'HEAD'],
 })
 
+const parseCheckoutSession = (checkout_session: any) => {
+  return {
+    stripe_id: checkout_session.id,
+    amount_total: checkout_session.amount_total,
+    customer_details: checkout_session.customer_details,
+    status: checkout_session.status,
+    payment_status: checkout_session.payment_status,
+    metadata: checkout_session.metadata,
+    line_items: checkout_session.line_items,
+    currency: checkout_session.currency
+  }
+};
+const insertCheckoutSession = (checkout_session: any) => {
+  return supabase.from('checkout_sessions').insert(parseCheckoutSession(checkout_session));
+}
 const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     const buf = await buffer(req)
@@ -54,7 +74,16 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     } else if (event.type === 'charge.succeeded') {
       const charge = event.data.object as Stripe.Charge
       console.log(`💵 Charge id: ${charge.id}`)
-    } else {
+    } 
+    else  if (event.type === 'checkout.session.completed') {
+      const checkout = event.data.object
+      const checkout_with_line_items = await stripe.checkout.sessions.retrieve(checkout.id, {
+        expand: ['line_items'],
+      })
+      const insert = await insertCheckoutSession(checkout_with_line_items);
+      console.log(insert);
+    }
+    else {
       console.warn(`🤷‍♀️ Unhandled event type: ${event.type}`)
     }
 
