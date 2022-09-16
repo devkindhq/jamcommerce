@@ -12,7 +12,7 @@ type ProductsProps  = {
 const ProductsNew = ({handleBuyNow}: ProductsProps) => {
   return (
       <Stack spacing={4} w="full">
-      {products.map((product, index) => {
+      {products.sort((prev,current) =>  current.price - prev.price ?? 0).map((product, index) => {
         const donationCardProps = {
           ...product,
           onClick: () => handleBuyNow(product)
