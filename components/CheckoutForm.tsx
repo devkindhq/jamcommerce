@@ -9,6 +9,7 @@ import { fetchPostJSON } from '../utils/api-helpers'
 import getStripe from '../utils/get-stripejs'
 import { formatAmountForDisplay } from '../utils/stripe-helpers'
 import ProductsNew from './ProductsNew'
+import { Heading } from '@chakra-ui/react'
 
 const CheckoutForm = () => {
   const [loading, setLoading] = useState(false)
@@ -116,6 +117,7 @@ const CheckoutForm = () => {
       </button>
 
     </form>
+    <Heading color="gray.700" size="lg" mb={4}>Giving levels</Heading>
     <ProductsNew buyNow={true} handleBuyNow={handleSingleProduct} />
     </>
   )

@@ -14,6 +14,8 @@ export default function DonationCard({onClick  ,image = '', name = 'One meal for
         bg={useColorModeValue('white', 'gray.800')}
         boxShadow={'md'}
         rounded={'md'}
+        border={'1px solid'}
+        borderColor="gray.200"
         overflow={'hidden'}>
         <Flex display="none">
           <Image
