@@ -19,28 +19,95 @@ const groupBy = (array: [], key: string) => {
     }, {}); // empty object is the initial value for result object
 };
 
+
+const getAllCurrencies = async () => {
+  return await supabase.from('currency_rates').select('*');
+}
+
+const findCurrency = async (currency:string) => {
+  const allCurrenciesRates =  await getAllCurrencies();
+  return allCurrenciesRates.data.find(currencyRate => currencyRate.code === currency);
+ 
+}
+
+const convertToBase = async (base_currency: string, currency: string, amount: number, dest_currency: string) => {
+  let destination_currency = await findCurrency(dest_currency);
+  console.log(base_currency, currency, dest_currency)
+  if(base_currency.toLowerCase() == currency.toLowerCase()) {
+    return {
+      base_currency: base_currency,
+      currency: currency,
+      request_amount: amount,
+      converted_amount: amount,
+      destination_currency: destination_currency.value * amount
+    }
+  }
+
+  let currencyValue = base_currency.toUpperCase()+currency.toUpperCase();
+  let currencyRate = await supabase.from("currency_rates").select('*').eq('currency', currencyValue).order('updated_at', {ascending: true}).limit(1).single();
+  var converted_amount = destination_currency.code == currency ? amount : ( amount / currencyRate?.data?.value);
+  let calculated_destination_currency = destination_currency.value < 1 ? converted_amount / destination_currency.value  : destination_currency.value * converted_amount
+  
+  if(currency.toLowerCase() == dest_currency.toLowerCase()){
+    var converted_amount = ( amount / currencyRate?.data?.value);
+    return {
+      base_currency: base_currency,
+      currency: currency,
+      request_amount: amount,
+      converted_amount: converted_amount,
+      destination_currency: amount
+    }
+  }
+
+  return {
+    base_currency: base_currency,
+    currency: currency,
+    request_amount: amount,
+    converted_amount: converted_amount,
+    destination_currency: calculated_destination_currency
+  }
+}
+
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
   ) {
 
     try {
-        console.log(req.query);
+        const {destination_currency} = req.query;
+
+        
+    
         const result = await supabase.from('checkout_sessions').select('*').eq('payment_status', 'paid');
         const groupedCurrency = groupBy(result.data, 'currency');
         const allCurrencies = Object.keys(groupedCurrency);
-        const currencyTotals = allCurrencies.map( currency => {
+        const currency =  allCurrencies.map( currency => {
             let currentCurrencies = groupedCurrency[currency];
             let amounts = currentCurrencies.map(e => (e.amount_total));
             let total = amounts.reduce((prev, current) => prev+current, 0);
+            let conversion = convertToBase('AUD', currency.toUpperCase(), total, destination_currency).then(e => { return e});;
             return {
-                currency: currency,
-                total: total,
-                total_transactions: currentCurrencies.length
-            }
+              currency: currency,
+              total: total,
+              conversion: conversion,
+              total_transactions: currentCurrencies.length
+          }
         });
+
+
+      let bringConvertedRates = () => currency.map( async e=> {
+        let conversion = await e.conversion;
+          return {
+            ...e,
+            conversion: conversion
+          }
+       })
+ 
+       var details = await Promise.all(bringConvertedRates());
+  
         const finalResult = {
-            details: currencyTotals,
+            details: details,
+
             base_currency_total: 1000
         }
                         
