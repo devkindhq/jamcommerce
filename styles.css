@@ -26,11 +26,11 @@ body {
   font-family: var(--body-font-family);
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
-
+/* 
 #__next {
   display: flex;
   justify-content: center;
-}
+} */
 
 .container {
   max-width: var(--container-width-max);
