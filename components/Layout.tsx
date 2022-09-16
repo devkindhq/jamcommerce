@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
+import { Box } from '@chakra-ui/react'
 
 type Props = {
   children: ReactNode
@@ -11,7 +12,7 @@ const Layout = ({
   children,
   title = 'TypeScript Next.js Stripe Example',
 }: Props) => (
-  <>
+  <Box maxW={"7xl"} mx="auto">
     <Head>
       <title>{title}</title>
       <meta charSet="utf-8" />
@@ -28,7 +29,8 @@ const Layout = ({
         content="https://nextjs-typescript-react-stripe-js.vercel.app/social_card.png"
       />
     </Head>
-    <div className="container">
+    <Box>
+
       <header>
         <div className="header-content">
           <Link href="/">
@@ -44,29 +46,9 @@ const Layout = ({
         </div>
       </header>
       {children}
-    </div>
-    <div className="banner">
-      <span>
-        This is a{' '}
-        <a
-          href="https://github.com/stripe-samples"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Stripe Sample
-        </a>
-        .{' View code on '}
-        <a
-          href="https://github.com/vercel/next.js/tree/canary/examples/with-stripe-typescript"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          GitHub
-        </a>
-        .
-      </span>
-    </div>
-  </>
+    </Box>
+   
+  </Box>
 )
 
 export default Layout
