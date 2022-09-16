@@ -1,4 +1,4 @@
-import { Badge, Box, Button, Heading, HStack, Image, Text, useDisclosure, Progress, Flex } from '@chakra-ui/react'
+import { Badge, Box, Button, Heading, HStack, Image, Text, useDisclosure, Progress, Flex, Stack, Spacer } from '@chakra-ui/react'
 import { NextPage } from 'next'
 import { useEffect, useState } from 'react'
 import CheckoutForm from '../components/CheckoutForm'
@@ -28,65 +28,39 @@ const IndexPage: NextPage = () => {
           <Box display="flex" justifyContent="center">
             <Heading>Purpose of this Campaign Head</Heading>
           </Box>
-          <Box display="flex" gap={4} py={8}>
-            <Box w="75%">
-              <Image w="full" rounded="lg" h="full" src="https://s3.amazonaws.com/launchgood/project%2F128769%2Fclean_water_for_yemen_LG+3-700x525.jpeg"></Image>
-            </Box>
-            <Box w="25%" display="flex" alignItems="center" justifyContent="space-between" flexDirection="column">
-                <h1>Product Name</h1>
-                <Box textAlign="center">
-                  
-                <Heading>{donationDetails && formatAmountForDisplay(donationDetails.destination_currency_total, 'AUD')}</Heading>
-                  <Text> Funded of $50,000 USD</Text>
-                  {donationDetails && <Progress colorScheme='green' height='32px' value={(donationDetails.destination_currency_total/2000)*100} />}
+          <Box display="flex" gap={4} my={8} rounded={'xl'} shadow={'lg'} flexDirection={['column', 'column', 'row']}>
+            <Flex w={["auto", "auto", "75%"]}>
+              <Image w="full"  h="full" src="https://s3.amazonaws.com/launchgood/project%2F128769%2Fclean_water_for_yemen_LG+3-700x525.jpeg"></Image>
+            </Flex>
+            <Box w={["auto", "auto", "25%"]} display="flex" alignItems="center" justifyContent="space-between" flexDirection="column">
+              <Spacer />
+                <Stack spacing={2} textAlign="center">
+                <Heading color='gray.700'>{donationDetails && formatAmountForDisplay(donationDetails.destination_currency_total, 'AUD')}</Heading>
+                  <Text color='gray.500'> Funded of {''}{formatAmountForDisplay(2000, 'AUD')}{' '}</Text>
+                  {donationDetails && <Progress rounded={'md'} colorScheme='teal' height='32px' value={(donationDetails.destination_currency_total/2000)*100} />}
                   <HStack>
                     <Badge>{donationDetails && donationDetails.total_transactions} supporters</Badge>
                     <Badge>14 days left</Badge>
+                    {/** TODO: Write a function to determine how many days left */}
                   </HStack>
                   <Box py={4} w="full">
-                <Button px={12} w="full" onClick={onOpen} rounded="full" py={6} variant="solid">Support</Button>
-                    <Text fontSize="xs">Verified for authenticity and Learn more</Text>
+                  <Button px={12} w="full" onClick={onOpen} colorScheme='green' textTransform={'uppercase'} rounded="full" py={6} variant="solid">Support</Button>
+                    <Text mt={2} color='gray.600' fontSize="xs">Safe checkout with Stripe</Text>
                   </Box>
-                </Box>
-                <Box p={2} textAlign="center">
-                  <Text fontSize="sm"> Partial Funding  this campaign will collect all funds raised by Oct 1, 2022 8:45 AM.</Text>
+                </Stack>
+                <Spacer />
+                <Box mb={6} p={2} textAlign="center">
+                  <Text fontSize="sm"> <strong>Partial Funding</strong> this campaign will collect all funds raised by Oct 1, 2022 8:45 AM.</Text>
                 </Box>
             </Box>
             <LevelModal isOpen={isOpen} onClose={onClose} />
           </Box>
 
+        <Flex  flexDirection={['column', 'column', 'row']}>
+          <Box w={["auto", "auto", "70%"]}><Text>Add content here</Text></Box>
+          <Box><CheckoutForm /></Box>
+        </Flex>
         </Box>
-      <Flex>
-       <Box w={'70%'}><Text>Add content here</Text></Box>
-       <Box><CheckoutForm /></Box>
-
-      </Flex>
-        {/* <ul className="card-list">
-          <li>
-            <Link href="/donate-with-checkout">
-              <a className="card checkout-style-background">
-                <h2 className="bottom">Donate with Checkout</h2>
-                <img src="/checkout-one-time-payments.svg" />
-              </a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/donate-with-elements">
-              <a className="card elements-style-background">
-                <h2 className="bottom">Donate with Elements</h2>
-                <img src="/elements-card-payment.svg" />
-              </a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/use-shopping-cart">
-              <a className="card cart-style-background">
-                <h2 className="bottom">Use Shopping Cart</h2>
-                <img src="/use-shopping-cart.png" />
-              </a>
-            </Link>
-          </li>
-        </ul> */}
       </Layout>
   )
 }
