@@ -103,12 +103,12 @@ export default async function handler(
           }
        })
  
-       var details = await Promise.all(bringConvertedRates());
-  
+        const details = await Promise.all(bringConvertedRates());
         const finalResult = {
             details: details,
-
-            base_currency_total: 1000
+            base_currency_total: details.map(e => e.conversion).map(e => e.converted_amount).reduce((prev,current) => prev+current),
+            destination_currency_total: details.map(e => e.conversion).map(e => e.destination_currency).reduce((prev,current) => prev+current),
+            total_transactions: details.map(e => e.total_transactions).reduce((prev,current) => prev+current)
         }
                         
         

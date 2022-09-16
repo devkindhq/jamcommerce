@@ -3,12 +3,12 @@ import React, { useState } from 'react'
 import CustomDonationInput from '../components/CustomDonationInput'
 import StripeTestCards from '../components/StripeTestCards'
 
-import getStripe from '../utils/get-stripejs'
-import { fetchPostJSON } from '../utils/api-helpers'
-import { formatAmountForDisplay, formatAmountForStripe } from '../utils/stripe-helpers'
-import * as config from '../config'
-import Products from './ProductsNew'
 import { Product } from 'use-shopping-cart'
+import * as config from '../config'
+import { fetchPostJSON } from '../utils/api-helpers'
+import getStripe from '../utils/get-stripejs'
+import { formatAmountForDisplay } from '../utils/stripe-helpers'
+import ProductsNew from './ProductsNew'
 
 const CheckoutForm = () => {
   const [loading, setLoading] = useState(false)
@@ -65,6 +65,7 @@ const CheckoutForm = () => {
     }
   }
   const handleSingleProduct = async (product: Product) => {
+    debugger;
     setLoading(true)
     // Create a Checkout Session.
     const response = await fetchPostJSON('/api/checkout_sessions', {
@@ -93,7 +94,8 @@ const CheckoutForm = () => {
   }
 
   return (
-    <><form onSubmit={handleSubmit}>
+    <>
+    <form onSubmit={handleSubmit}>
       <CustomDonationInput
         className="checkout-style"
         name={'customDonation'}
@@ -104,7 +106,6 @@ const CheckoutForm = () => {
         currency={config.CURRENCY}
         onChange={handleInputChange}
       />
-      <StripeTestCards />
       <button
         className="checkout-style-background"
         type="submit"
@@ -114,7 +115,7 @@ const CheckoutForm = () => {
       </button>
 
     </form>
-    <Products buyNow={true} handleBuyNow={handleSingleProduct} />
+    <ProductsNew buyNow={true} handleBuyNow={handleSingleProduct} />
     </>
   )
 }

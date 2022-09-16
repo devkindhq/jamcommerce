@@ -1,25 +1,30 @@
-import { Badge, Box, Button, Heading, HStack, Image, Text, useDisclosure } from '@chakra-ui/react'
+import { Badge, Box, Button, Heading, HStack, Image, Text, useDisclosure, Progress, Flex } from '@chakra-ui/react'
 import { NextPage } from 'next'
-import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import CheckoutForm from '../components/CheckoutForm'
 import Layout from '../components/Layout'
 import LevelModal from '../components/LevelModal'
-import { fetchGetJSON } from '../utils/api-helpers'
-import { useEffect, useState } from 'react'
-
+import ProductsNew from '../components/ProductsNew'
+import { formatAmountForDisplay } from '../utils/stripe-helpers'
 const IndexPage: NextPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [currrencies, setCurrencies] = useState<null>(null)
+  const [donationDetails, setDonationDetails] = useState(null)
+  const [loading, setLoading] = useState<boolean>(false)
+
   useEffect(() => {
-    fetchGetJSON('/api/currency')
-    .then((data) => {
-      setCurrencies(data)
-    })
-  }, [])
- 
+    setLoading(true);
+    fetch('/api/donation_details?destination_currency=AUD')
+    .then(response => response.json())
+    .then( e => {
+      setDonationDetails(e)
+    }).finally(() => setLoading(false));
+  },[]);
+  
 
   return (
       <Layout title="Home | Next.js + TypeScript Example">
-        <Box maxW={"7xl"} mx="auto">
+        <Box maxW={"7xl"} mx="auto" px={4}>
           <Box display="flex" justifyContent="center">
             <Heading>Purpose of this Campaign Head</Heading>
           </Box>
@@ -30,10 +35,12 @@ const IndexPage: NextPage = () => {
             <Box w="25%" display="flex" alignItems="center" justifyContent="space-between" flexDirection="column">
                 <h1>Product Name</h1>
                 <Box textAlign="center">
-                  <Heading>$39,187</Heading>
+                  
+                <Heading>{donationDetails && formatAmountForDisplay(donationDetails.destination_currency_total, 'AUD')}</Heading>
                   <Text> Funded of $50,000 USD</Text>
+                  {donationDetails && <Progress colorScheme='green' height='32px' value={(donationDetails.destination_currency_total/2000)*100} />}
                   <HStack>
-                    <Badge>1108 supporters</Badge>
+                    <Badge>{donationDetails && donationDetails.total_transactions} supporters</Badge>
                     <Badge>14 days left</Badge>
                   </HStack>
                   <Box py={4} w="full">
@@ -49,6 +56,11 @@ const IndexPage: NextPage = () => {
           </Box>
 
         </Box>
+      <Flex>
+       <Box w={'70%'}><Text>Add content here</Text></Box>
+       <Box><CheckoutForm /></Box>
+
+      </Flex>
         {/* <ul className="card-list">
           <li>
             <Link href="/donate-with-checkout">
