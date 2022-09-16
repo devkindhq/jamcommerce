@@ -5,8 +5,13 @@ import CheckoutForm from '../components/CheckoutForm'
 import Layout from '../components/Layout'
 import LevelModal from '../components/LevelModal'
 import ProductsNew from '../components/ProductsNew'
+import { Prose } from '@nikolovlazar/chakra-ui-prose'
 import { formatAmountForDisplay } from '../utils/stripe-helpers'
-const IndexPage: NextPage = () => {
+import { serialize } from 'next-mdx-remote/serialize'
+import { MDXRemote } from 'next-mdx-remote'
+import description from '../data/donation_description'
+
+const IndexPage: NextPage = ({source}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [currrencies, setCurrencies] = useState<null>(null)
   const [donationDetails, setDonationDetails] = useState(null)
@@ -26,9 +31,9 @@ const IndexPage: NextPage = () => {
       <Layout title="Home | Next.js + TypeScript Example">
         <Box maxW={"7xl"} mx="auto" px={4}>
           <Box display="flex" justifyContent="center">
-            <Heading>Purpose of this Campaign Head</Heading>
+            <Heading color="gray.700">Purpose of this Campaign Head</Heading>
           </Box>
-          <Box display="flex" gap={4} my={8} rounded={'xl'} shadow={'lg'} flexDirection={['column', 'column', 'row']}>
+          <Box display="flex" gap={4} my={8} rounded={'xl'} shadow={'lg'} flexDirection={['column', 'column', 'row']} overflow="hidden">
             <Flex w={["auto", "auto", "75%"]}>
               <Image w="full"  h="full" src="https://s3.amazonaws.com/launchgood/project%2F128769%2Fclean_water_for_yemen_LG+3-700x525.jpeg"></Image>
             </Flex>
@@ -57,7 +62,11 @@ const IndexPage: NextPage = () => {
           </Box>
 
         <Flex  flexDirection={['column', 'column', 'row']}>
-          <Box w={["auto", "auto", "70%"]}><Text>Add content here</Text></Box>
+          <Box w={["auto", "auto", "70%"]} px={6}>
+            <Prose>
+            <MDXRemote {...source}  />
+            </Prose>
+          </Box>
           <Box w={["auto", "auto", "30%"]}><CheckoutForm /></Box>
         </Flex>
         </Box>
@@ -66,3 +75,10 @@ const IndexPage: NextPage = () => {
 }
 
 export default IndexPage
+
+export async function getStaticProps() {
+  // MDX text - can be from a local file, database, anywhere
+  
+  const mdxSource = await serialize(description)
+  return { props: { source: mdxSource } }
+}
