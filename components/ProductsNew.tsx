@@ -11,8 +11,7 @@ type ProductsProps  = {
 
 const ProductsNew = ({handleBuyNow}: ProductsProps) => {
   return (
-    <section className="products">
-      <Stack spacing={4}>
+      <Stack spacing={4} w="full">
       {products.map((product, index) => {
         const donationCardProps = {
           ...product,
@@ -21,7 +20,6 @@ const ProductsNew = ({handleBuyNow}: ProductsProps) => {
          return (<DonationCard key={index} {...donationCardProps} />)
       })}
       </Stack>
-    </section>
   )
 }
 

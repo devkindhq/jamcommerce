@@ -95,7 +95,8 @@ const CheckoutForm = () => {
 
   return (
     <>
-    <form onSubmit={handleSubmit}>
+    {/** TODO: Add contact module here */}
+    <form onSubmit={handleSubmit} style={{marginBottom: '20px'}}>
       <CustomDonationInput
         className="checkout-style"
         name={'customDonation'}

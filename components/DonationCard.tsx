@@ -10,7 +10,6 @@ export default function DonationCard({onClick  ,image = '', name = 'One meal for
   return (
     <LinkBox onClick={() => onClick()} cursor="pointer">
       <Box
-        maxW={'270px'}
         w={'full'}
         bg={useColorModeValue('white', 'gray.800')}
         boxShadow={'md'}

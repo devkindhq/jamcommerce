@@ -58,7 +58,7 @@ const IndexPage: NextPage = () => {
 
         <Flex  flexDirection={['column', 'column', 'row']}>
           <Box w={["auto", "auto", "70%"]}><Text>Add content here</Text></Box>
-          <Box><CheckoutForm /></Box>
+          <Box w={["auto", "auto", "30%"]}><CheckoutForm /></Box>
         </Flex>
         </Box>
       </Layout>
