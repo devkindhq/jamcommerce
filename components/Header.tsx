@@ -27,10 +27,12 @@ import {
   SunIcon,
 } from '@chakra-ui/icons';
 import logo from '../public/logo.png'
+import { DEALING_CURRENCIES } from '../config';
+
 export default function Header({ selectedCurrency, updateCurrency }: { selectedCurrency: string, updateCurrency: (value:string) => void }) {
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onToggle } = useDisclosure();
-  const ALLOWED_CURRENCIES = ['AUD', 'USD', 'IDR']
+
 
   /**
    * Functions run to update currency when ever use select from the list currency
@@ -89,7 +91,7 @@ export default function Header({ selectedCurrency, updateCurrency }: { selectedC
             direction={'row'}
             spacing={2}>
             <Select onChange={handleChange} defaultValue={selectedCurrency}>
-              {ALLOWED_CURRENCIES.map((currency, index) => {
+              {DEALING_CURRENCIES.map((currency, index) => {
                 return (
                   <option key={index} value={currency}>{currency}</option>
                 )
@@ -101,6 +103,7 @@ export default function Header({ selectedCurrency, updateCurrency }: { selectedC
             <Button
               fontWeight={600}
               colorScheme="green"
+              px={12}
               href={'#'}>
               Donate
             </Button>
