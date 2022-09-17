@@ -9,15 +9,19 @@ import Head from './Head'
 type Props = {
   children: ReactNode
   title?: string
+  changeCurrency: (value:string) => void
+  selectedCurrency: string
 }
 
 const Layout = ({
   children,
   title = 'TypeScript Next.js Stripe Example',
+  changeCurrency,
+  selectedCurrency
 }: Props) => (
   <>
     <Head title={title} />
-    <Header />
+    <Header selectedCurrency={selectedCurrency} updateCurrency={changeCurrency} />
       {children}
     <Footer />
 </>
