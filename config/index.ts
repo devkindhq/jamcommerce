@@ -6,3 +6,4 @@ export const MAX_AMOUNT = 5000.0
 export const AMOUNT_STEP = 5.0
 export const DEALING_CURRENCIES =  ['AUD','EUR','USD','CAD','IDR']
 export const BASE_CURRENCY = 'AUD'
+export const RAISING_AMOUNT = 10000
