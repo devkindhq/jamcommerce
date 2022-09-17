@@ -26,10 +26,11 @@ import {
   MoonIcon,
   SunIcon,
 } from '@chakra-ui/icons';
-import logo from '../public/logo.png'
+import logoLight from '../public/logo.svg'
+import logoDark from '../public/logo-dark.svg'
 import { DEALING_CURRENCIES } from '../config';
-
 export default function Header({ selectedCurrency, updateCurrency }: { selectedCurrency: string, updateCurrency: (value:string) => void }) {
+  const logo = useColorModeValue(logoLight, logoDark)
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onToggle } = useDisclosure();
 
