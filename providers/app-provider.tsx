@@ -7,11 +7,11 @@ import AppContext from "../context/app-context";
 interface IAppProviderProps {
     children: React.ReactNode
 }
-type CurrencyObject = {
+export type CurrencyObject = {
     code: string,
     value: number
 }
-interface IAppProviderState {
+export interface IAppProviderState {
     base_currency: CurrencyObject,
     dealing_currencies: string[],
     currency_rates: CurrencyObject[] | any[] | undefined,

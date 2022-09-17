@@ -1,10 +1,9 @@
 import {
-    Box, Flex, Heading, Image, LinkBox, Stack, Text, useColorModeValue
+  Box, Flex, Heading, Image, LinkBox, Stack, Text, useColorModeValue
 } from '@chakra-ui/react';
-import Link from 'next/link';
+import { useContext } from 'react';
 import { formatCurrencyString } from 'use-shopping-cart';
-import * as config from '../config';
-import { formatAmountForDisplay } from '../utils/stripe-helpers';
+import AppContext from '../context/app-context';
 
 type DonationCardProps = {
   onClick: () => void
@@ -16,6 +15,7 @@ type DonationCardProps = {
 }
 
 export default function DonationCard({ onClick, image = '', name = 'One meal for a family', description = 'Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.', price = 10, count = 2 }: DonationCardProps) {
+const app = useContext(AppContext);
   return (
     <LinkBox onClick={() => onClick()} cursor="pointer">
       <Box
@@ -43,8 +43,8 @@ export default function DonationCard({ onClick, image = '', name = 'One meal for
             <Heading  fontSize={'2xl'} color={useColorModeValue('gray.800', 'gray.200')} fontWeight={600} fontFamily={'body'}>
               {formatCurrencyString(
                 {
-                  value: price,
-                  currency: config.CURRENCY,
+                  value: price * app.state.current_currency.value,
+                  currency: app.state.current_currency.code,
                 }
                 )}
             </Heading>

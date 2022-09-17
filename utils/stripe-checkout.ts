@@ -1,11 +1,10 @@
-import { Product } from 'use-shopping-cart'
-import { parseStripeProduct } from './stripe-helpers'
-import { fetchPostJSON } from './api-helpers'
-import getStripe from './get-stripejs'
+import { Product } from 'use-shopping-cart';
+import { fetchPostJSON } from './api-helpers';
+import getStripe from './get-stripejs';
+import { parseStripeProduct } from './stripe-helpers';
 
 
 async function customCheckoutRedirect(product: Product, amount: number, currency: string, customer_email: string | null = null): Promise<any> {
-  
     const parsedProduct = parseStripeProduct(product)
     // Create a Checkout Session.
     const response = await fetchPostJSON('/api/checkout_sessions', {
