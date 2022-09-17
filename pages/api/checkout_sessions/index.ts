@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { CURRENCY, MIN_AMOUNT, MAX_AMOUNT } from '../../../config'
+import {  MIN_AMOUNT, MAX_AMOUNT } from '../../../config'
 import { formatAmountForStripe } from '../../../utils/stripe-helpers'
 
 import Stripe from 'stripe'
@@ -16,13 +16,14 @@ export default async function handler(
   if (req.method === 'POST') {
     const amount: number = req.body.amount
     const name: string = req.body.name ?? ''
-    const email: string = req.body.email || null
+    const email: string = req.body.customer_email || null
+    const currency: string = req.body.currency || null
     const anonymous: string = req.body.anonymous ?? false
     const line_items: [{}] = req.body.line_items ?? [
       {
         name: 'Custom amount donation',
-        amount: formatAmountForStripe(amount, CURRENCY),
-        currency: CURRENCY,
+        amount: formatAmountForStripe(amount, currency.toUpperCase()),
+        currency: currency.toUpperCase(),
         quantity: 1,
       },
     ];
@@ -36,14 +37,16 @@ export default async function handler(
         metadata: {
           name: name,
           anonymous: anonymous,
-          email: email
+          email: email,
+          currency: currency
         },
+
         ...(email && {customer_email: email}),
         submit_type: 'donate',
         payment_method_types: ['card'],
         line_items: line_items,
-        success_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${req.headers.origin}/donate-with-checkout`,
+        success_url: `${req.headers.origin}/thank-you?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${req.headers.origin}/?status=cancelled`,
       }
       const checkoutSession: Stripe.Checkout.Session =
         await stripe.checkout.sessions.create(params)
