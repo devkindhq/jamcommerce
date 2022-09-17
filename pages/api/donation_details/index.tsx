@@ -14,8 +14,8 @@ export default async function handler(
     try {
         const {destination_currency} = req.query;
         const result = await supabase.from('checkout_sessions').select('*').eq('payment_status', 'paid');
-        const baseTotal = result.data?.reduce((prev, current) => {
-          return prev.base_currency_amount_total ?? 0 + current.base_currency_amount_total
+        const baseTotal = result.data?.map(transaction => transaction.base_currency_amount_total ).reduce((prev, current) => {
+          return prev + current
         });
         const transactionTotal = result.data?.length;
         const destinationTotal = await convertRate(destination_currency, baseTotal)
