@@ -1,3 +1,4 @@
+import { convertRateToBase } from './../currency/convert/index';
 import { buffer } from 'micro'
 import Cors from 'micro-cors'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -26,6 +27,15 @@ const cors = Cors({
   allowMethods: ['POST', 'HEAD'],
 })
 
+const addBaseCurrency = async (checkout_session: any) => {
+  const currencyRates = await convertRateToBase(checkout_session.currency, checkout_session.amount_total);
+  return {
+    ...checkout_session,
+    base_currency: currencyRates.data.currency,
+    base_currency_amount_total: currencyRates.data.amount
+  }
+}
+
 const parseCheckoutSession = (checkout_session: any) => {
   return {
     stripe_id: checkout_session.id,
@@ -35,10 +45,12 @@ const parseCheckoutSession = (checkout_session: any) => {
     payment_status: checkout_session.payment_status,
     metadata: checkout_session.metadata,
     line_items: checkout_session.line_items,
-    currency: checkout_session.currency
+    currency: checkout_session.currency,
+    base_currency: checkout_session.base_currency,
+    base_currency_amount_total: checkout_session.base_currency_amount_total
   }
 };
-const insertCheckoutSession = (checkout_session: any) => {
+const insertCheckoutSession = async (checkout_session: any) => {
   return supabase.from('checkout_sessions').insert(parseCheckoutSession(checkout_session));
 }
 const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -80,8 +92,9 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       const checkout_with_line_items = await stripe.checkout.sessions.retrieve(checkout.id, {
         expand: ['line_items'],
       })
-      const insert = await insertCheckoutSession(checkout_with_line_items);
-      console.log(insert);
+      const checkoutWithBaseCurrencies = await addBaseCurrency(checkout_with_line_items)
+      const insert = await insertCheckoutSession(checkoutWithBaseCurrencies);
+      if(insert.status == 201 || insert.status == 200) console.info('✅ Checkout session created in database')
     }
     else {
       console.warn(`🤷‍♀️ Unhandled event type: ${event.type}`)

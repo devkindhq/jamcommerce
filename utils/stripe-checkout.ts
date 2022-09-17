@@ -3,17 +3,16 @@ import { parseStripeProduct } from './stripe-helpers'
 import { fetchPostJSON } from './api-helpers'
 import getStripe from './get-stripejs'
 
-type CheckoutRedirect = {
-  product: Product, 
-  amount: number
-}
-async function customCheckoutRedirect({product, amount}: CheckoutRedirect): Promise<any> {
+
+async function customCheckoutRedirect(product: Product, amount: number, currency: string, customer_email: string | null = null): Promise<any> {
   
-    const parsedProduct = await parseStripeProduct(product)
+    const parsedProduct = parseStripeProduct(product)
     // Create a Checkout Session.
     const response = await fetchPostJSON('/api/checkout_sessions', {
       amount: amount,
-      line_items: [parsedProduct]
+      line_items: [parsedProduct],
+      currency: currency,
+      customer_email: customer_email
     })
 
     if (response.statusCode === 500) {

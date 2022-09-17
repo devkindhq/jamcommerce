@@ -10,6 +10,7 @@ import getStripe from '../utils/get-stripejs'
 import { formatAmountForDisplay } from '../utils/stripe-helpers'
 import ProductsNew from './ProductsNew'
 import { Heading, useColorModeValue } from '@chakra-ui/react'
+import customCheckoutRedirect from '../utils/stripe-checkout'
 
 const CheckoutForm = () => {
   const [loading, setLoading] = useState(false)
@@ -66,31 +67,11 @@ const CheckoutForm = () => {
     }
   }
   const handleSingleProduct = async (product: Product) => {
-    debugger;
     setLoading(true)
-    // Create a Checkout Session.
-    const response = await fetchPostJSON('/api/checkout_sessions', {
-      amount: input.customDonation,
-      line_items: [getStripeProduct(product)]
-    })
-
-    if (response.statusCode === 500) {
-      console.error(response.message)
-      return
-    }
-
-    // Redirect to Checkout.
-    const stripe = await getStripe()
-    const { error } = await stripe!.redirectToCheckout({
-      // Make the id field from the Checkout Session creation API response
-      // available to this file, so you can provide it as parameter here
-      // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
-      sessionId: response.id,  
-    })
-    // If `redirectToCheckout` fails due to a browser or network
-    // error, display the localized error message to your customer
-    // using `error.message`.
-    console.warn(error.message)
+    // TODO: add the currency here from provider
+    // TODO: this the input.customDonation since we don't need custom donation here.
+    
+    await customCheckoutRedirect(product, input.customDonation, 'USD');
     setLoading(false)
   }
 
