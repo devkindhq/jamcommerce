@@ -1,3 +1,5 @@
+import { Product } from 'use-shopping-cart';
+
 export function formatAmountForDisplay(
   amount: number,
   currency: string
@@ -46,4 +48,15 @@ export function formatAmountFromStripe(
     }
   }
   return zeroDecimalCurrency ? amount : Math.round(amount / 100)
+}
+
+export const parseStripeProduct = (product: Product) => {
+  return {
+    name: product.name,
+    currency: product.currency,
+    description: product.description,
+    amount: product.price,
+    images: [product.image],
+    quantity: 1
+  }
 }
