@@ -81,11 +81,11 @@ const IndexPage: NextPage = ({ source }) => {
             <Spacer />
             <Stack spacing={2} textAlign="center">
               <Box>
-                <Heading color={useColorModeValue('gray.700', 'gray.100')}>{donationDetails && formatAmountForDisplay(donationDetails.destination_currency_total, app.state.current_currency.code)}</Heading>
+                <Heading color={useColorModeValue('gray.700', 'gray.100')}>{donationDetails && formatAmountForDisplay(donationDetails.destination_currency_total/100, app.state.current_currency.code)}</Heading>
                 <Text color={useColorModeValue('gray.500', 'gray.400')}> Funded of {''}{formatAmountForDisplay((RAISING_AMOUNT * app.state.current_currency.value), app.state.current_currency.code)}{' '}</Text>
               </Box>
               {/** TODO: Raising amount needs to be converted */}
-              {donationDetails && <Progress rounded={'lg'} size={'md'} colorScheme='green' value={((donationDetails.destination_currency_total/10) / RAISING_AMOUNT) * 100} />}
+              {donationDetails && <Progress rounded={'lg'} size={'md'} colorScheme='green' value={((donationDetails.destination_currency_total/100) / RAISING_AMOUNT) * 100} />}
               <HStack pt={2} justifyContent={'center'}>
                 <Badge>{donationDetails && donationDetails.total_transactions} supporters</Badge>
                 <Badge>{days} days left</Badge>
