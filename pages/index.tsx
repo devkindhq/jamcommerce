@@ -1,4 +1,4 @@
-import { Badge, Box, Button, Heading, HStack, Image, Text, useDisclosure, Progress, Flex, Stack, Spacer } from '@chakra-ui/react'
+import { Badge, Box, Button, Heading, HStack, Image, Text, useDisclosure, Progress, Flex, Stack, Spacer, useColorModeValue } from '@chakra-ui/react'
 import { NextPage } from 'next'
 import { useEffect, useState } from 'react'
 import CheckoutForm from '../components/CheckoutForm'
@@ -10,6 +10,7 @@ import { formatAmountForDisplay } from '../utils/stripe-helpers'
 import { serialize } from 'next-mdx-remote/serialize'
 import { MDXRemote } from 'next-mdx-remote'
 import description from '../data/donation_description'
+import CampaignCard from '../components/CampaignCard'
 
 const IndexPage: NextPage = ({source}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -30,27 +31,31 @@ const IndexPage: NextPage = ({source}) => {
   return (
       <Layout title="Home | Next.js + TypeScript Example">
         <Box maxW={"7xl"} mx="auto" px={4}>
-          <Box display="flex" justifyContent="center">
-            <Heading color="gray.700">Purpose of this Campaign Head</Heading>
-          </Box>
-          <Box display="flex" gap={4} my={8} rounded={'xl'} shadow={'lg'} flexDirection={['column', 'column', 'row']} overflow="hidden">
+          <Box display="flex" gap={[4, 4, 0]} my={8} rounded={'xl'} shadow={'lg'} flexDirection={['column', 'column', 'row']} 
+          bg={useColorModeValue('white', 'gray.700')}
+          overflow="hidden">
             <Flex w={["auto", "auto", "75%"]}>
               <Image w="full"  h="full" src="https://s3.amazonaws.com/launchgood/project%2F128769%2Fclean_water_for_yemen_LG+3-700x525.jpeg"></Image>
             </Flex>
-            <Box w={["auto", "auto", "25%"]} display="flex" alignItems="center" justifyContent="space-between" flexDirection="column">
+            <Box w={["auto", "auto", "25%"]} px={2} display="flex" alignItems="center" justifyContent="space-between" flexDirection="column">
               <Spacer />
                 <Stack spacing={2} textAlign="center">
-                <Heading color='gray.700'>{donationDetails && formatAmountForDisplay(donationDetails.destination_currency_total, 'AUD')}</Heading>
-                  <Text color='gray.500'> Funded of {''}{formatAmountForDisplay(2000, 'AUD')}{' '}</Text>
-                  {donationDetails && <Progress rounded={'md'} colorScheme='teal' height='32px' value={(donationDetails.destination_currency_total/2000)*100} />}
-                  <HStack>
+                  <Box>
+                    <Heading color={useColorModeValue('gray.700', 'gray.100')}>{donationDetails && formatAmountForDisplay(donationDetails.destination_currency_total, 'AUD')}</Heading>
+                    <Text color={useColorModeValue('gray.500', 'gray.400')}> Funded of {''}{formatAmountForDisplay(2000, 'AUD')}{' '}</Text>
+                  </Box>
+                  {donationDetails && <Progress rounded={'lg'} size={'md'} colorScheme='green' value={(donationDetails.destination_currency_total/2000)*100} />}
+                  <HStack pt={2}>
                     <Badge>{donationDetails && donationDetails.total_transactions} supporters</Badge>
                     <Badge>14 days left</Badge>
                     {/** TODO: Write a function to determine how many days left */}
                   </HStack>
                   <Box py={4} w="full">
-                  <Button px={12} w="full" onClick={onOpen} colorScheme='green' textTransform={'uppercase'} rounded="full" py={6} variant="solid">Support</Button>
-                    <Text mt={2} color='gray.600' fontSize="xs">Safe checkout with Stripe</Text>
+                  <Button w="full" size={'lg'} shadow="md" onClick={onOpen} colorScheme='green' textTransform={'uppercase'}   variant="solid"    _hover={{
+          transform: 'translateY(-2px)',
+          boxShadow: 'lg',
+        }}>Support</Button>
+                    <Text mt={2} color={useColorModeValue('gray.600', 'gray.300')} fontSize="xs">Safe checkout with Stripe</Text>
                   </Box>
                 </Stack>
                 <Spacer />
@@ -61,8 +66,14 @@ const IndexPage: NextPage = ({source}) => {
             <LevelModal isOpen={isOpen} onClose={onClose} />
           </Box>
 
-        <Flex  flexDirection={['column', 'column', 'row']}>
-          <Box w={["auto", "auto", "70%"]} px={6}>
+        <Flex  flexDirection={['column', 'column', 'row']} gap={12} my={12}>
+          <Box w={["auto", "auto", "70%"]}>
+            <CampaignCard {...{
+              index: 2,
+              title: 'Campaign Objective',
+              content:
+                "Pakistan's Sindh Province has been the hardest hit with almost 15 million people homeless and half of the province underwater. We request everyone to join hands",
+            }} />
             <Prose>
             <MDXRemote {...source}  />
             </Prose>
