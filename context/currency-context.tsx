@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from 'react'
-import { FindCurrency } from '../utils/currency-helpers'
+import { findCurrency, getAllCurrencies } from '../utils/currency-helpers'
 
 
 type ICurrency = { code: string, rate: number }
@@ -16,11 +16,11 @@ interface ICurrencyContext {
 const defaultCurrencyState = {
     currency: {
         code: process.env.BASE_CURRENCY ?? 'AUD',
-        rate: 0
-    }
+        rate: 1
+    },
 }
 
-const CurrencyContext = createContext<ICurrencyContext>(defaultCurrencyState)
+export const CurrencyContext = createContext<ICurrencyContext>(defaultCurrencyState)
 
 
 function CurrencyProvider({ children }: CurrencyProviderProps) {
@@ -30,9 +30,7 @@ function CurrencyProvider({ children }: CurrencyProviderProps) {
     })
 
     const updateCurrency = async (code:string) => {
-        debugger;
-        const result = await FindCurrency(code)
-        
+        // const result = await findCurrency(code);
     }
     
     return (
