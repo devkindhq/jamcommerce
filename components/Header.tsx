@@ -32,7 +32,8 @@ export default function Header() {
   return (
     <Box borderBottom={1}
     borderStyle={'solid'}
-    borderColor={useColorModeValue('gray.200', 'gray.900')}> 
+    shadow="sm"
+    borderColor={useColorModeValue('gray.100', 'gray.900')}> 
    <Box maxW={'7xl'} mx="auto">
    <Flex
         bg={useColorModeValue('white', 'gray.800')}
@@ -42,6 +43,8 @@ export default function Header() {
         px={{ base: 4 }}
 
         align={'center'}>
+        {/* 
+        !NOTE: This will enable the mobile navigation when needed
         <Flex
           flex={{ base: 1, md: 'auto' }}
           ml={{ base: -2 }}
@@ -54,8 +57,8 @@ export default function Header() {
             variant={'ghost'}
             aria-label={'Toggle Navigation'}
           />
-        </Flex>
-        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
+        </Flex> */}
+        <Flex flex={{ base: 1 }} justify={{ base: 'start', md: 'start' }}>
           <Text
             textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
             fontFamily={'heading'}
