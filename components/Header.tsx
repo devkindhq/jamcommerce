@@ -16,6 +16,7 @@ import {
   useDisclosure,
   useColorMode,
   Image,
+  Select,
 } from '@chakra-ui/react';
 import {
   HamburgerIcon,
@@ -26,25 +27,35 @@ import {
   SunIcon,
 } from '@chakra-ui/icons';
 import logo from '../public/logo.png'
-export default function Header() {
+export default function Header({ selectedCurrency, updateCurrency }: { selectedCurrency: string, updateCurrency: (value:string) => void }) {
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onToggle } = useDisclosure();
+  const ALLOWED_CURRENCIES = ['AUD', 'USD', 'IDR']
+
+  /**
+   * Functions run to update currency when ever use select from the list currency
+   * 
+   * @param e
+   */
+  const handleChange = (e: any) => {
+    updateCurrency(e.target.value)
+  }
 
   return (
     <Box borderBottom={1}
-    borderStyle={'solid'}
-    shadow="sm"
-    borderColor={useColorModeValue('gray.100', 'gray.900')}> 
-   <Box maxW={'7xl'} mx="auto">
-   <Flex
-        bg={useColorModeValue('white', 'gray.800')}
-        color={useColorModeValue('gray.600', 'white')}
-        minH={'60px'}
-        py={{ base: 2 }}
-        px={{ base: 4 }}
+      borderStyle={'solid'}
+      shadow="sm"
+      borderColor={useColorModeValue('gray.100', 'gray.900')}>
+      <Box maxW={'7xl'} mx="auto">
+        <Flex
+          bg={useColorModeValue('white', 'gray.800')}
+          color={useColorModeValue('gray.600', 'white')}
+          minH={'60px'}
+          py={{ base: 2 }}
+          px={{ base: 4 }}
 
-        align={'center'}>
-        {/* 
+          align={'center'}>
+          {/* 
         !NOTE: This will enable the mobile navigation when needed
         <Flex
           flex={{ base: 1, md: 'auto' }}
@@ -59,41 +70,48 @@ export default function Header() {
             aria-label={'Toggle Navigation'}
           />
         </Flex> */}
-        <Flex flex={{ base: 1 }} justify={{ base: 'start', md: 'start' }}>
-          <Text
-            textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
-            fontFamily={'heading'}
-            color={useColorModeValue('gray.800', 'white')}>
-            <Image src={logo.src} maxW={40}/>
-          </Text>
+          <Flex flex={{ base: 1 }} justify={{ base: 'start', md: 'start' }}>
+            <Text
+              textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
+              fontFamily={'heading'}
+              color={useColorModeValue('gray.800', 'white')}>
+              <Image src={logo.src} maxW={40} />
+            </Text>
 
-          <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
-            <DesktopNav />
+            <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
+              <DesktopNav />
+            </Flex>
           </Flex>
+
+          <Stack
+            flex={{ base: 1, md: 0 }}
+            justify={'flex-end'}
+            direction={'row'}
+            spacing={2}>
+            <Select onChange={handleChange} defaultValue={selectedCurrency}>
+              {ALLOWED_CURRENCIES.map((currency, index) => {
+                return (
+                  <option key={index} value={currency}>{currency}</option>
+                )
+              })}
+            </Select>
+            <Button onClick={toggleColorMode} bg="none">
+              {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+            </Button>
+            <Button
+              fontWeight={600}
+              colorScheme="green"
+              href={'#'}>
+              Donate
+            </Button>
+
+          </Stack>
         </Flex>
 
-        <Stack
-          flex={{ base: 1, md: 0 }}
-          justify={'flex-end'}
-          direction={'row'}
-          spacing={2}>
-          <Button onClick={toggleColorMode} bg="none">
-            {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
-          </Button>
-          <Button
-            fontWeight={600}
-            colorScheme="green"
-            href={'#'}>
-            Donate
-          </Button>
-
-        </Stack>
-      </Flex>
-
-      <Collapse in={isOpen} animateOpacity>
-        <MobileNav />
-      </Collapse>
-    </Box> 
+        <Collapse in={isOpen} animateOpacity>
+          <MobileNav />
+        </Collapse>
+      </Box>
     </Box>
   );
 }

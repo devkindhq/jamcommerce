@@ -5,8 +5,17 @@ import Link from 'next/link';
 import { formatCurrencyString } from 'use-shopping-cart';
 import * as config from '../config';
 import { formatAmountForDisplay } from '../utils/stripe-helpers';
-// TODO: look how to define a ts function for onclick
-export default function DonationCard({onClick  ,image = '', name = 'One meal for a family', description = 'Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.', price = 10, count = 2}) {
+
+type DonationCardProps = {
+  onClick: () => void
+  image?: string
+  name?: string
+  description?: string
+  price?: number
+  count?: number
+}
+
+export default function DonationCard({ onClick, image = '', name = 'One meal for a family', description = 'Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.', price = 10, count = 2 }: DonationCardProps) {
   return (
     <LinkBox onClick={() => onClick()} cursor="pointer">
       <Box
