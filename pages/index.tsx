@@ -1,20 +1,20 @@
-import { Badge, Box, Button, Heading, HStack, Image, Text, useDisclosure, Progress, Flex, Stack, Spacer, useColorModeValue } from '@chakra-ui/react'
+import { Badge, Box, Button, Flex, Heading, HStack, Image, Progress, Spacer, Stack, Text, useColorModeValue, useDisclosure } from '@chakra-ui/react'
+import { Prose } from '@nikolovlazar/chakra-ui-prose'
 import { NextPage } from 'next'
-import { useEffect, useState } from 'react'
+import { MDXRemote } from 'next-mdx-remote'
+import { serialize } from 'next-mdx-remote/serialize'
+import { useContext, useEffect, useState } from 'react'
+import CampaignCard from '../components/CampaignCard'
 import CheckoutForm from '../components/CheckoutForm'
 import Layout from '../components/Layout'
 import LevelModal from '../components/LevelModal'
-import ProductsNew from '../components/ProductsNew'
-import { Prose } from '@nikolovlazar/chakra-ui-prose'
-import { formatAmountForDisplay } from '../utils/stripe-helpers'
-import { serialize } from 'next-mdx-remote/serialize'
-import { MDXRemote } from 'next-mdx-remote'
+import { RAISING_AMOUNT } from '../config'
+import AppContext from '../context/app-context'
+import { useCurrency } from '../context/currency-context'
 import description from '../data/donation_description'
 import endDate from '../data/donation_end_date'
-import CampaignCard from '../components/CampaignCard'
 import banner from '../public/banner.png'
-import { useCurrency } from '../context/currency-context'
-import { RAISING_AMOUNT } from '../config'
+import { formatAmountForDisplay } from '../utils/stripe-helpers'
 
 const IndexPage: NextPage = ({ source }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -24,6 +24,7 @@ const IndexPage: NextPage = ({ source }) => {
   const [days, setDays] = useState<number>(0)
   const [campaignDate, setCampaignDate] = useState<string>('')
   const { currency, dispatch} = useCurrency();
+  const app = useContext(AppContext);
   /**
    * This function use to count days from now to end date
    */
@@ -40,7 +41,7 @@ const IndexPage: NextPage = ({ source }) => {
    * This function use load donation details on the basis of current currency
    */
   const loadDonations = () => {
-    fetch('/api/donation_details?destination_currency=' + currentCurrency)
+    fetch('/api/donation_details?destination_currency=' + app.state.current_currency.code)
       .then(response => response.json())
       .then(e => {
         setDonationDetails(e)
@@ -51,12 +52,6 @@ const IndexPage: NextPage = ({ source }) => {
    * this useeffect run whenever the currentCurrency changes
    */
   useEffect(() => {
-    debugger;
-    currency,
-    dispatch({
-      currency: "IND",
-      rate: 10
-    })
     countLeftDays()
   }, [])
 
@@ -64,10 +59,14 @@ const IndexPage: NextPage = ({ source }) => {
    * this useeffect run whenever the currentCurrency changes
    */
   useEffect(() => {
-    setLoading(true);
     loadDonations()
-  }, [currentCurrency])
-
+    console.log('yes');
+  }, [app.state.current_currency])
+ /**
+  * WIP WIP WIP WIP
+  * 
+  * THE AMOUNT FOR DONATION DETAILS DOESNT SEEM TO BE CORRECT.
+  */
 
   return (
     <Layout title="Home | Next.js + TypeScript Example" selectedCurrency={currentCurrency} changeCurrency={setCurrentCurrency}>
@@ -82,11 +81,11 @@ const IndexPage: NextPage = ({ source }) => {
             <Spacer />
             <Stack spacing={2} textAlign="center">
               <Box>
-                <Heading color={useColorModeValue('gray.700', 'gray.100')}>{donationDetails && formatAmountForDisplay(donationDetails.destination_currency_total, currentCurrency)}</Heading>
-                <Text color={useColorModeValue('gray.500', 'gray.400')}> Funded of {''}{formatAmountForDisplay(RAISING_AMOUNT, currentCurrency)}{' '}</Text>
+                <Heading color={useColorModeValue('gray.700', 'gray.100')}>{donationDetails && formatAmountForDisplay(donationDetails.destination_currency_total, app.state.current_currency.code)}</Heading>
+                <Text color={useColorModeValue('gray.500', 'gray.400')}> Funded of {''}{formatAmountForDisplay((RAISING_AMOUNT * app.state.current_currency.value), app.state.current_currency.code)}{' '}</Text>
               </Box>
               {/** TODO: Raising amount needs to be converted */}
-              {donationDetails && <Progress rounded={'lg'} size={'md'} colorScheme='green' value={(donationDetails.destination_currency_total / RAISING_AMOUNT) * 100} />}
+              {donationDetails && <Progress rounded={'lg'} size={'md'} colorScheme='green' value={((donationDetails.destination_currency_total/10) / RAISING_AMOUNT) * 100} />}
               <HStack pt={2} justifyContent={'center'}>
                 <Badge>{donationDetails && donationDetails.total_transactions} supporters</Badge>
                 <Badge>{days} days left</Badge>
