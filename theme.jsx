@@ -1,4 +1,5 @@
 import { extendTheme } from '@chakra-ui/react'
+import { mode } from '@chakra-ui/theme-tools'
 import { withProse } from '@nikolovlazar/chakra-ui-prose'
 const ChakraTheme = extendTheme({
   colors: {
@@ -7,11 +8,14 @@ const ChakraTheme = extendTheme({
     },
   },
 }, withProse({
-  baseStyle: {
-    h2: {
-      color: 'gray.700'
-    }
+  baseStyle: 
+    (props) => ({
+      h2: {
+        color: mode('gray.700', 'gray.100')(props)
+      }
+    })
+
   }
-}))
+))
 
 export default ChakraTheme
