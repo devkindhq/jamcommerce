@@ -13,6 +13,9 @@ import description from '../data/donation_description'
 import endDate from '../data/donation_end_date'
 import CampaignCard from '../components/CampaignCard'
 import banner from '../public/banner.png'
+import { useCurrency } from '../context/currency-context'
+
+
 const IndexPage: NextPage = ({ source }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [donationDetails, setDonationDetails] = useState(null)
@@ -20,7 +23,7 @@ const IndexPage: NextPage = ({ source }) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [days, setDays] = useState<number>(0)
   const [campaignDate, setCampaignDate] = useState<string>('')
-  
+  const { currency, dispatch} = useCurrency();
   /**
    * This function use to count days from now to end date
    */
@@ -36,20 +39,26 @@ const IndexPage: NextPage = ({ source }) => {
   /**
    * This function use load donation details on the basis of current currency
    */
-  const loadDonations = ()=> {
+  const loadDonations = () => {
     fetch('/api/donation_details?destination_currency=' + currentCurrency)
-    .then(response => response.json())
-    .then(e => {
-      setDonationDetails(e)
-    }).finally(() => setLoading(false));
+      .then(response => response.json())
+      .then(e => {
+        setDonationDetails(e)
+      }).finally(() => setLoading(false));
   }
 
   /**
    * this useeffect run whenever the currentCurrency changes
    */
   useEffect(() => {
+    debugger;
+    currency,
+    dispatch({
+      currency: "IND",
+      rate: 10
+    })
     countLeftDays()
-  },[])
+  }, [])
 
   /**
    * this useeffect run whenever the currentCurrency changes
