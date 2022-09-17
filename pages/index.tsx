@@ -11,7 +11,7 @@ import { serialize } from 'next-mdx-remote/serialize'
 import { MDXRemote } from 'next-mdx-remote'
 import description from '../data/donation_description'
 import CampaignCard from '../components/CampaignCard'
-
+import banner from '../public/banner.png'
 const IndexPage: NextPage = ({source}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [currrencies, setCurrencies] = useState<null>(null)
@@ -35,7 +35,7 @@ const IndexPage: NextPage = ({source}) => {
           bg={useColorModeValue('white', 'gray.700')}
           overflow="hidden">
             <Flex w={["auto", "auto", "75%"]}>
-              <Image w="full"  h="full" src="https://s3.amazonaws.com/launchgood/project%2F128769%2Fclean_water_for_yemen_LG+3-700x525.jpeg"></Image>
+              <Image w="full"  h="full" src={banner.src}></Image>
             </Flex>
             <Box w={["auto", "auto", "25%"]} px={2} display="flex" alignItems="center" justifyContent="space-between" flexDirection="column">
               <Spacer />
@@ -54,7 +54,7 @@ const IndexPage: NextPage = ({source}) => {
                   <Button w="full" size={'lg'} shadow="md" onClick={onOpen} colorScheme='green' textTransform={'uppercase'}   variant="solid"    _hover={{
           transform: 'translateY(-2px)',
           boxShadow: 'lg',
-        }}>Support</Button>
+        }}>Support 🙏</Button>
                     <Text mt={2} color={useColorModeValue('gray.600', 'gray.300')} fontSize="xs">Safe checkout with Stripe</Text>
                   </Box>
                 </Stack>
