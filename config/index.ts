@@ -4,3 +4,5 @@ export const CURRENCY = 'AUD'
 export const MIN_AMOUNT = 10.0
 export const MAX_AMOUNT = 5000.0
 export const AMOUNT_STEP = 5.0
+export const DEALING_CURRENCIES =  ['EUR','USD','CAD','IDR']
+export const BASE_CURRENCY = 'AUD'

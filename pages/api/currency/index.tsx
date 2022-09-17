@@ -1,13 +1,10 @@
 
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createClient } from '@supabase/supabase-js'
+import { BASE_CURRENCY, DEALING_CURRENCIES } from '../../../config'
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 const supabase = createClient(supabaseUrl, supabaseAnonKey)
-
-const BASE_CURRENCY = 'AUD'
-const ALLOWED_CURRENCIES = ['USD', 'IDR']
-
 
 export default async function handler(
   req: NextApiRequest,
@@ -21,13 +18,14 @@ export default async function handler(
         const myHeaders = new Headers();
         myHeaders.append("apikey", process.env.CURRENCY_API_KEY);
         // Default options are marked with *
-        const url = process.env.CURRENCY_API_ENDPOINT + `?source=${BASE_CURRENCY}&currencies=${ALLOWED_CURRENCIES.join("%2C")}`
+        const url = process.env.CURRENCY_API_ENDPOINT + `?base_currency=${BASE_CURRENCY}&currencies=${DEALING_CURRENCIES.join("%2C")}`
         const response = await fetch(url, {
             method: "GET", // *GET, POST, PUT, DELETE, etc.
             headers: myHeaders,
             redirect: 'follow'
         })
         const result = await response.json();
+        console.log(result);
         const finalResult =  Object.values(result.data).map( currency => {
             return {
                 status: 1,

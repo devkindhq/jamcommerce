@@ -12,13 +12,15 @@ export default async function handler(
   if (req.method === 'POST') {
     try {
       const { authorization } = req.headers;
-        const { currency, amount  } = req.query;
-        let currency_rate = await supabase.from("currency_rates").select('*').eq('currency', currency).order('updated_at', {ascending: true}).limit(1).single();
-        if(amount){
-          res.status(200).json({amount: (currency_rate.data.value * amount), ...currency_rate})
+        const { code, amount  } = req.query;
+        let currency_rate = await supabase.from("currency_rates").select('*').eq('code', code).order('updated_at', {ascending: false}).limit(1).single();
+        const finalResult = {
+          ...currency_rate,
+          ...({data: Object.assign({},currency_rate.data, 
+            (amount && {amount:(currency_rate.data.value * amount)})
+            )}),
         }
-        res.status(200).json(currency_rate);
-     
+        return res.status(200).json(finalResult);
     } catch (err) {
       res.status(500).json({ statusCode: 500, message: err.message });
     }
