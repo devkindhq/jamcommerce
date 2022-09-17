@@ -18,46 +18,39 @@ export default async function handler(
       const { authorization } = req.headers;
 
       if (authorization === `Bearer ${process.env.API_SECRET_KEY}`) {
-        var myHeaders = new Headers();
+        const myHeaders = new Headers();
         myHeaders.append("apikey", process.env.CURRENCY_API_KEY);
         // Default options are marked with *
         const url = process.env.CURRENCY_API_ENDPOINT + `?source=${BASE_CURRENCY}&currencies=${ALLOWED_CURRENCIES.join("%2C")}`
-
         const response = await fetch(url, {
             method: "GET", // *GET, POST, PUT, DELETE, etc.
             headers: myHeaders,
             redirect: 'follow'
         })
         const result = await response.json();
-
-        const finalResult =  Object.keys(result.quotes).map( currency => {
-            let currentCurrency = currency.replace(BASE_CURRENCY, '');
-            let key = BASE_CURRENCY+currentCurrency;
+        const finalResult =  Object.values(result.data).map( currency => {
             return {
                 status: 1,
-                currency: key,
-                code: currentCurrency,
-                value: result.quotes[key],
+                currency: BASE_CURRENCY,
+                code: currency.code,
+                value: currency.value,
                 //TODO: look at this time
                 // updated_at: result.timestamp
             }
         });
         let insert = await supabase.from("currency_rates").upsert(finalResult);
-     
         if(insert?.status == 201 || insert?.status == 200){
-            res.status(200).json({ success: true, auth: 'authorized' });
+            return res.status(200).json({ success: true, auth: 'authorized' }); // all good
         }
-        
-        res.status(200).json({ success: false, auth: 'authorized' });
-
+        return res.status(200).json({ success: false, auth: 'authorized' }); // auth passed but code fail
       } else {
-        res.status(401).json({ success: false, auth: 'failed' });
+        return res.status(401).json({ success: false, auth: 'failed' }); // auth failed
       }
     } catch (err) {
-      res.status(500).json({ statusCode: 500, message: err.message });
+      return res.status(500).json({ statusCode: 500, message: err.message }); // something went wrong
     }
   } else {
     res.setHeader('Allow', 'POST');
-    res.status(405).end('Method Not Allowed');
+    return res.status(405).end('Method Not Allowed');
   }
 }
