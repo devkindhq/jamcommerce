@@ -11,11 +11,11 @@ export default function DonationCard({onClick  ,image = '', name = 'One meal for
     <LinkBox onClick={() => onClick()} cursor="pointer">
       <Box
         w={'full'}
-        bg={useColorModeValue('white', 'gray.800')}
+        bg={useColorModeValue('white', 'gray.700')}
         boxShadow={'md'}
         rounded={'md'}
         border={'1px solid'}
-        borderColor="gray.200"
+        borderColor={useColorModeValue('gray.200', 'gray.900')}
         overflow={'hidden'}>
         <Flex display="none">
           <Image
@@ -31,7 +31,7 @@ export default function DonationCard({onClick  ,image = '', name = 'One meal for
         </Flex>
         <Box p={6}>
           <Stack spacing={2}>
-            <Heading  fontSize={'2xl'} color="gray.800" fontWeight={600} fontFamily={'body'}>
+            <Heading  fontSize={'2xl'} color={useColorModeValue('gray.800', 'gray.200')} fontWeight={600} fontFamily={'body'}>
               {formatCurrencyString(
                 {
                   value: price,
@@ -40,11 +40,11 @@ export default function DonationCard({onClick  ,image = '', name = 'One meal for
                 )}
             </Heading>
 
-              <Heading fontSize={'lg'} fontWeight={600} color="gray.700" fontFamily={'body'}>
+              <Heading fontSize={'lg'} fontWeight={600} color={useColorModeValue('gray.700', 'gray.300')} fontFamily={'body'}>
               {name}
             </Heading>
        
-            <Text color={'gray.500'} fontSize='sm'>{description}</Text>
+            <Text  color={useColorModeValue('gray.500', 'gray.400')} fontSize='sm'>{description}</Text>
           </Stack>
             <Text color={'gray.500'} mt={4} fontSize='xs'>{count} claimed</Text>
         </Box>
