@@ -15,6 +15,7 @@ import {
   useBreakpointValue,
   useDisclosure,
   useColorMode,
+  Image,
 } from '@chakra-ui/react';
 import {
   HamburgerIcon,
@@ -24,7 +25,7 @@ import {
   MoonIcon,
   SunIcon,
 } from '@chakra-ui/icons';
-
+import logo from '../public/logo.png'
 export default function Header() {
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onToggle } = useDisclosure();
@@ -63,7 +64,7 @@ export default function Header() {
             textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
             fontFamily={'heading'}
             color={useColorModeValue('gray.800', 'white')}>
-            Logo
+            <Image src={logo.src} maxW={40}/>
           </Text>
 
           <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
