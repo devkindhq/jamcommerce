@@ -13,6 +13,7 @@ import description from '../data/donation_description'
 import endDate from '../data/donation_end_date'
 import CampaignCard from '../components/CampaignCard'
 import banner from '../public/banner.png'
+import { RAISING_AMOUNT } from '../config'
 const IndexPage: NextPage = ({ source }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [donationDetails, setDonationDetails] = useState(null)
@@ -66,18 +67,19 @@ const IndexPage: NextPage = ({ source }) => {
         <Box display="flex" gap={[4, 4, 0]} my={8} rounded={'xl'} shadow={'lg'} flexDirection={['column', 'column', 'row']}
           bg={useColorModeValue('white', 'gray.700')}
           overflow="hidden">
-          <Flex w={["auto", "auto", "75%"]}>
+          <Flex w={["auto", "auto", "75%"]} minH="full">
             <Image w="full" h="full" src={banner.src}></Image>
           </Flex>
-          <Box w={["auto", "auto", "25%"]} px={2} display="flex" alignItems="center" justifyContent="space-between" flexDirection="column">
+          <Box w={["auto", "auto", "auto"]} maxW={'350px'} mx="auto" px={2} display="flex" alignItems="center" justifyContent="space-between" flexDirection="column">
             <Spacer />
             <Stack spacing={2} textAlign="center">
               <Box>
                 <Heading color={useColorModeValue('gray.700', 'gray.100')}>{donationDetails && formatAmountForDisplay(donationDetails.destination_currency_total, currentCurrency)}</Heading>
-                <Text color={useColorModeValue('gray.500', 'gray.400')}> Funded of {''}{formatAmountForDisplay(2000, currentCurrency)}{' '}</Text>
+                <Text color={useColorModeValue('gray.500', 'gray.400')}> Funded of {''}{formatAmountForDisplay(RAISING_AMOUNT, currentCurrency)}{' '}</Text>
               </Box>
-              {donationDetails && <Progress rounded={'lg'} size={'md'} colorScheme='green' value={(donationDetails.destination_currency_total / 2000) * 100} />}
-              <HStack pt={2}>
+              {/** TODO: Raising amount needs to be converted */}
+              {donationDetails && <Progress rounded={'lg'} size={'md'} colorScheme='green' value={(donationDetails.destination_currency_total / RAISING_AMOUNT) * 100} />}
+              <HStack pt={2} justifyContent={'center'}>
                 <Badge>{donationDetails && donationDetails.total_transactions} supporters</Badge>
                 <Badge>{days} days left</Badge>
               </HStack>
