@@ -1,19 +1,96 @@
-# Example using Stripe with TypeScript and react-stripe-js
+# Headless Crowdfunding
 
-This is a full-stack TypeScript example using:
+A full stack app to initiate pages like GoFundMe, OpenCollective, LaunchGood and so fourth.
 
 - Frontend:
   - Next.js and [SWR](https://github.com/vercel/swr)
   - [react-stripe-js](https://github.com/stripe/react-stripe-js) for [Checkout](https://stripe.com/checkout) and [Elements](https://stripe.com/elements)
+  - [Chakra UI](https://chakra-ui.com/)
+  - [Use-Shopping-Cart](https://useshoppingcart.com/docs/)
 - Backend
   - Next.js [API routes](https://nextjs.org/docs/api-routes/introduction)
   - [stripe-node with TypeScript](https://github.com/stripe/stripe-node#usage-with-typescript)
+  - [Supabase](https://supabase.com/docs/reference/javascript)
+  - [CurrencyAPI](https://currencyapi.com)
 
+## Features
+- 🛍 Stripe Checkout
+- ฿ Multi-currency
+- 💸 Donation give levels
+- 🤑 Donation tips
+- 🛒 Fundamental Shopping Cart logic
+- ⚛️ State management
+- 🗃 Local Storage Support
+- ☁︎ Serverless Utilities (Product Validation)
+- 🧾 Easy-To-Access Cart Info
+- ✅ Fully Tested
+- 🎸 Jamstack friendly
+- and more to come 🔥
+
+
+## Setup
+
+##### Prequisites: 
+You will need to sign your account to the following services. Please make sure they're available in your country.
+- Stripe account
+- Supabase account
+- Currencyapi account
+
+##### Clone the repo
+
+``` 
+git clone https://github.com/rome2o/headlesscrowdfunding.git
+cd headlesscrowdfunding
+```
+
+##### Create your environment variables
+Please fetch all your API keys and chuck it inside the following
+```
+cp .env.local.example .env.local
+```
+
+Also, create `.env` file
+```
+nano .env
+```
+```
+# Supabase database URL
+DATABASE_URL=postgres://postgres:[YOUR-PASSWORD]@db.phrcxeiqklfccoulvjly.supabase.co:6543/postgres
+```
+
+##### Push the database schema
+
+``` 
+npx prisma db push
+```
+
+#### Populate your currency table
+Hit the currency API to populate your currencies. Make sure your you've `CURRENCY_API_ENDPOINT` and `CURRENCY_API_KEY`
+```
+curl --request POST \                                    
+     --url 'http://localhost:3000/api/currency' \
+     --header 'Authorization: Bearer <YOUR_API_TOKEN>'
+```
+
+
+## Add campaign information
+Some parameters are required to be set in the `config/index.ts`
+```
+export const CURRENCY = 'AUD'
+// Set your amount limits: Use float for decimal currencies and
+// Integer for zero-decimal currencies: https://stripe.com/docs/currencies#zero-decimal.
+export const MIN_AMOUNT = 10.0
+export const MAX_AMOUNT = 5000.0
+export const AMOUNT_STEP = 5.0
+export const DEALING_CURRENCIES =  ['AUD','EUR','USD','CAD','IDR']
+export const BASE_CURRENCY = 'AUD'
+export const RAISING_AMOUNT = 10000
+```
 ## Demo
 
-- Live demo: https://nextjs-typescript-react-stripe-js.vercel.app/
-- CodeSandbox: https://codesandbox.io/s/github/stripe-samples/nextjs-typescript-react-stripe-js
-- Tutorial: https://dev.to/thorwebdev/type-safe-payments-with-next-js-typescript-and-stripe-4jo7
+- Live demo: To be added
+- CodeSandbox: To be added
+- Tutorial: To be added
 
 The demo is running in test mode -- use `4242424242424242` as a test card number with any CVC + future expiration date.
 
@@ -60,24 +137,10 @@ Once you have access to [the environment variables you'll need](#required-config
   - [utils/stripe-helpers.ts](utils/stripe-helpers.ts)
     - Format amount strings properly using `Intl.NumberFormat`.
     - Format amount for usage with Stripe, including zero decimal currency detection.
+- TODO: Write more information about the features here
 
-## How to use
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
-
-```bash
-npx create-next-app --example with-stripe-typescript with-stripe-typescript-app
-```
-
-```bash
-yarn create next-app --example with-stripe-typescript with-stripe-typescript-app
-```
-
-```bash
-pnpm create next-app --example with-stripe-typescript with-stripe-typescript-app
-```
-
-### Required configuration
+### Stripe information
 
 Copy the `.env.local.example` file into a file named `.env.local` in the root directory of this project:
 
@@ -90,16 +153,6 @@ You will need a Stripe account ([register](https://dashboard.stripe.com/register
 ```bash
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=<replace-with-your-publishable-key>
 STRIPE_SECRET_KEY=<replace-with-your-secret-key>
-```
-
-Now install the dependencies and start the development server.
-
-```bash
-npm install
-npm run dev
-# or
-yarn
-yarn dev
 ```
 
 ### Forward webhooks to your local dev server
@@ -136,13 +189,10 @@ To deploy your local project to Vercel, push it to GitHub/GitLab/Bitbucket and [
 
 **Important**: When you import your project on Vercel, make sure to click on **Environment Variables** and set them to match your `.env.local` file.
 
-#### Deploy from Our Template
-
-Alternatively, you can deploy using our template by clicking on the Deploy button below.
-
-[![Deploy to Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-stripe-typescript&project-name=with-stripe-typescript&repository-name=with-stripe-typescript&env=NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,STRIPE_SECRET_KEY&envDescription=Enter%20your%20Stripe%20Keys&envLink=https://github.com/vercel/next.js/tree/canary/examples/with-stripe-typescript%23required-configuration)
-
+# Forked from 
+This project is a fork a [Next.js example](https://github.com/vercel/next.js/tree/canary/examples/with-stripe-typescript). You can read related [documentation here](https://vercel.com/guides/getting-started-with-nextjs-typescript-stripe)
 ## Authors
-
+- [@rome2o](https://github.com/rome2o)
+- TODO: Add Ahmed's link here
 - [@thorsten-stripe](https://twitter.com/thorwebdev)
 - [@lfades](https://twitter.com/luis_fades)

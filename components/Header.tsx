@@ -1,47 +1,32 @@
 import {
-  Box,
-  Flex,
-  Text,
-  IconButton,
-  Button,
-  Stack,
-  Collapse,
-  Icon,
-  Link,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  useColorModeValue,
-  useBreakpointValue,
-  useDisclosure,
-  useColorMode,
-  Image,
-  Select,
-} from '@chakra-ui/react';
-import {
-  HamburgerIcon,
-  CloseIcon,
   ChevronDownIcon,
   ChevronRightIcon,
   MoonIcon,
-  SunIcon,
+  SunIcon
 } from '@chakra-ui/icons';
-import logoLight from '../public/logo.svg'
-import logoDark from '../public/logo-dark.svg'
+import {
+  Box, Button, Collapse, Flex, Icon, Image, Link,
+  Popover, PopoverContent, PopoverTrigger, Select, Stack, Text, useBreakpointValue, useColorMode, useColorModeValue, useDisclosure
+} from '@chakra-ui/react';
+import { useContext } from 'react';
 import { DEALING_CURRENCIES } from '../config';
+import AppContext from '../context/app-context';
+import logoDark from '../public/logo-dark.svg';
+import logoLight from '../public/logo.svg';
 export default function Header({ selectedCurrency, updateCurrency }: { selectedCurrency: string, updateCurrency: (value:string) => void }) {
   const logo = useColorModeValue(logoLight, logoDark)
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onToggle } = useDisclosure();
+  const app = useContext(AppContext);
 
 
   /**
-   * Functions run to update currency when ever use select from the list currency
+   * Functions run to updØate currency when ever use select from the list currency
    * 
    * @param e
    */
   const handleChange = (e: any) => {
-    updateCurrency(e.target.value)
+    app.changeCurrency(e.target.value)
   }
 
   return (
@@ -121,10 +106,10 @@ export default function Header({ selectedCurrency, updateCurrency }: { selectedC
 }
 
 const DesktopNav = () => {
+  return null;
   const linkColor = useColorModeValue('gray.600', 'gray.200');
   const linkHoverColor = useColorModeValue('gray.800', 'white');
   const popoverContentBgColor = useColorModeValue('white', 'gray.800');
-  return null;
   return (
     <Stack direction={'row'} spacing={4}>
       {NAV_ITEMS.map((navItem) => (
