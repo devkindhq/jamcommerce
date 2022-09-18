@@ -1,20 +1,21 @@
 import {
   Box,
   Button,
-  Flex, HStack,
+  Flex,
+  HStack,
   Modal,
   ModalBody,
   ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Text,
-  useColorModeValue
+  ModalContent, ModalHeader,
+  ModalOverlay, useColorModeValue
 } from "@chakra-ui/react";
 import { Step, Steps, useSteps } from "chakra-ui-steps";
 import { Form, Formik } from "formik";
+import { useContext } from "react";
+import AppContext from "../context/app-context";
 import product from "../data/donation_products";
+import customCheckoutRedirect from "../utils/stripe-checkout";
+import { formatAmountForStripe } from "../utils/stripe-helpers";
 import { ChooseLevel, DonorForm, GoodDeeds } from "./DonationSteps";
 
 export default function LevelModal({
@@ -29,10 +30,10 @@ export default function LevelModal({
       <ModalOverlay />
       <ModalContent
         rounded={"none"}
-        bg={useColorModeValue(['white','white', "gray.100"], "gray.900")}
+        bg={useColorModeValue(["white", "white", "gray.100"], "gray.900")}
       >
         <Box maxWidth={"7xl"} mx="auto">
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader mt={2}>Do something good today</ModalHeader>
         </Box>
         <ModalCloseButton />
         <ModalBody>
@@ -46,6 +47,7 @@ export default function LevelModal({
 }
 
 export const Descriptions = () => {
+  const app = useContext(AppContext);
   const steps = [
     {
       label: "Lets initiate",
@@ -63,10 +65,10 @@ export const Descriptions = () => {
       content: <GoodDeeds />,
     },
   ];
+  const totalSteps = steps.length;
   const { nextStep, prevStep, reset, setStep, activeStep } = useSteps({
     initialStep: 0,
   });
-
   return (
     <Flex flexDir="column" maxW="4xl" mx="auto" mt={6}>
       <Formik
@@ -75,14 +77,32 @@ export const Descriptions = () => {
           name: "",
           anonymous: false,
           product: product[0].id,
-          tip: 5
+          tip: 5,
         }}
         onSubmit={(values) => {
+          let selectedProduct = product.find((e) => e.id == values.product); // finding the right product
+          if (selectedProduct == undefined)
+            throw new Error("Product was not found");
+          customCheckoutRedirect(
+            {
+              ...selectedProduct,
+              price: formatAmountForStripe(
+                (selectedProduct.price / 100) *
+                  app.state.current_currency.value +
+                  values.tip * app.state.current_currency.value,
+                app.state.current_currency.code
+              ),
+              currency: app.state.current_currency.code,
+            },
+            20,
+            app.state.current_currency.code
+          );
+          // TODO: Maybe add currency converted values in the form?
           alert(JSON.stringify(values, null, 2));
         }}
       >
         <Form>
-          <Steps colorScheme="green"  activeStep={activeStep} onClickStep={(step) => setStep(step)} size={['md']}>
+          <Steps colorScheme="green" activeStep={activeStep} size={["md"]}>
             {steps.map(({ label, description, content }) => {
               const currentstep = content;
               return (
@@ -90,10 +110,10 @@ export const Descriptions = () => {
                   label={label}
                   key={label}
                   h="full"
-                  textAlign={'left'}
+                  textAlign={"left"}
                   description={description}
                 >
-                  <Box h="full" mt={[0,0,16]}>
+                  <Box h="full" mt={[0, 0, 16]}>
                     <Flex
                       align="center"
                       justify="center"
@@ -102,7 +122,7 @@ export const Descriptions = () => {
                       alignSelf={"center"}
                       h="full"
                     >
-                      <Box bg="white" p={[2,2,6]} rounded="md">
+                      <Box bg="white" p={[2, 2, 6]} rounded="md">
                         {/* <Box mb={4}>
                         {/* <Text fontSize="2xl" fontWeight={'500'}>{label}</Text>
                         <Text>{description}</Text> 
@@ -123,13 +143,27 @@ export const Descriptions = () => {
                           >
                             Previous
                           </Button>
-                          <Button
-                            colorScheme="green"
-                            width="full"
-                            onClick={() => setStep(activeStep+1)}
-                          >
-                            Next
-                          </Button>
+                          {/**
+                           * TODO: Needs to do form validation on next buttons and so fourth.
+                           * Show error toast is anything wrong with the form.
+                           */}
+                          {activeStep + 1 === totalSteps ? (
+                            <Button
+                              colorScheme="green"
+                              width="full"
+                              type="submit"
+                            >
+                              Submit
+                            </Button>
+                          ) : (
+                            <Button
+                              colorScheme="green"
+                              width="full"
+                              onClick={() => nextStep()}
+                            >
+                              Next
+                            </Button>
+                          )}
                         </HStack>
                       </Box>
                     </Flex>
