@@ -3,12 +3,13 @@ import {
   Checkbox,
   Flex,
   FormControl,
-  FormLabel, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput,
+  FormLabel, HStack, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput,
   NumberInputField,
   NumberInputStepper, Slider,
   SliderFilledTrack,
   SliderThumb,
   SliderTrack,
+  Text,
   VStack
 } from "@chakra-ui/react";
 import { useFormikContext } from "formik";
@@ -92,15 +93,14 @@ export function GoodDeeds(){
 
   const handleChange = (value) => formik.setFieldValue('tip', value)
   useEffect(() => {
-    let original_price = currentProduct?.original_price
+    let original_price = currentProduct?.original_price || currentProduct.price
     let product = {
       ...currentProduct,
       original_price: original_price,
+      onClick: () => {},
+      price: original_price  + (formik.values.tip*100)
     }
-    setCurrentProduct( e => ({
-      ...product,
-      price: e.original_price ?? e.price ?? 0 + (formik.values.tip*100)
-    }))
+    setCurrentProduct( product)
   }, [formik.values.tip])
   
   const findClosestObject = (array, number) => {
@@ -121,14 +121,22 @@ export function GoodDeeds(){
   return (
  <Box>
   <DonationCard {...currentProduct} />
-  <Flex minW={'300px'} mt={5}>
-    <NumberInput maxW='100px' mr='2rem' value={formik.values.tip} onChange={handleChange} step={5}>
-      <NumberInputField />
-      <NumberInputStepper>
-        <NumberIncrementStepper />
-        <NumberDecrementStepper />
+  <HStack justifyContent={'space-between'}>
+  <Box>
+  <Text mt={4} fontSize="xl" fontWeight={'600'}> Add a little something extra </Text>
+  <Text fontSize="md"> Most people add little at least 20% extra. </Text>
+  </Box>
+  {/** TODO: Implement currency here. Add the currency symbol as well */}
+  <NumberInput size="lg" maxW='100px' onFocus={() =>{}} mt={0}  mr='2rem' value={formik.values.tip} onChange={handleChange} step={5} min={0} max={100} >
+      <NumberInputField mt={0} />
+      <NumberInputStepper m={0} onFocus={() =>{}}>
+        <NumberIncrementStepper mt={3} onFocus={() =>{}} />
+        <NumberDecrementStepper mt={0} onFocus={() =>{}} />
       </NumberInputStepper>
     </NumberInput>
+  </HStack>
+
+  <Flex minW={'300px'} mt={5}>
     <Slider
       flex='1'
       step={5}
