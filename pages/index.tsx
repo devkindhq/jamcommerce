@@ -1,7 +1,6 @@
 import { Badge, Box, Button, Flex, Heading, HStack, Image, Progress, Spacer, Stack, Text, useColorModeValue, useDisclosure } from '@chakra-ui/react'
 import { Prose } from '@nikolovlazar/chakra-ui-prose'
-import { NextPage } from 'next'
-import { MDXRemote } from 'next-mdx-remote'
+import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { serialize } from 'next-mdx-remote/serialize'
 import { useContext, useEffect, useState } from 'react'
 import CampaignCard from '../components/CampaignCard'
@@ -10,20 +9,24 @@ import Layout from '../components/Layout'
 import LevelModal from '../components/LevelModal'
 import { RAISING_AMOUNT } from '../config'
 import AppContext from '../context/app-context'
-import { useCurrency } from '../context/currency-context'
 import description from '../data/donation_description'
 import endDate from '../data/donation_end_date'
 import banner from '../public/banner.png'
 import { formatAmountForDisplay } from '../utils/stripe-helpers'
-
-const IndexPage: NextPage = ({ source }) => {
+type Homepage = {
+  source: MDXRemoteSerializeResult<Record<string, unknown>, Record<string, string>>,
+}
+type DonationDetails = {
+  destination_currency_total: number
+  total_transactions: number
+}
+const IndexPage = ({ source }: Homepage) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [donationDetails, setDonationDetails] = useState(null)
+  const [donationDetails, setDonationDetails] = useState<DonationDetails>({destination_currency_total: 0, total_transactions: 0})
   const [currentCurrency, setCurrentCurrency] = useState<string>('AUD')
   const [loading, setLoading] = useState<boolean>(false)
   const [days, setDays] = useState<number>(0)
   const [campaignDate, setCampaignDate] = useState<string>('')
-  const { currency, dispatch} = useCurrency();
   const app = useContext(AppContext);
   /**
    * This function use to count days from now to end date
@@ -32,7 +35,7 @@ const IndexPage: NextPage = ({ source }) => {
     const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
     const end = new Date(endDate);
     const start = new Date();
-    const diffDays = Math.round(Math.abs((start - end) / oneDay));
+    const diffDays = Math.round(Math.abs(((+start) - (+end)) / oneDay));
     setCampaignDate(end.toDateString());
     setDays(diffDays)
   }
@@ -69,7 +72,7 @@ const IndexPage: NextPage = ({ source }) => {
   */
 
   return (
-    <Layout title="Home | Next.js + TypeScript Example" selectedCurrency={currentCurrency} changeCurrency={setCurrentCurrency}>
+    <Layout title="Home | Next.js + TypeScript Example">
       <Box maxW={"7xl"} mx="auto" px={4}>
         <Box display="flex" gap={[4, 4, 0]} my={8} rounded={'xl'} shadow={'lg'} flexDirection={['column', 'column', 'row']}
           bg={useColorModeValue('white', 'gray.700')}

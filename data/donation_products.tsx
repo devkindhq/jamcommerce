@@ -1,4 +1,22 @@
-const product = [
+import { Product as Prod } from 'use-shopping-cart';
+
+export interface Product extends Prod { 
+  name: string,
+  description?: string | undefined,
+  id: string
+  price: number
+  image: string
+  attribution: string
+  currency: string
+  base_currency: string
+  base_price: number
+  original_price?: number
+  onClick?: (() => void) | undefined
+}
+
+type Products = Product[]
+const product = (): Products => {
+  return [
     {
       name: 'One time meal for a family',
       description: 'One time meal a family of 6.',
@@ -25,6 +43,7 @@ const product = [
     },
     {
       name: 'One week ration a family',
+      description: 'Provide one week ration to a family.',
       id: 'one_week_ration',
       price: 3500,
       image:
@@ -59,5 +78,6 @@ const product = [
       base_price: 400
     },
   ]
+}
   export default product
   

@@ -1,10 +1,8 @@
 
-import { NextApiRequest, NextApiResponse } from 'next'
-import { createClient } from '@supabase/supabase-js'
-import { BASE_CURRENCY, DEALING_CURRENCIES } from '../../../config'
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-const supabase = createClient(supabaseUrl, supabaseAnonKey)
+import { NextApiRequest, NextApiResponse } from 'next';
+import { BASE_CURRENCY, DEALING_CURRENCIES } from '../../../config';
+import supabase from '../../../utils/supabaseClient';
+
 
 export default async function handler(
   req: NextApiRequest,
@@ -16,6 +14,7 @@ export default async function handler(
 
       if (authorization === `Bearer ${process.env.API_SECRET_KEY}`) {
         const myHeaders = new Headers();
+        if(!process.env.CURRENCY_API_KEY) throw new Error("Currency API key not found")
         myHeaders.append("apikey", process.env.CURRENCY_API_KEY);
         // Default options are marked with *
         const url = process.env.CURRENCY_API_ENDPOINT + `?base_currency=${BASE_CURRENCY}&currencies=${DEALING_CURRENCIES.join("%2C")}`
@@ -26,7 +25,7 @@ export default async function handler(
         })
         const result = await response.json();
         console.log(result);
-        const finalResult =  Object.values(result.data).map( currency => {
+        const finalResult =  Object.values(result.data).map( (currency: any) => {
             return {
                 status: 1,
                 currency: BASE_CURRENCY,
@@ -45,6 +44,8 @@ export default async function handler(
         return res.status(401).json({ success: false, auth: 'failed' }); // auth failed
       }
     } catch (err) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       return res.status(500).json({ statusCode: 500, message: err.message }); // something went wrong
     }
   } else {

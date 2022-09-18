@@ -1,14 +1,10 @@
+import { buffer } from 'micro';
+import Cors from 'micro-cors';
+import { NextApiRequest, NextApiResponse } from 'next';
 import { convertRateToBase } from './../currency/convert/index';
-import { buffer } from 'micro'
-import Cors from 'micro-cors'
-import { NextApiRequest, NextApiResponse } from 'next'
-import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-const supabase = createClient(supabaseUrl, supabaseAnonKey)
-
-import Stripe from 'stripe'
+import Stripe from 'stripe';
+import supabase from '../../../utils/supabaseClient';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   // https://github.com/stripe/stripe-node#configuration
   apiVersion: '2020-08-27',
@@ -89,7 +85,8 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     } 
     else  if (event.type === 'checkout.session.completed') {
       const checkout = event.data.object
-      const checkout_with_line_items = await stripe.checkout.sessions.retrieve(checkout.id, {
+      // @ts-ignore
+      const checkout_with_line_items = await stripe.checkout.sessions.retrieve(checkout?.id, {
         expand: ['line_items'],
       })
       const checkoutWithBaseCurrencies = await addBaseCurrency(checkout_with_line_items)

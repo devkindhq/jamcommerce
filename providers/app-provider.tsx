@@ -1,8 +1,8 @@
-import React, { createContext } from "react";
+import React from "react";
 
-import { getAllCurrencies } from "../utils/currency-helpers";
 import { BASE_CURRENCY, DEALING_CURRENCIES } from "../config";
 import AppContext from "../context/app-context";
+import { getAllCurrencies } from "../utils/currency-helpers";
 
 interface IAppProviderProps {
     children: React.ReactNode
@@ -39,7 +39,8 @@ class AppProvider extends React.Component<IAppProviderProps, IAppProviderState> 
         this.changeCurrency = this.changeCurrency.bind(this);
     }
   changeCurrency = (code: string) => {
-    const findCurrency = this.state.currency_rates.find( rate => rate.code == code);
+    const findCurrency = this.state.currency_rates?.find( rate => rate.code == code);
+    if(!findCurrency) throw new Error("Currency not found");
     const foundCurrency = findCurrency ?? this.state.current_currency;
     this.setState(prev => ({
         ...prev,

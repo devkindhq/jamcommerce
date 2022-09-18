@@ -1,10 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { createClient } from '@supabase/supabase-js'
+import supabase from '../../../utils/supabaseClient';
 import { convertRate } from '../currency/convert';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 export default async function handler(
     req: NextApiRequest,
@@ -12,7 +8,9 @@ export default async function handler(
   ) {
 
     try {
-        const {destination_currency} = req.query;
+   
+        const destination_currency = Array.isArray(req.query.destination_currency) ? req.query.destination_currency[0] : req.query.destination_currency
+        if(!destination_currency) throw new Error("Destination currency not provided");
         const result = await supabase.from('checkout_sessions').select('*').eq('payment_status', 'paid');
         const baseTotal = result.data?.map(transaction => transaction.base_currency_amount_total ).reduce((prev, current) => {
           return prev + current

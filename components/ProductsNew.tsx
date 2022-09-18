@@ -1,10 +1,5 @@
 import { Stack } from '@chakra-ui/react'
-import { Cashify } from 'cashify'
-import React, { useContext } from 'react'
-import { formatCurrencyString } from 'use-shopping-cart'
 import { Product } from 'use-shopping-cart/core'
-import { BASE_CURRENCY } from '../config'
-import AppContext from '../context/app-context'
 import products from '../data/donation_products'
 import DonationCard from './DonationCard'
 
@@ -24,7 +19,7 @@ const ProductsNew = ({handleBuyNow}: ProductsProps) => {
 
   return (
       <Stack spacing={4} w="full">
-      {products.sort((prev,current) =>  current.price - prev.price ?? 0).map((product, index) => {
+      {products().sort((prev,current) =>  current.price - prev.price ?? 0).map((product, index) => {
         const donationCardProps = {
           ...product,
           onClick: () => handleBuyNow(product)

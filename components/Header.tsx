@@ -9,11 +9,11 @@ import {
   Popover, PopoverContent, PopoverTrigger, Select, Stack, Text, useBreakpointValue, useColorMode, useColorModeValue, useDisclosure
 } from '@chakra-ui/react';
 import { useContext } from 'react';
-import { DEALING_CURRENCIES } from '../config';
+import { BASE_CURRENCY, DEALING_CURRENCIES } from '../config';
 import AppContext from '../context/app-context';
 import logoDark from '../public/logo-dark.svg';
 import logoLight from '../public/logo.svg';
-export default function Header({ selectedCurrency, updateCurrency }: { selectedCurrency: string, updateCurrency: (value:string) => void }) {
+export default function Header() {
   const logo = useColorModeValue(logoLight, logoDark)
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onToggle } = useDisclosure();
@@ -76,7 +76,7 @@ export default function Header({ selectedCurrency, updateCurrency }: { selectedC
             justify={'flex-end'}
             direction={'row'}
             spacing={2}>
-            <Select onChange={handleChange} defaultValue={selectedCurrency}>
+            <Select onChange={handleChange} defaultValue={BASE_CURRENCY}>
               {DEALING_CURRENCIES.map((currency, index) => {
                 return (
                   <option key={index} value={currency}>{currency}</option>
@@ -90,7 +90,7 @@ export default function Header({ selectedCurrency, updateCurrency }: { selectedC
               fontWeight={600}
               colorScheme="green"
               px={12}
-              href={'#'}>
+              onClick={() => (console.log('donate'))}>
               Donate
             </Button>
 
@@ -107,49 +107,49 @@ export default function Header({ selectedCurrency, updateCurrency }: { selectedC
 
 const DesktopNav = () => {
   return null;
-  const linkColor = useColorModeValue('gray.600', 'gray.200');
-  const linkHoverColor = useColorModeValue('gray.800', 'white');
-  const popoverContentBgColor = useColorModeValue('white', 'gray.800');
-  return (
-    <Stack direction={'row'} spacing={4}>
-      {NAV_ITEMS.map((navItem) => (
-        <Box key={navItem.label}>
-          <Popover trigger={'hover'} placement={'bottom-start'}>
-            <PopoverTrigger>
-              <Link
-                p={2}
-                href={navItem.href ?? '#'}
-                fontSize={'sm'}
-                fontWeight={500}
-                color={linkColor}
-                _hover={{
-                  textDecoration: 'none',
-                  color: linkHoverColor,
-                }}>
-                {navItem.label}
-              </Link>
-            </PopoverTrigger>
+  // const linkColor = useColorModeValue('gray.600', 'gray.200');
+  // const linkHoverColor = useColorModeValue('gray.800', 'white');
+  // const popoverContentBgColor = useColorModeValue('white', 'gray.800');
+  // return (
+  //   <Stack direction={'row'} spacing={4}>
+  //     {NAV_ITEMS.map((navItem) => (
+  //       <Box key={navItem.label}>
+  //         <Popover trigger={'hover'} placement={'bottom-start'}>
+  //           <PopoverTrigger>
+  //             <Link
+  //               p={2}
+  //               href={navItem.href ?? '#'}
+  //               fontSize={'sm'}
+  //               fontWeight={500}
+  //               color={linkColor}
+  //               _hover={{
+  //                 textDecoration: 'none',
+  //                 color: linkHoverColor,
+  //               }}>
+  //               {navItem.label}
+  //             </Link>
+  //           </PopoverTrigger>
 
-            {navItem.children && (
-              <PopoverContent
-                border={0}
-                boxShadow={'xl'}
-                bg={popoverContentBgColor}
-                p={4}
-                rounded={'xl'}
-                minW={'sm'}>
-                <Stack>
-                  {navItem.children.map((child) => (
-                    <DesktopSubNav key={child.label} {...child} />
-                  ))}
-                </Stack>
-              </PopoverContent>
-            )}
-          </Popover>
-        </Box>
-      ))}
-    </Stack>
-  );
+  //           {navItem.children && (
+  //             <PopoverContent
+  //               border={0}
+  //               boxShadow={'xl'}
+  //               bg={popoverContentBgColor}
+  //               p={4}
+  //               rounded={'xl'}
+  //               minW={'sm'}>
+  //               <Stack>
+  //                 {navItem.children.map((child) => (
+  //                   <DesktopSubNav key={child.label} {...child} />
+  //                 ))}
+  //               </Stack>
+  //             </PopoverContent>
+  //           )}
+  //         </Popover>
+  //       </Box>
+  //     ))}
+  //   </Stack>
+  // );
 };
 
 const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
