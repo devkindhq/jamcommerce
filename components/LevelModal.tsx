@@ -46,6 +46,14 @@ export default function LevelModal({
   );
 }
 
+export interface FormValues {
+  email: string,
+  name: string,
+  anonymous: boolean,
+  product: string | undefined,
+  tip:number,
+}
+
 export const Descriptions = () => {
   const app = useContext(AppContext);
   const steps = [
@@ -69,6 +77,8 @@ export const Descriptions = () => {
   const { nextStep, prevStep, reset, setStep, activeStep } = useSteps({
     initialStep: 0,
   });
+ 
+  
   return (
     <Flex flexDir="column" maxW="4xl" mx="auto" mt={6}>
       <Formik
@@ -76,11 +86,11 @@ export const Descriptions = () => {
           email: "",
           name: "",
           anonymous: false,
-          product: product[0].id,
+          product: product()[0].id,
           tip: 5,
         }}
         onSubmit={(values) => {
-          let selectedProduct = product.find((e) => e.id == values.product); // finding the right product
+          let selectedProduct = product().find((e) => e.id == values.product); // finding the right product
           if (selectedProduct == undefined)
             throw new Error("Product was not found");
           customCheckoutRedirect(

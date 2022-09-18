@@ -6,7 +6,7 @@ import { formatCurrencyString } from 'use-shopping-cart';
 import AppContext from '../context/app-context';
 
 type DonationCardProps = {
-  onClick: () => void
+  onClick?: (() => void) | undefined
   image?: string
   name?: string
   description?: string
@@ -17,7 +17,7 @@ type DonationCardProps = {
 export default function DonationCard({ onClick, image = '', name = 'One meal for a family', description = 'Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.', price = 10, count = 2 }: DonationCardProps) {
 const app = useContext(AppContext);
   return (
-    <LinkBox onClick={() => onClick()} cursor="pointer">
+    <LinkBox onClick={() => onClick && onClick()} cursor="pointer">
       <Box
         w={'full'}
         bg={useColorModeValue('white', 'gray.700')}

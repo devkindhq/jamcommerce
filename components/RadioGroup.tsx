@@ -1,14 +1,14 @@
-import { useField } from "formik";
 import {
   RadioGroup as ChakraRadioGroup,
-  RadioGroupProps as ChakraRadioGroupProps,
+  RadioGroupProps as ChakraRadioGroupProps
 } from "@chakra-ui/react";
+import { useField } from "formik";
 import * as React from "react";
 
 type Props = ChakraRadioGroupProps;
 
-const RadioGroup = ({ name, children, ...props }: Props) => {
-  const [field, , { setValue }] = useField({ name, value: props.value });
+const RadioGroup = ({ name = 'product', children, ...props }: Props) => {
+  const [field, , { setValue }] = useField({ name: name, value: props.value });
 
   const namedChildren = React.Children.map(children, (child) => {
     if (!React.isValidElement(child)) return;
