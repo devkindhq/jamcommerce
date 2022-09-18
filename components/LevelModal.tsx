@@ -9,10 +9,12 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Text,
   useColorModeValue
 } from "@chakra-ui/react";
 import { Step, Steps, useSteps } from "chakra-ui-steps";
 import { Form, Formik } from "formik";
+import product from "../data/donation_products";
 import { ChooseLevel, DonorForm, GoodDeeds } from "./DonationSteps";
 
 export default function LevelModal({
@@ -27,7 +29,7 @@ export default function LevelModal({
       <ModalOverlay />
       <ModalContent
         rounded={"none"}
-        bg={useColorModeValue("gray.100", "gray.900")}
+        bg={useColorModeValue(['white','white', "gray.100"], "gray.900")}
       >
         <Box maxWidth={"7xl"} mx="auto">
           <ModalHeader>Modal Title</ModalHeader>
@@ -38,51 +40,41 @@ export default function LevelModal({
             <Descriptions />
           </Box>
         </ModalBody>
-
-        <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={onClose}>
-            Close
-          </Button>
-          <Button variant="ghost">Secondary Action</Button>
-        </ModalFooter>
       </ModalContent>
     </Modal>
   );
 }
 
-const Content = ({ index }: { index: number }) => {
-  return index;
-};
 export const Descriptions = () => {
   const steps = [
     {
       label: "Lets initiate",
-      description: "Lets initiate",
+      description: "With a little something in your heart",
       content: <DonorForm />,
     },
     {
       label: "Choose givings",
-      description: "Choose giving level",
+      description: "Your donation goes long way.",
       content: <ChooseLevel />,
     },
     {
       label: "Finalise good deeds",
-      description: "Finalise good deeds",
+      description: "Hey, adding a little extra is kindness.",
       content: <GoodDeeds />,
     },
   ];
-  const { nextStep, prevStep, reset, activeStep } = useSteps({
+  const { nextStep, prevStep, reset, setStep, activeStep } = useSteps({
     initialStep: 0,
   });
 
   return (
-    <Flex flexDir="column" maxW="2xl" mx="auto" mt={6}>
+    <Flex flexDir="column" maxW="4xl" mx="auto" mt={6}>
       <Formik
         initialValues={{
           email: "",
           name: "",
           anonymous: false,
-          product: "",
+          product: product[0].id,
           tip: 5
         }}
         onSubmit={(values) => {
@@ -90,7 +82,7 @@ export const Descriptions = () => {
         }}
       >
         <Form>
-          <Steps colorScheme="gray" activeStep={activeStep}>
+          <Steps colorScheme="green"  activeStep={activeStep} onClickStep={(step) => setStep(step)} size={['md']}>
             {steps.map(({ label, description, content }) => {
               const currentstep = content;
               return (
@@ -98,10 +90,11 @@ export const Descriptions = () => {
                   label={label}
                   key={label}
                   h="full"
+                  textAlign={'left'}
+                  description={description}
                 >
-                  <Box h="full" my={16}>
+                  <Box h="full" mt={[0,0,16]}>
                     <Flex
-                      bg="gray.100"
                       align="center"
                       justify="center"
                       alignItems={"center"}
@@ -109,7 +102,11 @@ export const Descriptions = () => {
                       alignSelf={"center"}
                       h="full"
                     >
-                      <Box bg="white" p={6} rounded="md">
+                      <Box bg="white" p={[2,2,6]} rounded="md">
+                        {/* <Box mb={4}>
+                        {/* <Text fontSize="2xl" fontWeight={'500'}>{label}</Text>
+                        <Text>{description}</Text> 
+                        </Box> */}
                         {currentstep}
                         <HStack
                           mt={6}
@@ -129,7 +126,7 @@ export const Descriptions = () => {
                           <Button
                             colorScheme="green"
                             width="full"
-                            onClick={nextStep}
+                            onClick={() => setStep(activeStep+1)}
                           >
                             Next
                           </Button>
