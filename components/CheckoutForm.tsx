@@ -70,7 +70,7 @@ const CheckoutForm = () => {
 
     </form>
     <Heading size="lg" mb={4} color={useColorModeValue('gray.700', 'gray.200')}>Giving levels</Heading>
-    <ProductsNew buyNow={true} handleBuyNow={handleSingleProduct} />
+    <ProductsNew handleBuyNow={handleSingleProduct} />
     </>
   )
 }

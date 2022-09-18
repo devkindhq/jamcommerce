@@ -4,24 +4,24 @@ import {
 } from "@chakra-ui/react";
 import { useField } from "formik";
 import * as React from "react";
-import { formatCurrencyString } from "use-shopping-cart";
+import { formatCurrencyString, Product } from "use-shopping-cart";
 import AppContext from "../context/app-context";
 
 type Props = UseRadioProps &
   ImageProps & {
     image: string;
     item: any;
-  };
+  } & Product;
 
 const DonationBoxRadio = React.forwardRef((props: Props, ref) => {
   const { image, name, item, ...radioProps } = props;
   const group = useRadioGroupContext();
-  let isChecked = group.value.toString() === props.value.toString();
+  let isChecked = group.value.toString() === props?.value?.toString();
 
   const [{ checked, ...field }] = useField({
-    name,
+    name: name ?? 'product',
     type: "radio",
-    value: radioProps.value.toString(),
+    value: radioProps?.value?.toString(),
     checked: isChecked,
   });
 
