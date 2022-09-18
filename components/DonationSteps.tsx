@@ -1,31 +1,19 @@
-import { FormikBag, FormikContext, useFormik, useFormikContext } from "formik";
 import {
-  Box,
-  Button,
   Checkbox,
   Flex,
   FormControl,
-  FormLabel,
-  HStack,
-  Input,
-  Slider,
+  FormLabel, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput,
+  NumberInputField,
+  NumberInputStepper, Slider,
   SliderFilledTrack,
   SliderThumb,
   SliderTrack,
   VStack
 } from "@chakra-ui/react";
-import { useContext, useState } from "react";
+import { useFormikContext } from "formik";
+import { default as product, default as products } from '../data/donation_products';
+import DonationBoxRadio from "./DonationBoxRadio";
 import RadioGroup from "./RadioGroup";
-import ImageRadio from "./ImageRadio";
-import products from '../data/donation_products'
-import {
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-} from '@chakra-ui/react'
-import product from "../data/donation_products";
 export function DonorForm() {
     const formik = useFormikContext();
     return (
@@ -81,7 +69,7 @@ return (
   <RadioGroup name="product" py={2} display="flex" gridColumnGap={2} display="flex" gridGap={4} flexDirection={'column'}> 
   {AVATARS.map((props, index) => {
     return (
-    <ImageRadio key={index}  value={props.id} {...props} />
+    <DonationBoxRadio key={index}  value={props.id} {...props} />
   )})}
 </RadioGroup>
 )
