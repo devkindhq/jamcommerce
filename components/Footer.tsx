@@ -39,7 +39,8 @@ const SocialButton = ({
       target="_blank"
       _hover={{
         bg: useColorModeValue('blackAlpha.200', 'whiteAlpha.200'),
-      }}>
+      }}
+      >
       <VisuallyHidden>{label}</VisuallyHidden>
       {children}
     </chakra.button>
@@ -63,7 +64,7 @@ export default function SmallWithLogoLeft() {
         <Image src={logo.src} maxW={[32,32]} my={2}  />
         <Text>© 2022 Shahul & Zeenat Foundation. All rights reserved</Text>
         <Stack direction={'row'} spacing={6}>
-          <SocialButton label={'Facebook'} href={'https://www.facebook.com/shahulzeenatfoundation/'} target="_blank">
+          <SocialButton label={'Facebook'} href={'https://www.facebook.com/shahulzeenatfoundation/'}>
             <FaFacebook />
           </SocialButton>
           <SocialButton label={'Instagram'} href={'https://www.instagram.com/shahulzeenatfoundation/'} >
