@@ -50,13 +50,18 @@ export function formatAmountFromStripe(
   return zeroDecimalCurrency ? amount : Math.round(amount / 100)
 }
 
+/**
+ * Returns the parsed product to send to /api/checkout_session
+ * @param product 
+ * @returns 
+ */
 export const parseStripeProduct = (product: Product) => {
   return {
     name: product.name,
     currency: product.currency,
     description: product.description,
     amount: product.price,
-    images: [product.image],
+    // TODO: Add image for the product here if necessary
     quantity: 1
   }
 }

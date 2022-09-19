@@ -135,7 +135,6 @@ export const Descriptions = () => {
       values?.email ?? ""
     );
     // TODO: Maybe add currency converted values in the form?
-    alert(JSON.stringify(values, null, 2));
   };
   const handleSubmit = (values: FormValues, actions: any) => {
     if (isLastStep) {
