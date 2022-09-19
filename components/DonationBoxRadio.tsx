@@ -1,6 +1,6 @@
 import { CheckCircleIcon } from "@chakra-ui/icons";
 import {
-    Box, chakra, HStack, ImageProps, Text, useRadio, useRadioGroupContext, UseRadioProps
+    Box, chakra, HStack, ImageProps, Text, useColorModeValue, useRadio, useRadioGroupContext, UseRadioProps
 } from "@chakra-ui/react";
 import { useField } from "formik";
 import * as React from "react";
@@ -42,9 +42,8 @@ const DonationBoxRadio = React.forwardRef((props: Props, ref) => {
         borderWidth={2}
         borderStyle="solid"
         transition="all 0.3s"
-        borderColor={state.isChecked ? "green.200" : "gray.200"}
+        borderColor={state.isChecked ? useColorModeValue('green.500', 'green.600') : useColorModeValue('gray.200', 'gray.600')}
         py={2}
-        maxW={["full", "500px"]}
         px={4}
         position="relative"
       >
@@ -62,7 +61,7 @@ const DonationBoxRadio = React.forwardRef((props: Props, ref) => {
               <Text fontWeight={"500"}>{radioProps.title}</Text>
               <Text fontSize={"sm"}>{radioProps.description}</Text>
             </Box>
-            {state.isChecked ? <CheckCircleIcon color={'green'} fontSize="xl" /> :  <Box borderWidth={1} boxSize="xl" shadow="sm"  borderColor={'gray.200'} minW={5} minH={1} w={5} h={5} rounded="full"></Box>}
+            {state.isChecked ? <CheckCircleIcon color={useColorModeValue('green.500', 'green.400')} fontSize="xl" /> :  <Box borderWidth={1} boxSize="xl" shadow="sm"  borderColor={useColorModeValue('gray.200', 'gray.600')} minW={5} minH={1} w={5} h={5} rounded="full"></Box>}
           </HStack>
         </Box>
       </Box>

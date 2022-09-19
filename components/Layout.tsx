@@ -16,7 +16,9 @@ const Layout = ({
   <>
     <Head title={title} />
     <Header />
+    <div style={{paddingTop: '100px'}}>
       {children}
+      </div>
     <Footer />
 </>
  
