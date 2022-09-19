@@ -239,8 +239,7 @@ export const Descriptions = () => {
                                   ? "Donate " +
                                     formatAmountForDisplay(
                                       values.tip +
-                                      (currentProduct?.price ??
-                                        // @ts-ignore
+                                      (// @ts-ignore
                                           currentProduct?.price / 100),
                                       app.state.current_currency.code
                                     )
