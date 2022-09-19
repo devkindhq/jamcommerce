@@ -27,7 +27,7 @@ const product = (): Products => {
       attribution: 'Photo by Priscilla Du Preez on Unsplash',
       currency: 'USD',
       base_currency: 'AUD',
-      base_price: 400
+      base_price: 1000
     },
     {
       name: 'Basic medical and hygiene for family',
@@ -39,7 +39,7 @@ const product = (): Products => {
       attribution: 'Photo by Jonathan Pielmayer on Unsplash',
       currency: 'USD',
       base_currency: 'AUD',
-      base_price: 400
+      base_price: 2000
     },
     {
       name: 'One week ration a family',
@@ -51,7 +51,7 @@ const product = (): Products => {
       attribution: 'Photo by Jonathan Pielmayer on Unsplash',
       currency: 'USD',
       base_currency: 'AUD',
-      base_price: 400
+      base_price: 3500
     },
     {
       name: 'Meal, medical and hygiene for a month for a family',
@@ -63,7 +63,7 @@ const product = (): Products => {
       attribution: 'Photo by Jonathan Pielmayer on Unsplash',
       currency: 'USD',
       base_currency: 'AUD',
-      base_price: 400
+      base_price: 10000
     },
     {
       name: 'Tent, meal, medical and hygiene for a month for a family',
@@ -75,9 +75,9 @@ const product = (): Products => {
       attribution: 'Photo by Jonathan Pielmayer on Unsplash',
       currency: 'USD',
       base_currency: 'AUD',
-      base_price: 400
+      base_price: 20000
     },
-  ]
+  ].sort((prev,current) => current.price - prev.price)
 }
   export default product
   
