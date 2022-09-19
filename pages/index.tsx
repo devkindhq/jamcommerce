@@ -131,6 +131,7 @@ const IndexPage = ({ source }: Homepage) => {
 export default IndexPage
 
 export async function getStaticProps() {
+  /** TODO: Read the query parameter for ?status=cancelled and display some information to inform user that transaction was cancelled */
   // MDX text - can be from a local file, database, anywhere
 
   const mdxSource = await serialize(description)
