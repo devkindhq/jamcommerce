@@ -21,6 +21,12 @@ const app = useContext(AppContext);
       <Box
         w={'full'}
         bg={useColorModeValue('white', 'gray.700')}
+        transition="all 0.3s"
+        _hover={{
+          background: useColorModeValue('gray.50', 'gray.800'),
+          transform: 'scale(1.01)',
+          borderColor: useColorModeValue('gray.300', 'blue.800')
+        }}
         boxShadow={'md'}
         rounded={'md'}
         border={'1px solid'}
