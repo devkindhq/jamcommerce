@@ -9,7 +9,7 @@ import {
   useColorModeValue,
   VisuallyHidden,
 } from '@chakra-ui/react';
-import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
+import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
 import { ReactNode } from 'react';
 import logoDark from '../public/logo-dark.svg';
 import logoLight from '../public/logo.svg';
@@ -36,6 +36,7 @@ const SocialButton = ({
       alignItems={'center'}
       justifyContent={'center'}
       transition={'background 0.3s ease'}
+      target="_blank"
       _hover={{
         bg: useColorModeValue('blackAlpha.200', 'whiteAlpha.200'),
       }}>
@@ -62,14 +63,14 @@ export default function SmallWithLogoLeft() {
         <Image src={logo.src} maxW={[32,32]} my={2}  />
         <Text>© 2022 Shahul & Zeenat Foundation. All rights reserved</Text>
         <Stack direction={'row'} spacing={6}>
-          <SocialButton label={'Twitter'} href={'#'}>
-            <FaTwitter />
+          <SocialButton label={'Facebook'} href={'https://www.facebook.com/shahulzeenatfoundation/'} target="_blank">
+            <FaFacebook />
           </SocialButton>
-          <SocialButton label={'YouTube'} href={'#'}>
-            <FaYoutube />
-          </SocialButton>
-          <SocialButton label={'Instagram'} href={'#'}>
+          <SocialButton label={'Instagram'} href={'https://www.instagram.com/shahulzeenatfoundation/'} >
             <FaInstagram />
+          </SocialButton>
+          <SocialButton label={'YouTube'} href={'https://www.youtube.com/channel/UCCr6ZYSIH95aGaUjt9g_42w'}>
+            <FaYoutube />
           </SocialButton>
         </Stack>
       </Container>
