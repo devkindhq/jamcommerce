@@ -4,6 +4,7 @@ import {
 import { useContext } from 'react';
 import { formatCurrencyString } from 'use-shopping-cart';
 import AppContext from '../context/app-context';
+import { formatAmountForDisplay, formatAmountFromStripe } from '../utils/stripe-helpers';
 
 type DonationCardProps = {
   onClick?: (() => void) | undefined
@@ -47,12 +48,7 @@ const app = useContext(AppContext);
         <Box p={6}>
           <Stack spacing={2}>
             <Heading  fontSize={'2xl'} color={useColorModeValue('gray.800', 'gray.200')} fontWeight={600} fontFamily={'body'}>
-              {formatCurrencyString(
-                {
-                  value: price * app.state.current_currency.value,
-                  currency: app.state.current_currency.code,
-                }
-                )}
+              {formatAmountForDisplay((formatAmountFromStripe(price, app.state.current_currency.code)) * app.state.current_currency.value, app.state.current_currency.code)}
             </Heading>
 
               <Heading fontSize={'lg'} fontWeight={600} color={useColorModeValue('gray.700', 'gray.300')} fontFamily={'body'}>
