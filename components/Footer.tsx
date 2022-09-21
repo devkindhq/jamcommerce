@@ -29,11 +29,12 @@ const SocialButton = ({
     <chakra.button
       bg={useColorModeValue('blackAlpha.100', 'whiteAlpha.100')}
       rounded={'full'}
-      w={8}
-      h={8}
+      w={9}
+      h={9}
       cursor={'pointer'}
       as={'a'}
       href={href}
+      fontSize='lg'
       display={'inline-flex'}
       alignItems={'center'}
       justifyContent={'center'}
@@ -67,7 +68,7 @@ export default function SmallWithLogoLeft() {
         align={{ base: 'center', md: 'center' }}>
         <Image src={logo.src} maxW={[32,32]} my={2}  />
         <Text>© 2022 Shahul & Zeenat Foundation. All rights reserved</Text>
-        <Stack direction={'row'} spacing={6}>
+        <Stack direction={'row'} spacing={4}>
           <SocialButton label={'Facebook'} href={'https://www.facebook.com/shahulzeenatfoundation/'}>
             <FaFacebook />
           </SocialButton>
