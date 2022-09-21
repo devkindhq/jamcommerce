@@ -8,6 +8,8 @@ export function formatAmountForDisplay(
     style: 'currency',
     currency: currency,
     currencyDisplay: 'symbol',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
   })
   return numberFormat.format(amount)
 }
