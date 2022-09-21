@@ -7,6 +7,7 @@ type AppContext = {
     changeCurrency: (code: string) => void
     onPopupClose: () => void
     onPopupOpen: () => void
+    selectProduct: (product_id: string) => void
 }
 const AppContext = createContext<AppContext>({
     state: {
@@ -25,11 +26,13 @@ const AppContext = createContext<AppContext>({
         },
         popup: {
             isOpen: false
-        }
+        },
+        selectedProduct: null
     },
     changeCurrency: () => (console.log('currency function not initiated')),
     onPopupClose: () => (console.log('on close not initialised')),
-    onPopupOpen: () => (console.log('on open not initialised'))
+    onPopupOpen: () => (console.log('on open not initialised')),
+    selectProduct: () => (console.log('on open not initialised'))
 });
 
 export default AppContext;

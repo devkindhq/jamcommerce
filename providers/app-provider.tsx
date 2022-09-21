@@ -18,8 +18,10 @@ export interface IAppProviderState {
     currency_rates: CurrencyObject[] | any[] | undefined,
     current_currency: CurrencyObject,
     popup: {
-      isOpen: boolean
+      isOpen: boolean,
     }
+    selectedProduct: string | null
+    
 }
 
 class AppProvider extends React.Component<IAppProviderProps, IAppProviderState> {
@@ -40,15 +42,21 @@ class AppProvider extends React.Component<IAppProviderProps, IAppProviderState> 
                 value: 1
             },
             popup: {
-              isOpen: false
-            }
+              isOpen: false,
+            },
+            selectedProduct: null
           };
         this.changeCurrency = this.changeCurrency.bind(this);
         this.onPopupClose = this.onPopupClose.bind(this);
         this.onPopupOpen = this.onPopupOpen.bind(this);
+        this.selectProduct = this.selectProduct.bind(this);
     }
   onPopupClose = () => this.setState(prev => ({...prev,  popup: {isOpen: false}}))
   onPopupOpen = () => this.setState(prev => ({...prev,  popup: {isOpen: true}}))
+  selectProduct = (product_id: string) => {
+    this.setState(prev => ({...prev, selectedProduct: product_id}))
+    this.onPopupOpen();
+  };
   changeCurrency = (code: string) => {
     const findCurrency = this.state.currency_rates?.find( rate => rate.code == code);
     if(!findCurrency) throw new Error("Currency not found");
@@ -65,7 +73,8 @@ class AppProvider extends React.Component<IAppProviderProps, IAppProviderState> 
           state: this.state,
           changeCurrency: this.changeCurrency,
           onPopupClose: this.onPopupClose,
-          onPopupOpen: this.onPopupOpen
+          onPopupOpen: this.onPopupOpen,
+          selectProduct: this.selectProduct
         }}
       >
         <div>{this.props.children}</div>

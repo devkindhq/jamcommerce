@@ -154,7 +154,7 @@ export const Descriptions = () => {
           email: "",
           name: "",
           anonymous: false,
-          product: product()[0].id,
+          product: app.state.selectedProduct ?? product()[0].id,
           tip: 5,
         }}
         validateOnBlur={false}

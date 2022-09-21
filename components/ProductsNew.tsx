@@ -1,5 +1,7 @@
 import { Stack } from '@chakra-ui/react'
+import { useContext } from 'react'
 import { Product } from 'use-shopping-cart/core'
+import AppContext from '../context/app-context'
 import products from '../data/donation_products'
 import DonationCard from './DonationCard'
 
@@ -16,13 +18,13 @@ const ProductsNew = ({handleBuyNow}: ProductsProps) => {
 //     return prev
 // },{});
 
-
+  const app = useContext(AppContext);
   return (
       <Stack spacing={4} w="full">
       {products().map((product, index) => {
         const donationCardProps = {
           ...product,
-          onClick: () => handleBuyNow(product)
+          onClick: () => app.selectProduct(product.id)
         }
          return (<DonationCard key={index} {...donationCardProps} />)
       })}
