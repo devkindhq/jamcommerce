@@ -1,13 +1,15 @@
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { Box, Button, Flex, Slide, useColorModeValue, useDisclosure } from "@chakra-ui/react";
 import { useScroll, useViewportScroll } from "framer-motion";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { BiDonateHeart, BiShare } from "react-icons/bi";
 import { FaCreativeCommonsShare, FaShare } from "react-icons/fa";
+import AppContext from "../context/app-context";
 
 export default function StickyCTA(){
-    const { scrollY } = useViewportScroll();
+    const { scrollY } = useScroll();
     const [show, setShow] = useState(false)
+    const app = useContext(AppContext);
     scrollY.onChange( y => y > 500 ? setShow(true) : setShow(false))
     return(
         <Box position={'relative'} zIndex={1}>
@@ -16,7 +18,7 @@ export default function StickyCTA(){
             <Button w="full" flex={0} px={12} variant="outline" colorScheme="blue" size="lg" leftIcon={<BiShare />}>
                 Share
             </Button>
-            <Button w="full" flex={1} colorScheme="yellow" rightIcon={<BiDonateHeart />} size="lg">
+            <Button w="full" flex={1} colorScheme="yellow" rightIcon={<BiDonateHeart />} size="lg" onClick={() => app.onPopupOpen()}>
                 Donate
             </Button>
         </Flex>

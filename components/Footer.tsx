@@ -11,11 +11,13 @@ import {
   VisuallyHidden,
 } from "@chakra-ui/react";
 import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
-import { ReactNode } from "react";
+import { ReactNode, useContext } from "react";
 import logoDark from "../public/logo-dark.svg";
 import logoLight from "../public/logo.svg";
 import ShareCard from "./ShareCard";
 import StickyCTA from "./StickyFooter";
+import LevelModal from "./LevelModal";
+import AppContext from "../context/app-context";
 
 const SocialButton = ({
   children,
@@ -54,6 +56,7 @@ const SocialButton = ({
 export default function SmallWithLogoLeft() {
   const logo = useColorModeValue(logoLight, logoDark);
   const isMobile = useBreakpointValue({ base: true, md: false });
+  const app = useContext(AppContext);
   return (
     <Box
       bg={useColorModeValue("gray.50", "gray.900")}
@@ -63,6 +66,7 @@ export default function SmallWithLogoLeft() {
       borderColor={useColorModeValue("gray.200", "gray.900")}
       mb={isMobile ? 20: 0}
     >
+      <LevelModal isOpen={app.state.popup.isOpen}  onClose={() => app.onPopupClose()} />
       {isMobile && <StickyCTA />}
       <Box maxW="4xl" mx="auto" py={8} px={[0, 8]}>
         {<ShareCard justifyContent="left" shadow="lg" />}

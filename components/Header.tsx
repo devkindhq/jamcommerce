@@ -160,7 +160,7 @@ export default function Header() {
               size="lg"
               rightIcon={<BiDonateHeart />}
               px={12}
-              onClick={() => console.log("donate")}
+              onClick={() => app.onPopupOpen()}
             >
               Donate
             </Button>

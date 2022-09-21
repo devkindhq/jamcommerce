@@ -5,6 +5,8 @@ import { IAppProviderState } from "../providers/app-provider";
 type AppContext = {
     state: IAppProviderState,
     changeCurrency: (code: string) => void
+    onPopupClose: () => void
+    onPopupOpen: () => void
 }
 const AppContext = createContext<AppContext>({
     state: {
@@ -20,9 +22,14 @@ const AppContext = createContext<AppContext>({
         current_currency: {
             code: BASE_CURRENCY,
             value: 1
+        },
+        popup: {
+            isOpen: false
         }
     },
-    changeCurrency: () => (console.log('currency function not initiated'))
+    changeCurrency: () => (console.log('currency function not initiated')),
+    onPopupClose: () => (console.log('on close not initialised')),
+    onPopupOpen: () => (console.log('on open not initialised'))
 });
 
 export default AppContext;

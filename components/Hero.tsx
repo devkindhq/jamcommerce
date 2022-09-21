@@ -27,7 +27,6 @@ type DonationDetails = {
 };
 
 export default function Hero() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [donationDetails, setDonationDetails] = useState<DonationDetails>({
     destination_currency_total: 0,
     total_transactions: 0,
@@ -208,7 +207,7 @@ export default function Hero() {
               w="full"
               size={"lg"}
               shadow="md"
-              onClick={onOpen}
+              onClick={() => app.onPopupOpen()}
               colorScheme="yellow"
               variant="solid"
               _hover={{
@@ -237,7 +236,6 @@ export default function Hero() {
           </Text>
         </Box>
       </Box>
-      <LevelModal isOpen={isOpen} onClose={onClose} />
     </Box>
   );
 }
