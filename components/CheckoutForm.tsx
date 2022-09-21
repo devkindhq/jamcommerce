@@ -18,19 +18,6 @@ const CheckoutForm = () => {
   })
   const app = useContext(AppContext);
 
-  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (e) =>
-    setInput({
-      ...input,
-      [e.currentTarget.name]: e.currentTarget.value,
-    })
-
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault()
-    setLoading(true)
-    await customAmountCheckoutRedict(input.customDonation);
-    setLoading(false)
-  }
-
   const changeProductCurrency = (product: Product, currency: CurrencyObject) => {
     return {
       ...product,
