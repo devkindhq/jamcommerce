@@ -48,27 +48,6 @@ const CheckoutForm = () => {
 
   return (
     <>
-    {/** TODO: Add contact module here */}
-    <form onSubmit={handleSubmit} style={{marginBottom: '20px'}}>
-      <CustomDonationInput
-        className="checkout-style"
-        name={'customDonation'}
-        value={input.customDonation}
-        min={config.MIN_AMOUNT}
-        max={config.MAX_AMOUNT}
-        step={config.AMOUNT_STEP}
-        currency={config.CURRENCY}
-        onChange={handleInputChange}
-      />
-      <button
-        className="checkout-style-background"
-        type="submit"
-        disabled={loading}
-      >
-        Donate {formatAmountForDisplay(input.customDonation, config.CURRENCY)}
-      </button>
-
-    </form>
     <Heading size="lg" mb={4} color={useColorModeValue('gray.700', 'gray.200')}>Giving levels</Heading>
     <ProductsNew handleBuyNow={handleSingleProduct} />
     </>
