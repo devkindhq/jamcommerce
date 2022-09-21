@@ -1,4 +1,4 @@
-import { Badge, Box, Button, Flex, Heading, HStack, Image, Progress, Spacer, Stack, Text, useColorModeValue, useDisclosure } from '@chakra-ui/react'
+import { Badge, Box, Button, Collapse, Flex, Heading, HStack, Image, Progress, Spacer, Stack, Text, useBreakpointValue, useColorModeValue, useDisclosure } from '@chakra-ui/react'
 import { Prose } from '@nikolovlazar/chakra-ui-prose'
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { serialize } from 'next-mdx-remote/serialize'
@@ -13,6 +13,7 @@ import description from '../data/donation_description'
 import endDate from '../data/donation_end_date'
 import banner from '../public/banner.png'
 import { formatAmountForDisplay } from '../utils/stripe-helpers'
+
 type Homepage = {
   source: MDXRemoteSerializeResult<Record<string, unknown>, Record<string, string>>,
 }
@@ -28,6 +29,9 @@ const IndexPage = ({ source }: Homepage) => {
   const [days, setDays] = useState<number>(0)
   const [campaignDate, setCampaignDate] = useState<string>('')
   const app = useContext(AppContext);
+  const [show, setShow] = useState<boolean>(false)
+
+  const handleToggle = () => setShow(!show)
   /**
    * This function use to count days from now to end date
    */
@@ -117,9 +121,24 @@ const IndexPage = ({ source }: Homepage) => {
               content:
                 "Pakistan's Sindh Province has been the hardest hit with almost 15 million people homeless and half of the province underwater. We request everyone to join hands",
             }} />
-            <Prose>
-              <MDXRemote {...source} />
-            </Prose>
+            {useBreakpointValue({
+              base: (
+              <>
+                <Collapse startingHeight={300} in={show}>
+                <Prose>
+                  <MDXRemote {...source} />
+                </Prose>
+                </Collapse>
+                <Button size='md' variant="outline" w="full" mt={8} onClick={handleToggle}>
+                  Read {show ? 'Less' : 'More'}
+                </Button>
+              </>), 
+              md: (
+              <Prose>
+                <MDXRemote {...source} />
+              </Prose>
+              )
+            })}
           </Box>
           <Box w={["auto", "auto", "30%"]}><CheckoutForm /></Box>
         </Flex>
