@@ -22,6 +22,8 @@ export function formatAmountForStripe(
     style: 'currency',
     currency: currency,
     currencyDisplay: 'symbol',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
   })
   const parts = numberFormat.formatToParts(amount)
   let zeroDecimalCurrency: boolean = true
@@ -30,7 +32,7 @@ export function formatAmountForStripe(
       zeroDecimalCurrency = false
     }
   }
-  return zeroDecimalCurrency ? amount : Math.round(amount * 100)
+  return zeroDecimalCurrency ? parseInt(amount.toFixed())*100 : Math.abs(amount * 100)
 }
 
 export function formatAmountFromStripe(
