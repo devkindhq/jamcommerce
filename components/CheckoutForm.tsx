@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 
 import CustomDonationInput from '../components/CustomDonationInput'
 
-import { Heading, useColorModeValue } from '@chakra-ui/react'
+import { Box, Heading, useColorModeValue } from '@chakra-ui/react'
 import { Product } from 'use-shopping-cart'
 import * as config from '../config'
 import AppContext from '../context/app-context'
@@ -34,10 +34,10 @@ const CheckoutForm = () => {
   }
 
   return (
-    <>
+    <Box>
     <Heading size="lg" mb={4} color={useColorModeValue('gray.700', 'gray.200')}>Giving levels</Heading>
     <ProductsNew handleBuyNow={handleSingleProduct} />
-    </>
+    </Box>
   )
 }
 

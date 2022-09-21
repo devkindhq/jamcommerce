@@ -107,7 +107,10 @@ export default function Hero() {
       overflow="hidden"
     >
       <Flex w={["auto", "auto", "75%"]} minH="full" position={"relative"}>
-        {isPlayback ? (
+{/**
+ * TODO: Enable this after the video is finalised
+ *    
+ * {isPlayback ? (
           <AspectRatio ratio={16 / 16} w="full">
             <iframe
               title="naruto"
@@ -136,9 +139,11 @@ export default function Hero() {
                 fontSize={"9xl"}
               ></IconButton>
             </Box>
-            <Image w="full" h="full" src={banner.src} />
           </>
         )}
+ * 
+ */}        
+        <Image w="full" h="full" src={banner.src} />
       </Flex>
       <Box
         w={["auto", "auto", "auto"]}

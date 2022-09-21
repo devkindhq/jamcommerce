@@ -3,6 +3,7 @@ import {
   Button,
   Collapse,
   Flex,
+  Stack,
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { Prose } from "@nikolovlazar/chakra-ui-prose";
@@ -66,18 +67,22 @@ const IndexPage = ({ source }: Homepage) => {
   const [show, setShow] = useState<boolean>(false);
 
   const handleToggle = () => setShow(!show);
-
+  const isMobile = useBreakpointValue({base: true, md: false })
   return (
     <Layout title="Home | Next.js + TypeScript Example">
       <Box maxW={"7xl"} mx="auto" px={4}>
         <Hero />
         <Flex flexDirection={["column", "column", "row"]} gap={12} my={12}>
           <Box w={["auto", "auto", "70%"]}>
+            <Stack>
             <Content />
-            <ShareCard />
+            {!isMobile && (<ShareCard />)}
+            </Stack>
           </Box>
           <Box w={["auto", "auto", "30%"]}>
+            <Stack gap={6}>
             <CheckoutForm />
+            </Stack>
           </Box>
         </Flex>
       </Box>

@@ -6,6 +6,7 @@ import {
   Link,
   Stack,
   Text,
+  useBreakpointValue,
   useColorModeValue,
   VisuallyHidden,
 } from '@chakra-ui/react';
@@ -13,6 +14,7 @@ import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
 import { ReactNode } from 'react';
 import logoDark from '../public/logo-dark.svg';
 import logoLight from '../public/logo.svg';
+import ShareCard from './ShareCard';
 
 const SocialButton = ({
   children,
@@ -49,10 +51,12 @@ const SocialButton = ({
 
 export default function SmallWithLogoLeft() {
   const logo = useColorModeValue(logoLight, logoDark)
+  const isMobile = useBreakpointValue({base: true, md: false})
   return (
     <Box
       bg={useColorModeValue('gray.50', 'gray.900')}
       color={useColorModeValue('gray.700', 'gray.200')} py={4} textAlign="center">
+      {isMobile && (<ShareCard />)}
       <Container
         as={Stack}
         maxW={'7xl'}
