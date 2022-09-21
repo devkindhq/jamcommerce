@@ -14,8 +14,8 @@ export default function ShareCard() {
     const ShareButtons = () => {
         return(
         <Flex mt={4} gridGap={2}>
-            {social_links.map(social_link => {
-                return (<IconButton rounded={'full'} fontSize={'2xl'} icon={social_link.icon} colorScheme={social_link.colorScheme ?? 'pink'} aria-label={social_link.label} />)
+            {social_links.map((social_link, index) => {
+                return (<IconButton key={'social_link_'+index} rounded={'full'} fontSize={'2xl'} icon={social_link.icon} colorScheme={social_link.colorScheme ?? 'pink'} aria-label={social_link.label} />)
             })}
         <IconButton rounded={'full'} icon={<LinkIcon />} colorScheme='yellow' onClick={copyURL} aria-label="Copy link" />
         </Flex>
