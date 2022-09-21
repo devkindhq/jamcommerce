@@ -1,3 +1,4 @@
+import { Box, useBreakpointValue } from '@chakra-ui/react'
 import { ReactNode } from 'react'
 
 import Footer from './Footer'
@@ -16,9 +17,9 @@ const Layout = ({
   <>
     <Head title={title} />
     <Header />
-    <div style={{paddingTop: '100px'}}>
+    <Box pt={useBreakpointValue({base: '150px', md: '100px'})}>
       {children}
-      </div>
+    </Box>
     <Footer />
 </>
  

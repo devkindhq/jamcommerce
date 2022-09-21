@@ -1,8 +1,9 @@
-import { Badge, Box, Button, Collapse, Flex, Heading, HStack, Image, Progress, Spacer, Stack, Text, useBreakpointValue, useColorModeValue, useDisclosure } from '@chakra-ui/react'
+import { AspectRatio, Badge, Box, Button, Collapse, Flex, Heading, HStack, IconButton, Image, Progress, Spacer, Stack, Text, useBreakpointValue, useColorModeValue, useDisclosure } from '@chakra-ui/react'
 import { Prose } from '@nikolovlazar/chakra-ui-prose'
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { serialize } from 'next-mdx-remote/serialize'
 import { useContext, useEffect, useState } from 'react'
+import { BiPlayCircle } from 'react-icons/bi'
 import CampaignCard from '../components/CampaignCard'
 import CheckoutForm from '../components/CheckoutForm'
 import Layout from '../components/Layout'
@@ -25,6 +26,7 @@ const IndexPage = ({ source }: Homepage) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [donationDetails, setDonationDetails] = useState<DonationDetails>({destination_currency_total: 0, total_transactions: 0})
   const [currentCurrency, setCurrentCurrency] = useState<string>('AUD')
+  const [isPlayback, setPlayback] = useState<string>(false)
   const [loading, setLoading] = useState<boolean>(false)
   const [days, setDays] = useState<number>(0)
   const [campaignDate, setCampaignDate] = useState<string>('')
@@ -81,8 +83,20 @@ const IndexPage = ({ source }: Homepage) => {
         <Box display="flex" gap={[4, 4, 0]} my={8} rounded={'xl'} shadow={'lg'} flexDirection={['column', 'column', 'row']}
           bg={useColorModeValue('white', 'gray.700')}
           overflow="hidden">
-          <Flex w={["auto", "auto", "75%"]} minH="full">
-            <Image w="full" h="full" src={banner.src}></Image>
+          <Flex w={["auto", "auto", "75%"]} minH="full" position={'relative'}>
+          {isPlayback ?  (
+          <AspectRatio ratio={16/16} w="full">
+          <iframe
+            title='naruto'
+            src='https://www.youtube.com/embed/aScmJS75dyI?autoplay=1'
+            allowFullScreen
+          />
+        </AspectRatio>
+          ): 
+          <>
+          <Box position={'absolute'} height={'100%'} width={'100%'} display={'flex'} justifyContent='center' alignContent={'center'} alignItems='center' bg={'blackAlpha.400'}><IconButton onClick={() => setPlayback(true)} icon={<BiPlayCircle />} aria-label="Play video" fontSize={'9xl'}></IconButton></Box>
+          <Image w="full" h="full" src={banner.src} />
+          </>}
           </Flex>
           <Box w={["auto", "auto", "auto"]} maxW={'350px'} mx="auto" px={2} display="flex" alignItems="center" justifyContent="space-between" flexDirection="column">
             <Spacer />
