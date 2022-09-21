@@ -125,9 +125,11 @@ export default function Hero() {
               justifyContent="center"
               alignContent={"center"}
               alignItems="center"
-              bg={"blackAlpha.400"}
+              bg={useColorModeValue("blackAlpha.400","blackAlpha.400")}
             >
               <IconButton
+                bg="none"
+                color={useColorModeValue('gray.100', 'white')}
                 onClick={() => setPlayback(true)}
                 icon={<BiPlayCircle />}
                 aria-label="Play video"

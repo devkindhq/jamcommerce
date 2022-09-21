@@ -4,7 +4,6 @@ import { useContext } from "react";
 import AppContext from "../context/app-context";
 import { social_links } from "../data/social_links";
 
-import donation from '../public/donation-doodle-1.svg';
 import { formatAmountForDisplay } from "../utils/stripe-helpers";
 
 const copyURL = async () => {
@@ -30,7 +29,6 @@ export default function ShareCard() {
             <Text fontSize={'xl'} fontWeight={'semibold'} color={useColorModeValue('gray.700','white')}>Invite your friends and family to donate.</Text>
             <ShareButtons  />
             </Box>
-            <Image  src={donation.src} maxW={'100px'} />
             </Flex>
         </Box>
     )
