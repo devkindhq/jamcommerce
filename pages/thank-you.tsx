@@ -2,20 +2,15 @@ import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 
 import Layout from '../components/Layout'
-import PrintObject from '../components/PrintObject'
-import Cart from '../components/Cart'
-import ClearCart from '../components/ClearCart'
 
-import { fetchGetJSON } from '../utils/api-helpers'
-import useSWR from 'swr'
-import { CheckCircleIcon, CheckIcon } from '@chakra-ui/icons'
-import { Box, Divider, Flex, Heading, Image, Spacer, Spinner, Text, useColorModeValue } from '@chakra-ui/react'
-import { formatAmountForDisplay } from '../utils/stripe-helpers'
+import { CheckIcon } from '@chakra-ui/icons'
+import { Box, Flex, Heading, Spacer, Spinner, Text, useColorModeValue } from '@chakra-ui/react'
 import { useContext } from 'react'
-import AppContext from '../context/app-context'
-import ticket from '../public/ticket.svg';
-import CampaignCard from '../components/CampaignCard'
+import useSWR from 'swr'
 import TransactionCard from '../components/TransactionCard'
+import AppContext from '../context/app-context'
+import { fetchGetJSON } from '../utils/api-helpers'
+import { formatAmountForDisplay } from '../utils/stripe-helpers'
 
 const ResultPage: NextPage = () => {
   const router = useRouter()
@@ -33,7 +28,8 @@ const ResultPage: NextPage = () => {
 
   return (
     <Layout title="Thank you - Your donations have been received">
-        <Flex  direction="column" alignContent={'center'} alignItems='center' textAlign={"center"} w="full" justifyContent={'space-around'} mx="auto" maxW="6xl" gridGap={2} py={14} mt={14} color={useColorModeValue("gray.800", "gray.100")} minH={['auto', 'auto', '80vh']} align={'center'} justify="center" justifyItems={'center'} justifySelf='center' alignSelf={'center'}>
+      <Box maxW={'5xl'} mx="auto">
+      <Flex direction="column" alignContent={'center'} alignItems='center' textAlign={"center"} w="full" justifyContent={'space-around'} mx="auto" maxW="6xl" gridGap={2} py={14} mt={14} color={useColorModeValue("gray.800", "gray.100")}  align={'center'} justify="center" justifyItems={'center'} justifySelf='center' alignSelf={'center'}>
         <Box rounded="full" p={8}  borderWidth={1}  bg={useColorModeValue("green.100","green.900")}><CheckIcon fontSize={'7xl'} color={useColorModeValue("green.700","green.100")}/></Box>
         <Box mb={16}>
         <Heading color={useColorModeValue("gray.700","white")}>Thank you for your kindness</Heading>
@@ -45,7 +41,7 @@ const ResultPage: NextPage = () => {
                 <Flex gap={4} justifyContent={'space-between'}>
                 <Box>
                   <Text fontSize="lg"  fontWeight={'semibold'}>Name</Text>
-                  <Text color={useColorModeValue("gray.800", "gray.100")}>{data?.customer_details.name}</Text>
+                  <Text color={useColorModeValue("gray.800", "gray.100")}>{data?.customer_details?.name}</Text>
                 </Box>
                 <Box textAlign={'right'}>
                   <Text fontSize="lg"  fontWeight={'semibold'}>Amount</Text>
@@ -73,16 +69,8 @@ const ResultPage: NextPage = () => {
                 </TransactionCard>}
    
         <Spacer />
-        </Flex>
-{/*    
-        <h1>Checkout Payment Result</h1>
-        <h2>Status: {data?.payment_intent?.status ?? 'loading...'}</h2>
-        <h3>CheckoutSession response:</h3>
-        <PrintObject content={data ?? 'loading...'} />
-        <Cart>
-          <ClearCart />
-        </Cart> */}
-
+      </Flex>
+      </Box>
     </Layout>
   )
 }

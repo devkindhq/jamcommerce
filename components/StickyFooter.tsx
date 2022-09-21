@@ -1,15 +1,27 @@
 import { ArrowForwardIcon } from "@chakra-ui/icons";
-import { Box, Button, Flex, useColorModeValue } from "@chakra-ui/react";
+import { Box, Button, Flex, Slide, useColorModeValue, useDisclosure } from "@chakra-ui/react";
+import { useScroll, useViewportScroll } from "framer-motion";
+import { useState } from "react";
+import { BiDonateHeart, BiShare } from "react-icons/bi";
+import { FaCreativeCommonsShare, FaShare } from "react-icons/fa";
 
 export default function StickyCTA(){
+    const { scrollY } = useViewportScroll();
+    const [show, setShow] = useState(false)
+    scrollY.onChange( y => y > 500 ? setShow(true) : setShow(false))
     return(
-        <Flex position="fixed" gridGap={4} px={4} py={4} bottom={0} borderTop="1px solid" borderColor={'gray.200'} right={0} bg={useColorModeValue("white","gray.600")} w="full" zIndex={1}>
-            <Button w="full" flex={0} px={12} variant="outline" colorScheme="blue" size="lg">
+        <Box position={'relative'} zIndex={1}>
+        <Slide direction='bottom' in={show}>
+        <Flex gridGap={4} px={4} py={4}  position="relative" bottom={0} borderTop="1px solid" borderColor={useColorModeValue("white","gray.800")} right={0} bg={useColorModeValue("white","gray.700")} w="full">
+            <Button w="full" flex={0} px={12} variant="outline" colorScheme="blue" size="lg" leftIcon={<BiShare />}>
                 Share
             </Button>
-            <Button w="full" flex={1} colorScheme="yellow" rightIcon={<ArrowForwardIcon />} size="lg">
+            <Button w="full" flex={1} colorScheme="yellow" rightIcon={<BiDonateHeart />} size="lg">
                 Donate
             </Button>
         </Flex>
+        </Slide>
+        </Box>
+
     )
 }

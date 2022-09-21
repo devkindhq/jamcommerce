@@ -12,12 +12,12 @@ type Props = {
 
 const Layout = ({
   children,
-  title = 'TypeScript Next.js Stripe Example',
+  title = 'Regional Sindh Emergency Flood Relief 2022',
 }: Props) => (
   <>
     <Head title={title} />
     <Header />
-    <Box pt={useBreakpointValue({base: '150px', md: '100px'})}>
+    <Box pt={useBreakpointValue({base: '0px', md: '100px'})}>
       {children}
     </Box>
     <Footer />

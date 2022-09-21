@@ -1,22 +1,19 @@
 import {
-    AspectRatio,
-    Badge,
-    Box,
-    Button,
-    Flex,
-    Heading,
-    HStack,
-    IconButton,
-    Image,
-    Progress,
-    Skeleton, Spacer,
-    Stack,
-    Text,
-    useColorModeValue,
-    useDisclosure
+  Badge,
+  Box,
+  Button,
+  Flex,
+  Heading,
+  HStack, Image,
+  Progress,
+  Skeleton, Spacer,
+  Stack,
+  Text,
+  useColorModeValue,
+  useDisclosure
 } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
-import { BiPlayCircle } from "react-icons/bi";
+import { BiDonateHeart } from "react-icons/bi";
 import LevelModal from "../components/LevelModal";
 import { RAISING_AMOUNT } from "../config";
 import AppContext from "../context/app-context";
@@ -212,15 +209,15 @@ export default function Hero() {
               size={"lg"}
               shadow="md"
               onClick={onOpen}
-              colorScheme="green"
-              textTransform={"uppercase"}
+              colorScheme="yellow"
               variant="solid"
               _hover={{
                 transform: "translateY(-2px)",
                 boxShadow: "lg",
               }}
+              rightIcon={<BiDonateHeart />}
             >
-              Support 🙏
+              <Text mr={2}>Donate</Text>
             </Button>
             <Text
               mt={2}

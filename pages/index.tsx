@@ -69,14 +69,14 @@ const IndexPage = ({ source }: Homepage) => {
   const handleToggle = () => setShow(!show);
   const isMobile = useBreakpointValue({base: true, md: false })
   return (
-    <Layout title="Home | Next.js + TypeScript Example">
+    <Layout title="Regional Sindh Emergency Flood Relief 2022 - Shahul &amp; Zeenat Foundation">
       <Box maxW={"7xl"} mx="auto" px={4}>
         <Hero />
         <Flex flexDirection={["column", "column", "row"]} gap={12} my={12}>
           <Box w={["auto", "auto", "70%"]}>
             <Stack>
             <Content />
-            {!isMobile && (<ShareCard />)}
+            {/* {!isMobile && (<ShareCard />)} */}
             </Stack>
           </Box>
           <Box w={["auto", "auto", "30%"]}>
