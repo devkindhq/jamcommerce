@@ -13,6 +13,7 @@ import CampaignCard from "../components/CampaignCard";
 import CheckoutForm from "../components/CheckoutForm";
 import Hero from "../components/Hero";
 import Layout from "../components/Layout";
+import ShareCard from "../components/ShareCard";
 import description from "../data/donation_description";
 
 type Homepage = {
@@ -73,6 +74,7 @@ const IndexPage = ({ source }: Homepage) => {
         <Flex flexDirection={["column", "column", "row"]} gap={12} my={12}>
           <Box w={["auto", "auto", "70%"]}>
             <Content />
+            <ShareCard />
           </Box>
           <Box w={["auto", "auto", "30%"]}>
             <CheckoutForm />
