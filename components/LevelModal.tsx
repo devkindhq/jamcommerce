@@ -8,8 +8,10 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalHeader,
-  ModalOverlay, useBreakpointValue,
-  useColorModeValue
+  ModalOverlay,
+  Select,
+  useBreakpointValue,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { Step, Steps, useSteps } from "chakra-ui-steps";
 import { Form, Formik } from "formik";
@@ -20,7 +22,7 @@ import product, { default as products } from "../data/donation_products";
 import customCheckoutRedirect from "../utils/stripe-checkout";
 import {
   formatAmountForDisplay,
-  formatAmountForStripe
+  formatAmountForStripe,
 } from "../utils/stripe-helpers";
 import { ChooseLevel, DonorForm, GoodDeeds } from "./DonationSteps";
 
@@ -179,7 +181,6 @@ export const Descriptions = () => {
                 })}
               >
                 {steps.map(({ label, description, content }) => {
-                  const currentstep = content;
                   return (
                     <Step
                       label={label}
@@ -187,72 +188,79 @@ export const Descriptions = () => {
                       h="full"
                       textAlign={"left"}
                       description={description}
-                    >
-                      <Box h="full" mt={{ base: 0, lg: 16 }}>
-                        <Flex
-                          align="center"
-                          justify="center"
-                          alignItems={"center"}
-                          alignContent="center"
-                          alignSelf={"center"}
-                          h="full"
-                        >
-                          <Box
-                            bg={useColorModeValue("white", "gray.800")}
-                            p={[4, 4, 6]}
-                            rounded="md"
-                            w="full"
-                          >
-                            {/* <Box mb={4}>
-                          {/* <Text fontSize="2xl" fontWeight={'500'}>{label}</Text>
-                          <Text>{description}</Text> 
-                          </Box> */}
-                            {currentstep}
-                            {/**
-                             * TODO: Needs to do form validation on next buttons and so fourth.
-                             * Show error toast is anything wrong with the form.
-                             */}
-
-                            <HStack
-                              mt={6}
-                              justifyContent={"space-between"}
-                              w="full"
-                            >
-                              {activeStep !== 0 && (
-                                <Button
-                                  colorScheme="gray"
-                                  variant={"ghost"}
-                                  isDisabled={activeStep === 0}
-                                  width="full"
-                                  onClick={prevStep}
-                                >
-                                  Previous
-                                </Button>
-                              )}
-
-                              <Button
-                                colorScheme="green"
-                                width="full"
-                                type="submit"
-                              >
-                                {isLastStep
-                                  ? "Donate " +
-                                    formatAmountForDisplay(
-                                      values.tip +
-                                      (// @ts-ignore
-                                          currentProduct?.price / 100),
-                                      app.state.current_currency.code
-                                    )
-                                  : "Next"}
-                              </Button>
-                            </HStack>
-                          </Box>
-                        </Flex>
-                      </Box>
-                    </Step>
+                    />
                   );
                 })}
               </Steps>
+              <Box h="full" mt={{ base: 0, lg: 16 }}>
+                <Flex
+                  align="center"
+                  justify="center"
+                  alignItems={"center"}
+                  alignContent="center"
+                  alignSelf={"center"}
+                  h="full"
+                  w="full"
+                >
+                  <Box
+                    bg={useColorModeValue("white", "gray.800")}
+                    p={[4, 4, 6]}
+                    rounded="md"
+                    w="full"
+                  >
+                    <Select
+                      maxW={"100px"}
+                      variant={"filled"}
+                      ml={"auto"}
+                      bg={useColorModeValue("white", "gray.700")}
+                      onChange={(e) => app.changeCurrency(e.target.value)}
+                      defaultValue={app.state.base_currency.code}
+                    >
+                      {app.state.dealing_currencies.map((currency, index) => {
+                        return (
+                          <option key={index} value={currency}>
+                            {currency}
+                          </option>
+                        );
+                      })}
+                    </Select>
+                    {/* <Box mb={4}>
+                          {/* <Text fontSize="2xl" fontWeight={'500'}>{label}</Text>
+                          <Text>{description}</Text> 
+                          </Box> */}
+                    {steps[activeStep].content}
+                    {/**
+                     * TODO: Needs to do form validation on next buttons and so fourth.
+                     * Show error toast is anything wrong with the form.
+                     */}
+
+                    <HStack mt={6} justifyContent={"space-between"} w="full">
+                      {activeStep !== 0 && (
+                        <Button
+                          colorScheme="gray"
+                          variant={"ghost"}
+                          isDisabled={activeStep === 0}
+                          width="full"
+                          onClick={prevStep}
+                        >
+                          Previous
+                        </Button>
+                      )}
+
+                      <Button colorScheme="green" width="full" type="submit">
+                        {isLastStep
+                          ? "Donate " +
+                            formatAmountForDisplay(
+                              values.tip + // @ts-ignore
+                                currentProduct?.price / 100,
+                              app.state.current_currency.code
+                            )
+                          : "Next"}
+                      </Button>
+                    </HStack>
+                  </Box>
+                </Flex>
+              </Box>
             </Form>
           );
         }}
