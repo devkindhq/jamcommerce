@@ -16,14 +16,13 @@ import { Form, Formik } from "formik";
 import { useContext } from "react";
 import * as yup from "yup";
 import AppContext from "../context/app-context";
-import product, { default as products } from "../data/donation_products";
+import product, { default as products, Product } from "../data/donation_products";
 import { convertCurrencyAmount } from "../utils/currency-helpers";
 import customCheckoutRedirect from "../utils/stripe-checkout";
 import {
   formatAmountForDisplay,
   formatAmountForStripe
 } from "../utils/stripe-helpers";
-import CurrencySelector from "./CurrencySelector";
 import { ChooseLevel, DonorForm, GoodDeeds } from "./DonationSteps";
 
 export default function LevelModal({
@@ -43,7 +42,7 @@ export default function LevelModal({
         <Box maxWidth={"7xl"} mx="auto">
           <ModalHeader
             mt={2}
-            fontSize={useBreakpointValue({ base: "3xl", sm: "4xl", lg: "6xl" })}
+            fontSize={useBreakpointValue({ base: "2xl", sm: "3xl", lg: "4xl" })}
           >
             Do something good today
           </ModalHeader>
@@ -65,6 +64,7 @@ export interface FormValues {
   anonymous: boolean;
   product: string | undefined;
   tip: number;
+  customProduct: Product | null
 }
 
 export const Descriptions = () => {
@@ -115,7 +115,7 @@ export const Descriptions = () => {
       anonymous: yup.bool().required(),
     }),
     yup.object().shape({
-      product: yup.string().required(),
+      product: yup.string().required()
     }),
     yup.object().shape({
       tip: yup
@@ -129,7 +129,7 @@ export const Descriptions = () => {
   ];
 
   const submitForm = (values: FormValues) => {
-    let selectedProduct = product().find((e) => e.id == values.product); // finding the right product
+    let selectedProduct = values?.customProduct ?? product().find((e) => e.id == values.product); // finding the right product
     if (selectedProduct == undefined) throw new Error("Product was not found");
     customCheckoutRedirect(
       {
@@ -151,7 +151,6 @@ export const Descriptions = () => {
     if (isLastStep) {
       submitForm(values);
     } else {
-      console.log("This is a next step");
       actions.setTouched({}); // So that errors are gone.
       actions.setSubmitting(false);
       setStep(activeStep + 1);
@@ -167,6 +166,7 @@ export const Descriptions = () => {
           anonymous: false,
           product: app.state.selectedProduct ?? product()[0].id,
           tip: 0,
+          customProduct: null
         }}
         validateOnBlur={false}
         validateOnChange={false}
@@ -175,7 +175,7 @@ export const Descriptions = () => {
         onSubmit={handleSubmit}
       >
         {({ values }) => {
-          const currentProduct = products().find(
+          const currentProduct = values.customProduct ?? products().find(
             (product) => product.id == values.product
           );
           return (
@@ -213,11 +213,6 @@ export const Descriptions = () => {
                             rounded="md"
                             w="full"
                           >
-                            {activeStep > 0 && (
-                              <Flex justifyContent={"flex-end"} w="full">
-                                <CurrencySelector size={"md"} mb={2} />
-                              </Flex>
-                            )}
                             {/* <Box mb={4}>
                           {/* <Text fontSize="2xl" fontWeight={'500'}>{label}</Text>
                           <Text>{description}</Text> 

@@ -24,12 +24,14 @@ import { FaMinusCircle, FaPlusCircle } from "react-icons/fa";
 import AppContext from "../context/app-context";
 import { default as products, Product } from "../data/donation_products";
 import { findClosestObject, smileys } from "../utils/smiley";
+import CurrencySelector from "./CurrencySelector";
 import DonationBoxRadio from "./DonationBoxRadio";
+import DonationRadioBoxCustom from "./DonationBoxRadioCustom";
 import DonationCard from "./DonationCard";
 import { FormValues } from "./LevelModal";
 import RadioGroup from "./RadioGroup";
 
-const CustomErrorMessage = ({ name }: { name: string | undefined }) => (
+export const CustomErrorMessage = ({ name }: { name: string | undefined }) => (
   <Text color="red" fontSize="xs" mt={1}>
     {/** @ts-ignore */}
     <ErrorMessage name={name} />
@@ -72,6 +74,11 @@ export function DonorForm() {
         />
         <CustomErrorMessage name={"email"} />
       </FormControl>
+      <FormControl>
+        <FormLabel htmlFor="currency">Currency</FormLabel>
+        <CurrencySelector size={"md"} mb={5} />
+        <CustomErrorMessage name={"currency"} />
+      </FormControl>
       <FormControl display="flex" alignItems="center">
         <FormLabel htmlFor="anonymous" mb="0">
           I would like to donate anonymously
@@ -111,6 +118,7 @@ export function ChooseLevel() {
       flexDirection={"column"}
     >
       {donationProducts.map((props, index) => {
+        if(props.id == 'custom') return <DonationRadioBoxCustom key={index} value={props.id} {...props} />
         return <DonationBoxRadio key={index} value={props.id} {...props} />;
       })}
     </RadioGroup>
@@ -120,7 +128,7 @@ export function ChooseLevel() {
 export function GoodDeeds() {
   const app = useContext(AppContext);
   const formik = useFormikContext<FormValues>();
-  const formProduct = products().find(
+  const formProduct = formik.values.customProduct ?? products().find(
     (product) => product.id == formik.values.product
   );
   if (!formProduct) throw new Error("Something went wrong with the product");

@@ -11,7 +11,9 @@ export interface Product extends Prod {
   base_currency: string
   base_price: number
   original_price?: number
-  onClick?: (() => void) | undefined
+  onClick?: (() => void) | undefined,
+  min_price?: number,
+  max_price?: number
 }
 
 type Products = Product[]
@@ -68,14 +70,16 @@ const product = (): Products => {
       base_price: 20000
     },
     {
-      name: 'Custom Donation Option',
-      id: 'custom_option',
-      description: 'add your preference amount of donation',
+      name: 'Custom Donation',
+      id: 'custom',
+      description: 'Decide your donation by yourself!',
       price: 1000,
       attribution: 'Photo by Jonathan Pielmayer on Unsplash',
       currency: 'USD',
       base_currency: 'AUD',
-      base_price: 1000
+      base_price: 1000,
+      min_price: 1000,
+      max_price: 30000
     },
   ].sort((prev,current) => current.price - prev.price)
 }
