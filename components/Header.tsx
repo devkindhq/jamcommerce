@@ -138,6 +138,7 @@ export default function Header() {
               display={{ base: "none", md: "flex" }}
               onChange={handleChange}
               defaultValue={BASE_CURRENCY}
+              size="lg"
             >
               {DEALING_CURRENCIES.map((currency, index) => {
                 return (
@@ -149,8 +150,9 @@ export default function Header() {
             </Select>
             <Button
               onClick={toggleColorMode}
-              bg="none"
-              display={{ base: "none", md: "block" }}
+              size="lg"
+              p={0}
+              display={{ base: "none", md: "flex" }}
             >
               {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
             </Button>
