@@ -1,4 +1,3 @@
-import { MinusIcon, PlusSquareIcon, Plus } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -17,12 +16,11 @@ import {
   Text,
   useColorModeValue,
   useNumberInput,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import { ErrorMessage, Field, useFormikContext } from "formik";
 import { useContext, useState } from "react";
-import { BiMinus, BiMinusBack, BiMinusCircle } from "react-icons/bi";
-import { FaMinus, FaMinusCircle, FaPlusCircle } from "react-icons/fa";
+import { FaMinusCircle, FaPlusCircle } from "react-icons/fa";
 import AppContext from "../context/app-context";
 import { default as products, Product } from "../data/donation_products";
 import { findClosestObject, smileys } from "../utils/smiley";
