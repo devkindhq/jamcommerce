@@ -127,7 +127,7 @@ export function GoodDeeds() {
   const [currentProduct, setCurrentProduct] = useState<Product>(formProduct);
   const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } =
       useNumberInput({
-        step: 5,
+        step: 10,
         defaultValue: 0,
         min: 0,
         max: 100, // TODO: Fix this on the basis of currency. This depends on currency selected. e.g. 100+ IDR is nothing.
