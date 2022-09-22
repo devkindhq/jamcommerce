@@ -25,7 +25,6 @@ import {
 } from "@chakra-ui/react";
 import { useContext } from "react";
 import { BiDonateHeart } from "react-icons/bi";
-import { BASE_CURRENCY, DEALING_CURRENCIES } from "../config";
 import AppContext from "../context/app-context";
 import logoDark from "../public/logo-dark.svg";
 import logoLight from "../public/logo.svg";
@@ -34,15 +33,6 @@ export default function Header() {
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onToggle } = useDisclosure();
   const app = useContext(AppContext);
-
-  /**
-   * Functions run to updØate currency when ever use select from the list currency
-   *
-   * @param e
-   */
-  const handleChange = (e: any) => {
-    app.changeCurrency(e.target.value);
-  };
 
   return (
     <Box
@@ -78,10 +68,10 @@ export default function Header() {
               maxW={"100px"}
               variant={"filled"}
               bg={useColorModeValue("white", "gray.700")}
-              onChange={handleChange}
-              defaultValue={BASE_CURRENCY}
+              onChange={(e) => app.changeCurrency(e.target.value)}
+              defaultValue={app.state.base_currency.code}
             >
-              {DEALING_CURRENCIES.map((currency, index) => {
+              {app.state.dealing_currencies.map((currency, index) => {
                 return (
                   <option key={index} value={currency}>
                     {currency}
@@ -136,11 +126,11 @@ export default function Header() {
           >
             <Select
               display={{ base: "none", md: "flex" }}
-              onChange={handleChange}
-              defaultValue={BASE_CURRENCY}
+              onChange={(e) => app.changeCurrency(e.target.value)}
+              defaultValue={app.state.base_currency.code}
               size="lg"
             >
-              {DEALING_CURRENCIES.map((currency, index) => {
+              {app.state.dealing_currencies.map((currency, index) => {
                 return (
                   <option key={index} value={currency}>
                     {currency}
@@ -170,7 +160,7 @@ export default function Header() {
         </Flex>
 
         <Collapse in={isOpen} animateOpacity>
-          <MobileNav handleChange={handleChange} />
+          <MobileNav />
         </Collapse>
       </Box>
     </Box>
@@ -263,7 +253,8 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
   );
 };
 
-const MobileNav = ({ handleChange }: { handleChange: (e: any) => void }) => {
+const MobileNav = () => {
+  const app = useContext(AppContext);
   return (
     <Stack
       bg={useColorModeValue("white", "gray.800")}
@@ -271,8 +262,11 @@ const MobileNav = ({ handleChange }: { handleChange: (e: any) => void }) => {
       display={{ md: "none" }}
     >
       <Text>Change currency</Text>
-      <Select onChange={handleChange} defaultValue={BASE_CURRENCY}>
-        {DEALING_CURRENCIES.map((currency, index) => {
+      <Select
+        onChange={(e) => app.changeCurrency(e.target.value)}
+        defaultValue={app.state.base_currency.code}
+      >
+        {app.state.dealing_currencies.map((currency, index) => {
           return (
             <option key={index} value={currency}>
               {currency}
