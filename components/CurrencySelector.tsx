@@ -12,6 +12,7 @@ export default function CurrencySelector({size, mb} : {size?: size, mb?: number}
       bg={useColorModeValue("gray.100", "gray.700")}
       onChange={(e) => app.changeCurrency(e.target.value)}
       defaultValue={app.state.current_currency.code}
+      value={app.state.current_currency.code}
       mb={mb ?? 0}
     >
       {app.state.dealing_currencies.map((currency, index) => {
