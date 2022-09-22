@@ -1,3 +1,4 @@
+import { MinusIcon, PlusSquareIcon, Plus } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -20,6 +21,8 @@ import {
 } from "@chakra-ui/react";
 import { ErrorMessage, Field, useFormikContext } from "formik";
 import { useContext, useState } from "react";
+import { BiMinus, BiMinusBack, BiMinusCircle } from "react-icons/bi";
+import { FaMinus, FaMinusCircle, FaPlusCircle } from "react-icons/fa";
 import AppContext from "../context/app-context";
 import { default as products, Product } from "../data/donation_products";
 import { findClosestObject, smileys } from "../utils/smiley";
@@ -169,7 +172,7 @@ export function GoodDeeds() {
           </Box>
           {/** TODO: Implement currency here. Add the currency symbol as well */}
           <HStack
-            maxW={["13em"]}
+            maxW={["16em"]}
             justifyContent="center"
             alignItems={"center"}
             justify="center"
@@ -180,8 +183,9 @@ export function GoodDeeds() {
               size="lg"
               onContextMenu={(e) => e.preventDefault()}
               colorScheme="blue"
+              fontSize={'6xl'}
             >
-              -
+              <FaMinusCircle />
             </Button>
             <InputGroup>
               <Input
@@ -193,9 +197,10 @@ export function GoodDeeds() {
               />
               <InputRightElement
                 pointerEvents="none"
-                color="gray.300"
+                color={useColorModeValue("gray.700", "white")}
                 fontSize="1.2em"
                 mt={1}
+                p={0}
                 children="%"
               />
             </InputGroup>
@@ -204,8 +209,9 @@ export function GoodDeeds() {
               size="lg"
               onContextMenu={(e) => e.preventDefault()}
               colorScheme="blue"
+              fontSize={'6xl'}
             >
-              +
+              <FaPlusCircle />
             </Button>
           </HStack>
         </Flex>
