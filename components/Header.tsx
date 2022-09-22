@@ -109,7 +109,9 @@ export default function Header() {
             direction={"row"}
             spacing={2}
           >
+            <Box display={{ base: "none", md: "flex" }} w="full">
             <CurrencySelector />
+            </Box>
             <Button
               onClick={toggleColorMode}
               size="lg"
