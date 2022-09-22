@@ -135,8 +135,8 @@ export const Descriptions = () => {
       {
         ...selectedProduct,
         price: formatAmountForStripe(
-          (selectedProduct.price / 100) * app.state.current_currency.value +
-            values.tip * app.state.current_currency.value,
+          (selectedProduct.price / 100) * app.state.current_currency.value + // product price
+          (selectedProduct.price / 100 ) * (values.tip/100) * app.state.current_currency.value, // tip price
           app.state.current_currency.code
         ),
         currency: app.state.current_currency.code,
@@ -166,7 +166,7 @@ export const Descriptions = () => {
           name: "",
           anonymous: false,
           product: app.state.selectedProduct ?? product()[0].id,
-          tip: 5,
+          tip: 0,
         }}
         validateOnBlur={false}
         validateOnChange={false}
@@ -254,11 +254,13 @@ export const Descriptions = () => {
                                   ? "Donate " +
                                     formatAmountForDisplay(
                                       convertCurrencyAmount(
-                                        values.tip,
+                                        // @ts-ignore -- Because by this time the current product would have been found.
+                                        (currentProduct?.price / 100 ) * (values.tip/100),
                                         app.state.base_currency,
                                         app.state.current_currency
-                                      ) + // @ts-ignore
+                                      ) + 
                                         convertCurrencyAmount(
+                                          // @ts-ignore -- Because by this time the current product would have been found.
                                           currentProduct?.price / 100,
                                           app.state.base_currency,
                                           app.state.current_currency

@@ -6,6 +6,8 @@ import {
   FormLabel,
   HStack,
   Input,
+  InputGroup,
+  InputRightElement,
   Slider,
   SliderFilledTrack,
   SliderThumb,
@@ -20,7 +22,6 @@ import { ErrorMessage, Field, useFormikContext } from "formik";
 import { useContext, useState } from "react";
 import AppContext from "../context/app-context";
 import { default as products, Product } from "../data/donation_products";
-import { convertCurrencyAmount } from "../utils/currency-helpers";
 import { findClosestObject, smileys } from "../utils/smiley";
 import DonationBoxRadio from "./DonationBoxRadio";
 import DonationCard from "./DonationCard";
@@ -126,24 +127,12 @@ export function GoodDeeds() {
   const [currentProduct, setCurrentProduct] = useState<Product>(formProduct);
   const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } =
       useNumberInput({
-        step: convertCurrencyAmount(
-          5,
-          app.state.base_currency,
-          app.state.current_currency
-        ),
+        step: 5,
         defaultValue: 0,
         min: 0,
-        max: convertCurrencyAmount(
-          100,
-          app.state.base_currency,
-          app.state.current_currency
-        ), // TODO: Fix this on the basis of currency. This depends on currency selected. e.g. 100+ IDR is nothing.
+        max: 100, // TODO: Fix this on the basis of currency. This depends on currency selected. e.g. 100+ IDR is nothing.
         precision: 0,
-        value: convertCurrencyAmount(
-          formik.values.tip,
-          app.state.base_currency,
-          app.state.current_currency
-        ),
+        value: formik.values.tip,
         onChange: (e) => handleChange(parseInt(e)),
       }),
     inc = getIncrementButtonProps(),
@@ -151,17 +140,6 @@ export function GoodDeeds() {
     input = getInputProps();
 
   const handleChange = (value: number) => formik.setFieldValue("tip", value);
-  // useEffect(() => {
-  //   let original_price = currentProduct?.original_price || currentProduct?.price
-  //   if(!original_price) throw new Error("Something went wrong with the product pricing.")
-  //   let product = {
-  //     ...currentProduct,
-  //     original_price: original_price,
-  //     onClick: () => {},
-  //     price: original_price  + (formik.values.tip*100)
-  //   }
-  //   // setCurrentProduct(product)
-  // }, [formik.values.tip])
 
   return (
     <Box>
@@ -190,7 +168,13 @@ export function GoodDeeds() {
             </Text>
           </Box>
           {/** TODO: Implement currency here. Add the currency symbol as well */}
-          <HStack maxW={["auto", "auto", "200px"]} mt={2}>
+          <HStack
+            maxW={["13em"]}
+            justifyContent="center"
+            alignItems={"center"}
+            justify="center"
+            mt={2}
+          >
             <Button
               {...dec}
               size="lg"
@@ -199,13 +183,22 @@ export function GoodDeeds() {
             >
               -
             </Button>
-            <Input
-              {...input}
-              type=""
-              bg={useColorModeValue("white", "gray.700")}
-              colorScheme="blue"
-              size="lg"
-            />
+            <InputGroup>
+              <Input
+                {...input}
+                type=""
+                bg={useColorModeValue("white", "gray.700")}
+                colorScheme="blue"
+                size="lg"
+              />
+              <InputRightElement
+                pointerEvents="none"
+                color="gray.300"
+                fontSize="1.2em"
+                mt={1}
+                children="%"
+              />
+            </InputGroup>
             <Button
               {...inc}
               size="lg"
@@ -219,9 +212,10 @@ export function GoodDeeds() {
         <Flex mt={5}>
           <Box w="full">
             <Slider
-              step={5}
               focusThumbOnChange={false}
+              step={5}
               value={formik.values.tip}
+              max={100}
               onChange={handleChange}
             >
               <SliderTrack>
