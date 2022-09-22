@@ -1,22 +1,26 @@
 import {
   Box,
-  Button, Checkbox,
+  Button,
   Flex,
-  FormControl, FormLabel,
+  FormControl,
+  FormLabel,
   HStack,
   Input,
   Slider,
   SliderFilledTrack,
   SliderThumb,
   SliderTrack,
+  Switch,
   Text,
   useColorModeValue,
   useNumberInput,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import { ErrorMessage, Field, useFormikContext } from "formik";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import AppContext from "../context/app-context";
 import { default as products, Product } from "../data/donation_products";
+import { convertCurrencyAmount } from "../utils/currency-helpers";
 import { findClosestObject, smileys } from "../utils/smiley";
 import DonationBoxRadio from "./DonationBoxRadio";
 import DonationCard from "./DonationCard";
@@ -35,22 +39,6 @@ export function DonorForm() {
   return (
     <VStack spacing={4} align="flex-start" minW={["auto", "sm"]} maxW="full">
       <FormControl>
-        <FormLabel htmlFor="email">Email Address</FormLabel>
-        <Field
-          as={Input}
-          id="email"
-          name="email"
-          type="email"
-          variant="filled"
-          onChange={formik.handleChange}
-          value={formik.values.email}
-          isDisabled={formik.values.anonymous}
-          //@ts-ignore
-          isInvalid={formik?.touched?.email && formik?.errors?.email}
-        />
-        <CustomErrorMessage name={"email"} />
-      </FormControl>
-      <FormControl>
         <FormLabel htmlFor="name">Name</FormLabel>
         <Field
           as={Input}
@@ -66,15 +54,34 @@ export function DonorForm() {
         />
         <CustomErrorMessage name="name" />
       </FormControl>
-      <Checkbox
-        id="anonymous"
-        name="anonymous"
-        onChange={formik.handleChange}
-        isChecked={formik.values.anonymous}
-        colorScheme="green"
-      >
-        I would like to donate as anonymous
-      </Checkbox>
+      <FormControl>
+        <FormLabel htmlFor="email">Email Address</FormLabel>
+        <Field
+          as={Input}
+          id="email"
+          name="email"
+          type="email"
+          variant="filled"
+          onChange={formik.handleChange}
+          value={formik.values.email}
+          isDisabled={formik.values.anonymous}
+          //@ts-ignore
+          isInvalid={formik?.touched?.email && formik?.errors?.email}
+        />
+        <CustomErrorMessage name={"email"} />
+      </FormControl>
+      <FormControl display="flex" alignItems="center">
+        <FormLabel htmlFor="anonymous" mb="0">
+          I would like to donate anonymously
+        </FormLabel>
+        <Switch
+          id="anonymous"
+          name="anonymous"
+          onChange={formik.handleChange}
+          isChecked={formik.values.anonymous}
+          colorScheme="yellow"
+        />
+      </FormControl>
     </VStack>
   );
 }
@@ -109,6 +116,7 @@ export function ChooseLevel() {
 }
 
 export function GoodDeeds() {
+  const app = useContext(AppContext);
   const formik = useFormikContext<FormValues>();
   const formProduct = products().find(
     (product) => product.id == formik.values.product
@@ -118,12 +126,24 @@ export function GoodDeeds() {
   const [currentProduct, setCurrentProduct] = useState<Product>(formProduct);
   const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } =
       useNumberInput({
-        step: 5,
-        defaultValue: 5,
+        step: convertCurrencyAmount(
+          5,
+          app.state.base_currency,
+          app.state.current_currency
+        ),
+        defaultValue: 0,
         min: 0,
-        max: 100, // TODO: Fix this on the basis of currency. This depends on currency selected. e.g. 100+ IDR is nothing.
+        max: convertCurrencyAmount(
+          100,
+          app.state.base_currency,
+          app.state.current_currency
+        ), // TODO: Fix this on the basis of currency. This depends on currency selected. e.g. 100+ IDR is nothing.
         precision: 0,
-        value: formik.values.tip,
+        value: convertCurrencyAmount(
+          formik.values.tip,
+          app.state.base_currency,
+          app.state.current_currency
+        ),
         onChange: (e) => handleChange(parseInt(e)),
       }),
     inc = getIncrementButtonProps(),
@@ -142,7 +162,6 @@ export function GoodDeeds() {
   //   }
   //   // setCurrentProduct(product)
   // }, [formik.values.tip])
-
 
   return (
     <Box>

@@ -8,10 +8,8 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalHeader,
-  ModalOverlay,
-  Select,
-  useBreakpointValue,
-  useColorModeValue,
+  ModalOverlay, useBreakpointValue,
+  useColorModeValue
 } from "@chakra-ui/react";
 import { Step, Steps, useSteps } from "chakra-ui-steps";
 import { Form, Formik } from "formik";
@@ -19,11 +17,13 @@ import { useContext } from "react";
 import * as yup from "yup";
 import AppContext from "../context/app-context";
 import product, { default as products } from "../data/donation_products";
+import { convertCurrencyAmount } from "../utils/currency-helpers";
 import customCheckoutRedirect from "../utils/stripe-checkout";
 import {
   formatAmountForDisplay,
-  formatAmountForStripe,
+  formatAmountForStripe
 } from "../utils/stripe-helpers";
+import CurrencySelector from "./CurrencySelector";
 import { ChooseLevel, DonorForm, GoodDeeds } from "./DonationSteps";
 
 export default function LevelModal({
@@ -41,7 +41,12 @@ export default function LevelModal({
         bg={useColorModeValue("gray.100", "gray.900")}
       >
         <Box maxWidth={"7xl"} mx="auto">
-          <ModalHeader mt={2}>Do something good today</ModalHeader>
+          <ModalHeader
+            mt={2}
+            fontSize={useBreakpointValue({ base: "3xl", sm: "4xl", lg: "6xl" })}
+          >
+            Do something good today
+          </ModalHeader>
         </Box>
         <ModalCloseButton />
         <ModalBody>
@@ -93,7 +98,9 @@ export const Descriptions = () => {
         .nullable()
         .when("anonymous", {
           is: false,
-          then: yup.string().required("You must enter a name"),
+          then: yup
+            .string()
+            .required("Name is required unless you're anonymous"),
         }),
       email: yup
         .string()
@@ -101,7 +108,9 @@ export const Descriptions = () => {
         .nullable()
         .when("anonymous", {
           is: false,
-          then: yup.string().required("You must enter an email address"),
+          then: yup
+            .string()
+            .required("Email address is required unless you're anonymous"),
         }),
       anonymous: yup.bool().required(),
     }),
@@ -175,10 +184,8 @@ export const Descriptions = () => {
                 colorScheme="green"
                 activeStep={activeStep}
                 size={["md"]}
-                orientation={useBreakpointValue({
-                  base: "vertical",
-                  lg: "horizontal",
-                })}
+                className="steps"
+                labelOrientation="vertical"
               >
                 {steps.map(({ label, description, content }) => {
                   return (
@@ -188,79 +195,86 @@ export const Descriptions = () => {
                       h="full"
                       textAlign={"left"}
                       description={description}
-                    />
-                  );
-                })}
-              </Steps>
-              <Box h="full" mt={{ base: 0, lg: 16 }}>
-                <Flex
-                  align="center"
-                  justify="center"
-                  alignItems={"center"}
-                  alignContent="center"
-                  alignSelf={"center"}
-                  h="full"
-                  w="full"
-                >
-                  <Box
-                    bg={useColorModeValue("white", "gray.800")}
-                    p={[4, 4, 6]}
-                    rounded="md"
-                    w="full"
-                  >
-                    <Select
-                      maxW={"100px"}
-                      variant={"filled"}
-                      ml={"auto"}
-                      bg={useColorModeValue("white", "gray.700")}
-                      onChange={(e) => app.changeCurrency(e.target.value)}
-                      defaultValue={app.state.base_currency.code}
+                      className="individualStep"
                     >
-                      {app.state.dealing_currencies.map((currency, index) => {
-                        return (
-                          <option key={index} value={currency}>
-                            {currency}
-                          </option>
-                        );
-                      })}
-                    </Select>
-                    {/* <Box mb={4}>
+                      <Box h="full" mt={{ base: 0, lg: 8 }}>
+                        <Flex
+                          align="center"
+                          justify="center"
+                          alignItems={"center"}
+                          alignContent="center"
+                          alignSelf={"center"}
+                          h="full"
+                          w="full"
+                        >
+                          <Box
+                            bg={useColorModeValue("white", "gray.800")}
+                            p={[4, 4, 6]}
+                            rounded="md"
+                            w="full"
+                          >
+                            {activeStep > 0 && (
+                              <Flex justifyContent={"flex-end"} w="full">
+                                <CurrencySelector size={"md"} mb={2} />
+                              </Flex>
+                            )}
+                            {/* <Box mb={4}>
                           {/* <Text fontSize="2xl" fontWeight={'500'}>{label}</Text>
                           <Text>{description}</Text> 
                           </Box> */}
-                    {steps[activeStep].content}
-                    {/**
-                     * TODO: Needs to do form validation on next buttons and so fourth.
-                     * Show error toast is anything wrong with the form.
-                     */}
+                            {steps[activeStep].content}
+                            {/**
+                             * TODO: Needs to do form validation on next buttons and so fourth.
+                             * Show error toast is anything wrong with the form.
+                             */}
 
-                    <HStack mt={6} justifyContent={"space-between"} w="full">
-                      {activeStep !== 0 && (
-                        <Button
-                          colorScheme="gray"
-                          variant={"ghost"}
-                          isDisabled={activeStep === 0}
-                          width="full"
-                          onClick={prevStep}
-                        >
-                          Previous
-                        </Button>
-                      )}
+                            <HStack
+                              mt={6}
+                              justifyContent={"space-between"}
+                              w="full"
+                            >
+                              {activeStep !== 0 && (
+                                <Button
+                                  colorScheme="gray"
+                                  variant={"ghost"}
+                                  isDisabled={activeStep === 0}
+                                  width="full"
+                                  onClick={prevStep}
+                                >
+                                  Previous
+                                </Button>
+                              )}
 
-                      <Button colorScheme="green" width="full" type="submit">
-                        {isLastStep
-                          ? "Donate " +
-                            formatAmountForDisplay(
-                              values.tip + // @ts-ignore
-                                currentProduct?.price / 100,
-                              app.state.current_currency.code
-                            )
-                          : "Next"}
-                      </Button>
-                    </HStack>
-                  </Box>
-                </Flex>
-              </Box>
+                              <Button
+                                colorScheme="green"
+                                width="full"
+                                type="submit"
+                              >
+                                {isLastStep
+                                  ? "Donate " +
+                                    formatAmountForDisplay(
+                                      convertCurrencyAmount(
+                                        values.tip,
+                                        app.state.base_currency,
+                                        app.state.current_currency
+                                      ) + // @ts-ignore
+                                        convertCurrencyAmount(
+                                          currentProduct?.price / 100,
+                                          app.state.base_currency,
+                                          app.state.current_currency
+                                        ),
+                                      app.state.current_currency.code
+                                    )
+                                  : "Next"}
+                              </Button>
+                            </HStack>
+                          </Box>
+                        </Flex>
+                      </Box>
+                    </Step>
+                  );
+                })}
+              </Steps>
             </Form>
           );
         }}

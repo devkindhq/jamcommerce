@@ -2,7 +2,7 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
   MoonIcon,
-  SunIcon,
+  SunIcon
 } from "@chakra-ui/icons";
 import {
   Box,
@@ -14,20 +14,19 @@ import {
   Link,
   Popover,
   PopoverContent,
-  PopoverTrigger,
-  Select,
-  Stack,
+  PopoverTrigger, Stack,
   Text,
   useBreakpointValue,
   useColorMode,
   useColorModeValue,
-  useDisclosure,
+  useDisclosure
 } from "@chakra-ui/react";
 import { useContext } from "react";
 import { BiDonateHeart } from "react-icons/bi";
 import AppContext from "../context/app-context";
 import logoDark from "../public/logo-dark.svg";
 import logoLight from "../public/logo.svg";
+import CurrencySelector from "./CurrencySelector";
 export default function Header() {
   const logo = useColorModeValue(logoLight, logoDark);
   const { colorMode, toggleColorMode } = useColorMode();
@@ -64,21 +63,7 @@ export default function Header() {
             <Button onClick={toggleColorMode} bg="none">
               {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
             </Button>
-            <Select
-              maxW={"100px"}
-              variant={"filled"}
-              bg={useColorModeValue("white", "gray.700")}
-              onChange={(e) => app.changeCurrency(e.target.value)}
-              defaultValue={app.state.base_currency.code}
-            >
-              {app.state.dealing_currencies.map((currency, index) => {
-                return (
-                  <option key={index} value={currency}>
-                    {currency}
-                  </option>
-                );
-              })}
-            </Select>
+            <CurrencySelector />
           </Flex>
         </Box>
       </Box>
@@ -124,20 +109,7 @@ export default function Header() {
             direction={"row"}
             spacing={2}
           >
-            <Select
-              display={{ base: "none", md: "flex" }}
-              onChange={(e) => app.changeCurrency(e.target.value)}
-              defaultValue={app.state.base_currency.code}
-              size="lg"
-            >
-              {app.state.dealing_currencies.map((currency, index) => {
-                return (
-                  <option key={index} value={currency}>
-                    {currency}
-                  </option>
-                );
-              })}
-            </Select>
+            <CurrencySelector />
             <Button
               onClick={toggleColorMode}
               size="lg"
@@ -262,18 +234,7 @@ const MobileNav = () => {
       display={{ md: "none" }}
     >
       <Text>Change currency</Text>
-      <Select
-        onChange={(e) => app.changeCurrency(e.target.value)}
-        defaultValue={app.state.base_currency.code}
-      >
-        {app.state.dealing_currencies.map((currency, index) => {
-          return (
-            <option key={index} value={currency}>
-              {currency}
-            </option>
-          );
-        })}
-      </Select>
+      <CurrencySelector />
       {/* {NAV_ITEMS.map((navItem) => (
         <MobileNavItem key={navItem.label} {...navItem} />
       ))} */}
