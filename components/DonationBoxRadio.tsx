@@ -6,6 +6,7 @@ import { useField } from "formik";
 import * as React from "react";
 import { formatCurrencyString, Product } from "use-shopping-cart";
 import AppContext from "../context/app-context";
+import { formatAmountForDisplay, formatAmountFromStripe } from "../utils/stripe-helpers";
 
 type Props = UseRadioProps &
   ImageProps & {
@@ -52,10 +53,7 @@ const DonationBoxRadio = React.forwardRef((props: Props, ref) => {
             <Box>
             <Box >
               <Text fontSize={"2xl"} fontWeight={"500"}>
-                {formatCurrencyString({
-                  value: radioProps.price * app.state.current_currency.value,
-                  currency: app.state.current_currency.code,
-                })}
+              {formatAmountForDisplay((formatAmountFromStripe(radioProps.price, app.state.current_currency.code)) * app.state.current_currency.value, app.state.current_currency.code)}
               </Text>
             </Box>
               <Text fontWeight={"500"}>{radioProps.title}</Text>

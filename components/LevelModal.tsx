@@ -17,11 +17,13 @@ import { useContext } from "react";
 import * as yup from "yup";
 import AppContext from "../context/app-context";
 import product, { default as products } from "../data/donation_products";
+import { convertCurrencyAmount } from "../utils/currency-helpers";
 import customCheckoutRedirect from "../utils/stripe-checkout";
 import {
   formatAmountForDisplay,
   formatAmountForStripe
 } from "../utils/stripe-helpers";
+import CurrencySelector from "./CurrencySelector";
 import { ChooseLevel, DonorForm, GoodDeeds } from "./DonationSteps";
 
 export default function LevelModal({
@@ -39,7 +41,12 @@ export default function LevelModal({
         bg={useColorModeValue("gray.100", "gray.900")}
       >
         <Box maxWidth={"7xl"} mx="auto">
-          <ModalHeader mt={2}>Do something good today</ModalHeader>
+          <ModalHeader
+            mt={2}
+            fontSize={useBreakpointValue({ base: "3xl", sm: "4xl", lg: "6xl" })}
+          >
+            Do something good today
+          </ModalHeader>
         </Box>
         <ModalCloseButton />
         <ModalBody>
@@ -91,7 +98,9 @@ export const Descriptions = () => {
         .nullable()
         .when("anonymous", {
           is: false,
-          then: yup.string().required("You must enter a name"),
+          then: yup
+            .string()
+            .required("Name is required unless you're anonymous"),
         }),
       email: yup
         .string()
@@ -99,7 +108,9 @@ export const Descriptions = () => {
         .nullable()
         .when("anonymous", {
           is: false,
-          then: yup.string().required("You must enter an email address"),
+          then: yup
+            .string()
+            .required("Email address is required unless you're anonymous"),
         }),
       anonymous: yup.bool().required(),
     }),
@@ -124,8 +135,8 @@ export const Descriptions = () => {
       {
         ...selectedProduct,
         price: formatAmountForStripe(
-          (selectedProduct.price / 100) * app.state.current_currency.value +
-            values.tip * app.state.current_currency.value,
+          (selectedProduct.price / 100) * app.state.current_currency.value + // product price
+          (selectedProduct.price / 100 ) * (values.tip/100) * app.state.current_currency.value, // tip price
           app.state.current_currency.code
         ),
         currency: app.state.current_currency.code,
@@ -155,7 +166,7 @@ export const Descriptions = () => {
           name: "",
           anonymous: false,
           product: app.state.selectedProduct ?? product()[0].id,
-          tip: 5,
+          tip: 0,
         }}
         validateOnBlur={false}
         validateOnChange={false}
@@ -173,13 +184,10 @@ export const Descriptions = () => {
                 colorScheme="green"
                 activeStep={activeStep}
                 size={["md"]}
-                orientation={useBreakpointValue({
-                  base: "vertical",
-                  lg: "horizontal",
-                })}
+                className="steps"
+                labelOrientation="vertical"
               >
                 {steps.map(({ label, description, content }) => {
-                  const currentstep = content;
                   return (
                     <Step
                       label={label}
@@ -187,8 +195,9 @@ export const Descriptions = () => {
                       h="full"
                       textAlign={"left"}
                       description={description}
+                      className="individualStep"
                     >
-                      <Box h="full" mt={{ base: 0, lg: 16 }}>
+                      <Box h="full" mt={{ base: 0, lg: 8 }}>
                         <Flex
                           align="center"
                           justify="center"
@@ -196,6 +205,7 @@ export const Descriptions = () => {
                           alignContent="center"
                           alignSelf={"center"}
                           h="full"
+                          w="full"
                         >
                           <Box
                             bg={useColorModeValue("white", "gray.800")}
@@ -203,11 +213,16 @@ export const Descriptions = () => {
                             rounded="md"
                             w="full"
                           >
+                            {activeStep > 0 && (
+                              <Flex justifyContent={"flex-end"} w="full">
+                                <CurrencySelector size={"md"} mb={2} />
+                              </Flex>
+                            )}
                             {/* <Box mb={4}>
                           {/* <Text fontSize="2xl" fontWeight={'500'}>{label}</Text>
                           <Text>{description}</Text> 
                           </Box> */}
-                            {currentstep}
+                            {steps[activeStep].content}
                             {/**
                              * TODO: Needs to do form validation on next buttons and so fourth.
                              * Show error toast is anything wrong with the form.
@@ -238,9 +253,18 @@ export const Descriptions = () => {
                                 {isLastStep
                                   ? "Donate " +
                                     formatAmountForDisplay(
-                                      values.tip +
-                                      (// @ts-ignore
-                                          currentProduct?.price / 100),
+                                      convertCurrencyAmount(
+                                        // @ts-ignore -- Because by this time the current product would have been found.
+                                        (currentProduct?.price / 100 ) * (values.tip/100),
+                                        app.state.base_currency,
+                                        app.state.current_currency
+                                      ) + 
+                                        convertCurrencyAmount(
+                                          // @ts-ignore -- Because by this time the current product would have been found.
+                                          currentProduct?.price / 100,
+                                          app.state.base_currency,
+                                          app.state.current_currency
+                                        ),
                                       app.state.current_currency.code
                                     )
                                   : "Next"}

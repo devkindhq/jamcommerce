@@ -1,22 +1,29 @@
 import {
   Box,
-  Button, Checkbox,
+  Button,
   Flex,
-  FormControl, FormLabel,
+  FormControl,
+  FormLabel,
   HStack,
   Input,
+  InputGroup,
+  InputRightElement,
   Slider,
   SliderFilledTrack,
   SliderThumb,
   SliderTrack,
+  Switch,
   Text,
   useColorModeValue,
   useNumberInput,
   VStack
 } from "@chakra-ui/react";
 import { ErrorMessage, Field, useFormikContext } from "formik";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { FaMinusCircle, FaPlusCircle } from "react-icons/fa";
+import AppContext from "../context/app-context";
 import { default as products, Product } from "../data/donation_products";
+import { findClosestObject, smileys } from "../utils/smiley";
 import DonationBoxRadio from "./DonationBoxRadio";
 import DonationCard from "./DonationCard";
 import { FormValues } from "./LevelModal";
@@ -34,22 +41,6 @@ export function DonorForm() {
   return (
     <VStack spacing={4} align="flex-start" minW={["auto", "sm"]} maxW="full">
       <FormControl>
-        <FormLabel htmlFor="email">Email Address</FormLabel>
-        <Field
-          as={Input}
-          id="email"
-          name="email"
-          type="email"
-          variant="filled"
-          onChange={formik.handleChange}
-          value={formik.values.email}
-          isDisabled={formik.values.anonymous}
-          //@ts-ignore
-          isInvalid={formik?.touched?.email && formik?.errors?.email}
-        />
-        <CustomErrorMessage name={"email"} />
-      </FormControl>
-      <FormControl>
         <FormLabel htmlFor="name">Name</FormLabel>
         <Field
           as={Input}
@@ -65,15 +56,34 @@ export function DonorForm() {
         />
         <CustomErrorMessage name="name" />
       </FormControl>
-      <Checkbox
-        id="anonymous"
-        name="anonymous"
-        onChange={formik.handleChange}
-        isChecked={formik.values.anonymous}
-        colorScheme="green"
-      >
-        I would like to donate as anonymous
-      </Checkbox>
+      <FormControl>
+        <FormLabel htmlFor="email">Email Address</FormLabel>
+        <Field
+          as={Input}
+          id="email"
+          name="email"
+          type="email"
+          variant="filled"
+          onChange={formik.handleChange}
+          value={formik.values.email}
+          isDisabled={formik.values.anonymous}
+          //@ts-ignore
+          isInvalid={formik?.touched?.email && formik?.errors?.email}
+        />
+        <CustomErrorMessage name={"email"} />
+      </FormControl>
+      <FormControl display="flex" alignItems="center">
+        <FormLabel htmlFor="anonymous" mb="0">
+          I would like to donate anonymously
+        </FormLabel>
+        <Switch
+          id="anonymous"
+          name="anonymous"
+          onChange={formik.handleChange}
+          isChecked={formik.values.anonymous}
+          colorScheme="yellow"
+        />
+      </FormControl>
     </VStack>
   );
 }
@@ -107,20 +117,8 @@ export function ChooseLevel() {
   );
 }
 
-const smileys = [
-  { number: 10, value: "😞" },
-  { number: 25, value: "😊" },
-  { number: 50, value: "😁" },
-  { number: 75, value: "😄" },
-  { number: 100, value: "😍" },
-];
-type Smiley = {
-  number: number;
-  value: string;
-};
-type Smileys = Smiley[];
-
 export function GoodDeeds() {
+  const app = useContext(AppContext);
   const formik = useFormikContext<FormValues>();
   const formProduct = products().find(
     (product) => product.id == formik.values.product
@@ -130,8 +128,8 @@ export function GoodDeeds() {
   const [currentProduct, setCurrentProduct] = useState<Product>(formProduct);
   const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } =
       useNumberInput({
-        step: 5,
-        defaultValue: 5,
+        step: 10,
+        defaultValue: 0,
         min: 0,
         max: 100, // TODO: Fix this on the basis of currency. This depends on currency selected. e.g. 100+ IDR is nothing.
         precision: 0,
@@ -143,36 +141,7 @@ export function GoodDeeds() {
     input = getInputProps();
 
   const handleChange = (value: number) => formik.setFieldValue("tip", value);
-  // useEffect(() => {
-  //   let original_price = currentProduct?.original_price || currentProduct?.price
-  //   if(!original_price) throw new Error("Something went wrong with the product pricing.")
-  //   let product = {
-  //     ...currentProduct,
-  //     original_price: original_price,
-  //     onClick: () => {},
-  //     price: original_price  + (formik.values.tip*100)
-  //   }
-  //   // setCurrentProduct(product)
-  // }, [formik.values.tip])
 
-  const findClosestObject = (array: Smileys, number: number) => {
-    return array.reduce((a, b, _currentIndex, array): Smiley => {
-      let aNumber = typeof a == "object" ? a.number : a;
-      let aDiff = Math.abs(aNumber - number);
-      let bDiff = Math.abs(b.number - number);
-      // blank object
-      var result: number = 0;
-      if (aDiff == bDiff) {
-        // Choose largest vs smallest (> vs <)
-        result = a.number > b.number ? b.number : aNumber;
-      } else {
-        result = bDiff < aDiff ? b.number : aNumber;
-      }
-      return (
-        array.find((e) => e.number == result) ?? { number: 1, value: "😊" }
-      );
-    });
-  };
   return (
     <Box>
       <DonationCard {...currentProduct} />
@@ -200,38 +169,57 @@ export function GoodDeeds() {
             </Text>
           </Box>
           {/** TODO: Implement currency here. Add the currency symbol as well */}
-          <HStack maxW={["auto", "auto", "200px"]} mt={2}>
+          <HStack
+            maxW={["16em"]}
+            justifyContent="center"
+            alignItems={"center"}
+            justify="center"
+            mt={2}
+          >
             <Button
               {...dec}
               size="lg"
               onContextMenu={(e) => e.preventDefault()}
               colorScheme="blue"
+              fontSize={'6xl'}
             >
-              -
+              <FaMinusCircle />
             </Button>
-            <Input
-              {...input}
-              type=""
-              bg={useColorModeValue("white", "gray.700")}
-              colorScheme="blue"
-              size="lg"
-            />
+            <InputGroup>
+              <Input
+                {...input}
+                type=""
+                bg={useColorModeValue("white", "gray.700")}
+                colorScheme="blue"
+                size="lg"
+              />
+              <InputRightElement
+                pointerEvents="none"
+                color={useColorModeValue("gray.700", "white")}
+                fontSize="1.2em"
+                mt={1}
+                p={0}
+                children="%"
+              />
+            </InputGroup>
             <Button
               {...inc}
               size="lg"
               onContextMenu={(e) => e.preventDefault()}
               colorScheme="blue"
+              fontSize={'6xl'}
             >
-              +
+              <FaPlusCircle />
             </Button>
           </HStack>
         </Flex>
         <Flex mt={5}>
           <Box w="full">
             <Slider
-              step={5}
               focusThumbOnChange={false}
+              step={5}
               value={formik.values.tip}
+              max={100}
               onChange={handleChange}
             >
               <SliderTrack>

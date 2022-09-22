@@ -1,3 +1,4 @@
+import { CurrencyObject } from '../providers/app-provider';
 import { DEALING_CURRENCIES } from './../config/index';
 import SupaBase from './supabaseClient'
 
@@ -12,4 +13,8 @@ async function getAllCurrencies(){
     return await SupaBase.from("currency_rates").select('*').in('code', DEALING_CURRENCIES).order('updated_at', { ascending: false }).limit(DEALING_CURRENCIES.length);
 }
 
-export { findCurrency, getAllCurrencies }
+const convertCurrencyAmount = (amount: number, base_currency: CurrencyObject, destination_currency: CurrencyObject): number => {
+    return (amount * base_currency.value) * destination_currency.value;
+}
+
+export { findCurrency, getAllCurrencies, convertCurrencyAmount }

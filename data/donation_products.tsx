@@ -67,6 +67,16 @@ const product = (): Products => {
       base_currency: 'AUD',
       base_price: 20000
     },
+    {
+      name: 'Custom Donation Option',
+      id: 'custom_option',
+      description: 'add your preference amount of donation',
+      price: 1000,
+      attribution: 'Photo by Jonathan Pielmayer on Unsplash',
+      currency: 'USD',
+      base_currency: 'AUD',
+      base_price: 1000
+    },
   ].sort((prev,current) => current.price - prev.price)
 }
   export default product

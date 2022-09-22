@@ -2,7 +2,7 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
   MoonIcon,
-  SunIcon,
+  SunIcon
 } from "@chakra-ui/icons";
 import {
   Box,
@@ -14,35 +14,24 @@ import {
   Link,
   Popover,
   PopoverContent,
-  PopoverTrigger,
-  Select,
-  Stack,
+  PopoverTrigger, Stack,
   Text,
   useBreakpointValue,
   useColorMode,
   useColorModeValue,
-  useDisclosure,
+  useDisclosure
 } from "@chakra-ui/react";
 import { useContext } from "react";
 import { BiDonateHeart } from "react-icons/bi";
-import { BASE_CURRENCY, DEALING_CURRENCIES } from "../config";
 import AppContext from "../context/app-context";
 import logoDark from "../public/logo-dark.svg";
 import logoLight from "../public/logo.svg";
+import CurrencySelector from "./CurrencySelector";
 export default function Header() {
   const logo = useColorModeValue(logoLight, logoDark);
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onToggle } = useDisclosure();
   const app = useContext(AppContext);
-
-  /**
-   * Functions run to updØate currency when ever use select from the list currency
-   *
-   * @param e
-   */
-  const handleChange = (e: any) => {
-    app.changeCurrency(e.target.value);
-  };
 
   return (
     <Box
@@ -74,21 +63,7 @@ export default function Header() {
             <Button onClick={toggleColorMode} bg="none">
               {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
             </Button>
-            <Select
-              maxW={"100px"}
-              variant={"filled"}
-              bg={useColorModeValue("white", "gray.700")}
-              onChange={handleChange}
-              defaultValue={BASE_CURRENCY}
-            >
-              {DEALING_CURRENCIES.map((currency, index) => {
-                return (
-                  <option key={index} value={currency}>
-                    {currency}
-                  </option>
-                );
-              })}
-            </Select>
+            <CurrencySelector />
           </Flex>
         </Box>
       </Box>
@@ -134,23 +109,12 @@ export default function Header() {
             direction={"row"}
             spacing={2}
           >
-            <Select
-              display={{ base: "none", md: "flex" }}
-              onChange={handleChange}
-              defaultValue={BASE_CURRENCY}
-            >
-              {DEALING_CURRENCIES.map((currency, index) => {
-                return (
-                  <option key={index} value={currency}>
-                    {currency}
-                  </option>
-                );
-              })}
-            </Select>
+            <CurrencySelector />
             <Button
               onClick={toggleColorMode}
-              bg="none"
-              display={{ base: "none", md: "block" }}
+              size="lg"
+              p={0}
+              display={{ base: "none", md: "flex" }}
             >
               {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
             </Button>
@@ -168,7 +132,7 @@ export default function Header() {
         </Flex>
 
         <Collapse in={isOpen} animateOpacity>
-          <MobileNav handleChange={handleChange} />
+          <MobileNav />
         </Collapse>
       </Box>
     </Box>
@@ -261,7 +225,8 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
   );
 };
 
-const MobileNav = ({ handleChange }: { handleChange: (e: any) => void }) => {
+const MobileNav = () => {
+  const app = useContext(AppContext);
   return (
     <Stack
       bg={useColorModeValue("white", "gray.800")}
@@ -269,15 +234,7 @@ const MobileNav = ({ handleChange }: { handleChange: (e: any) => void }) => {
       display={{ md: "none" }}
     >
       <Text>Change currency</Text>
-      <Select onChange={handleChange} defaultValue={BASE_CURRENCY}>
-        {DEALING_CURRENCIES.map((currency, index) => {
-          return (
-            <option key={index} value={currency}>
-              {currency}
-            </option>
-          );
-        })}
-      </Select>
+      <CurrencySelector />
       {/* {NAV_ITEMS.map((navItem) => (
         <MobileNavItem key={navItem.label} {...navItem} />
       ))} */}
