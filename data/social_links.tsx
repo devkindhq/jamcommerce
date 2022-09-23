@@ -18,16 +18,6 @@ export const social_links = [
     colorScheme: 'facebook'
   },
   {
-    outlet: "Facebook Messenger",
-    href:
-      "https://www.facebook.com/sharer.php?u=https://dev.to/dsasse07/beginner-s-guide-to-jest-testing-in-react-1nig",
-    background: "#3b5898",
-    color: "white",
-    label: "Share on Facebook Messenger",
-    icon: <FacebookMessengerShareButton appId="0" url={share_url} style={{padding:'9px'}}><FaFacebookMessenger /></FacebookMessengerShareButton>,
-    colorScheme: 'messenger'
-  },
-  {
     outlet: "Whatsapp",
     href:
       "whatsapp://send?text=",
@@ -64,15 +54,5 @@ export const social_links = [
     color: "white",
     label: "Share via Email",
     icon: <EmailShareButton subject={share_subject} body={share_body} url={share_url} style={{padding:'9px'}}><EmailIcon /></EmailShareButton>
-  },
-  {
-    outlet: "SMS",
-    href:
-      `sms:?body=${share_body}`,
-    background: "#7bcb20",
-    color: "white",
-    type: 'button',
-    label: "Share via SMS",
-    icon: <FaSms />
   }
 ]
