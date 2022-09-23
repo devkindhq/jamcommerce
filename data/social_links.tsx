@@ -24,7 +24,7 @@ export const social_links = [
     background: "#3b5898",
     color: "white",
     label: "Share on Facebook Messenger",
-    icon: <FacebookMessengerShareButton url={share_url} style={{padding:'9px'}}><FaFacebookMessenger /></FacebookMessengerShareButton>,
+    icon: <FacebookMessengerShareButton appId="0" url={share_url} style={{padding:'9px'}}><FaFacebookMessenger /></FacebookMessengerShareButton>,
     colorScheme: 'messenger'
   },
   {

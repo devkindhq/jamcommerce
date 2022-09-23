@@ -72,7 +72,7 @@ const product = (): Products => {
     {
       name: 'Custom Donation',
       id: 'custom',
-      description: 'Decide your donation by yourself!',
+      description: 'Tap here to select your custom amount of donation',
       price: 1000,
       attribution: 'Photo by Jonathan Pielmayer on Unsplash',
       currency: 'USD',

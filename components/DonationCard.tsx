@@ -4,6 +4,7 @@ import {
 import { useContext } from 'react';
 import { formatCurrencyString } from 'use-shopping-cart';
 import AppContext from '../context/app-context';
+import { Product } from '../data/donation_products';
 import { formatAmountForDisplay, formatAmountFromStripe } from '../utils/stripe-helpers';
 
 type DonationCardProps = {
@@ -13,9 +14,10 @@ type DonationCardProps = {
   description?: string
   price?: number
   count?: number
+  id: string
 }
 
-export default function DonationCard({ onClick, image = '', name = 'One meal for a family', description = 'Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.', price = 10, count = 2 }: DonationCardProps) {
+export default function DonationCard({ onClick, image = '', name = 'One meal for a family', description = 'Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.', price = 10, count = 2, id }: DonationCardProps) {
 const app = useContext(AppContext);
   return (
     <LinkBox onClick={() => onClick && onClick()} cursor="pointer">
@@ -47,6 +49,7 @@ const app = useContext(AppContext);
         </Flex>
         <Box p={6}>
           <Stack spacing={2}>
+            {id && id == 'custom' && (<Text>Starting from</Text>)}
             <Heading  fontSize={'2xl'} color={useColorModeValue('gray.800', 'gray.200')} fontWeight={600} fontFamily={'body'}>
               {formatAmountForDisplay((formatAmountFromStripe(price, app.state.current_currency.code)) * app.state.current_currency.value, app.state.current_currency.code)}
             </Heading>
