@@ -96,6 +96,7 @@ export function DonorForm() {
 }
 
 export function ChooseLevel() {
+  const app = useContext(AppContext);
   const donationProducts = products().map((e) => {
     const { name } = e;
     return {
@@ -103,6 +104,13 @@ export function ChooseLevel() {
       title: name,
     };
   });
+
+  function swapSelectedProduct(products: Product[]){
+    const customIndex = products.findIndex( e => e.id == app.state.selectedProduct),
+    element = products.splice(customIndex, 1)[0];
+    products.splice(0, 0, element);
+    return products;
+}
 
   type Values = {
     email: string;
@@ -117,7 +125,7 @@ export function ChooseLevel() {
       gridGap={4}
       flexDirection={"column"}
     >
-      {donationProducts.map((props, index) => {
+      {swapSelectedProduct(donationProducts).map((props, index) => {
         if(props.id == 'custom') return <DonationRadioBoxCustom key={index} value={props.id} {...props} />
         return <DonationBoxRadio key={index} value={props.id} {...props} />;
       })}
@@ -126,7 +134,6 @@ export function ChooseLevel() {
 }
 
 export function GoodDeeds() {
-  const app = useContext(AppContext);
   const formik = useFormikContext<FormValues>();
   const formProduct = formik.values.customProduct ?? products().find(
     (product) => product.id == formik.values.product
