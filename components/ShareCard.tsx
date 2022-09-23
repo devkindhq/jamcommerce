@@ -25,9 +25,6 @@ export default function ShareCard(props: any) {
     return (
       <Flex mt={4} gridGap={2} flexWrap="wrap" maxW="2xl">
         {social_links.map((social_link, index) => {
-          props = {
-            ...(social_link.type && {as: "a", href: social_link.href})
-          }
           return (
             <IconButton
               as="p"
@@ -37,7 +34,6 @@ export default function ShareCard(props: any) {
               icon={social_link.icon}
               colorScheme={social_link.colorScheme ?? "pink"}
               aria-label={social_link.label}
-              {...props}
             />
           );
         })}
