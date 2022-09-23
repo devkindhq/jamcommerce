@@ -60,7 +60,9 @@ const app = useContext(AppContext);
        
             <Text  color={useColorModeValue('gray.500', 'gray.400')} fontSize='sm'>{description}</Text>
           </Stack>
-            <Text color={'gray.500'} mt={4} fontSize='xs'>{count} claimed</Text>
+            {/* 
+            TODO: Create some function to calculate the line items from checkout and show here
+            <Text color={'gray.500'} mt={4} fontSize='xs'>{count} claimed</Text> */}
         </Box>
       </Box>
       </LinkBox>
