@@ -11,7 +11,7 @@ We at Shahul & Zeenat Foundation aim at providing meals and medical aid to the a
 
 A group of brothers and sisters who are mostly students are trying to do their best to help people around the region. We request everyone to come forward and donate and extend solidarity to the people. 
 
-**How will the funds be utilised? **
+**How will the funds be utilised?**
 
 Our core focus is to provide the families with three time meals and cover basic medical and hygiene necessities of the children and adults.
 One time food for a family - $10
