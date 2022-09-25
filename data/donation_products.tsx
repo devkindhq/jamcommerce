@@ -6,7 +6,7 @@ export interface Product extends Prod {
   id: string
   price: number
   image?: string
-  attribution: string
+  attribution?: string
   currency: string
   base_currency: string
   base_price: number
@@ -21,50 +21,45 @@ const product = (): Products => {
   return [
     {
       name: 'One time meal for a family',
-      description: 'One time meal a family of 6.',
+      description: 'A one-time meal to a family of 6.',
       id: 'one_time_meal',
       price: 1000,
-      attribution: 'Photo by Priscilla Du Preez on Unsplash',
       currency: 'USD',
       base_currency: 'AUD',
       base_price: 1000
     },
     {
-      name: 'Basic medical and hygiene for family',
-      description:'Basic medical and hygiene for a family of 6. It includes essential medical and hygiene supplies for men, women and children.',
+      name: 'Medical and hygiene pack',
+      description:'A one-time basic medical & hygiene supply to a family including essentials for women and children.',
       id: 'basic_medical_hygiene',
       price: 2000,
-      attribution: 'Photo by Jonathan Pielmayer on Unsplash',
       currency: 'USD',
       base_currency: 'AUD',
       base_price: 2000
     },
     {
-      name: 'One week ration a family',
-      description: 'Provide one week ration to a family.',
+      name: 'Ration pack for a family',
+      description: 'Provide a one week ration to a family.',
       id: 'one_week_ration',
       price: 3500,
-      attribution: 'Photo by Jonathan Pielmayer on Unsplash',
       currency: 'USD',
       base_currency: 'AUD',
       base_price: 3500
     },
     {
-      name: 'Meal, medical and hygiene for a month for a family',
+      name: 'Month-long meal, medical & basic hygiene supply',
       id: 'meal_medical_pack',
-      description: 'It include food supplies, meals, medical, and hygiene for a month for a family of 6.',
+      description: 'Provide a month\'s meal, medical & basic hygiene supply to a family',
       price: 10000,
-      attribution: 'Photo by Jonathan Pielmayer on Unsplash',
       currency: 'USD',
       base_currency: 'AUD',
       base_price: 10000
     },
     {
-      name: 'Tent, meal, medical and hygiene for a month for a family',
+      name: 'Tent + Month-long meal, medical & basic hygiene supply',
       id: 'tent_meal_medical',
-      description: 'It include food supplies, meals, medical, hygiene and a tent for a family of 6.',
+      description: 'Provide a shelter, one month’s meal, medical & basic hygiene supply for a family.',
       price: 20000,
-      attribution: 'Photo by Jonathan Pielmayer on Unsplash',
       currency: 'USD',
       base_currency: 'AUD',
       base_price: 20000
@@ -74,7 +69,6 @@ const product = (): Products => {
       id: 'custom',
       description: 'Tap here to select your custom amount of donation',
       price: 1000,
-      attribution: 'Photo by Jonathan Pielmayer on Unsplash',
       currency: 'USD',
       base_currency: 'AUD',
       base_price: 1000,
