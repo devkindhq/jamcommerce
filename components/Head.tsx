@@ -13,7 +13,7 @@ return (
     <title>{title}</title>
     <meta charSet="utf-8" />
     <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-    <meta name="theme-color" content={useColorModeValue("white","black")}></meta>
+    <meta name="theme-color" content={useColorModeValue("white","black")} />
     <OGHead title={share_subject} description={ogDescription} image={share_image} url={share_url} />
     </NextHeader>)
 }
