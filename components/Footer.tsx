@@ -18,7 +18,7 @@ import ShareCard from "./ShareCard";
 import StickyCTA from "./StickyFooter";
 import LevelModal from "./LevelModal";
 import AppContext from "../context/app-context";
-
+import NextLink from "next/link"
 const SocialButton = ({
   children,
   label,
@@ -80,7 +80,7 @@ export default function SmallWithLogoLeft() {
         justify={{ base: "center", md: "space-between" }}
         align={{ base: "center", md: "center" }}
       >
-        <Image src={logo.src} maxW={[32, 32]} my={2} />
+        <NextLink href="/" passHref><Link><Image src={logo.src} maxW={[32, 32]} my={2} /></Link></NextLink>
         <Text>© 2022 Shahul & Zeenat Foundation. All rights reserved</Text>
         <Stack direction={"row"} spacing={4}>
           <SocialButton

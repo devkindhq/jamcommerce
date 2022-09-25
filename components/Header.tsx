@@ -28,6 +28,8 @@ import logoDark from "../public/logo-dark.svg";
 import logoLight from "../public/logo.svg";
 import CustomAlert from "./Alert";
 import CurrencySelector from "./CurrencySelector";
+import NextLink from "next/link"
+
 export default function Header({status}: {status?: string}) {
   const logo = useColorModeValue(logoLight, logoDark);
   const { colorMode, toggleColorMode } = useColorMode();
@@ -97,7 +99,11 @@ export default function Header({status}: {status?: string}) {
               fontFamily={"heading"}
               color={useColorModeValue("gray.800", "white")}
             >
+              <NextLink href="/" passHref>
+              <Link>
               <Image src={logo.src} maxW={[32, 40]} my={2} />
+              </Link>
+              </NextLink>
             </Text>
 
             <Flex display={{ base: "none", md: "flex" }} ml={10}>
@@ -194,8 +200,8 @@ const DesktopNav = () => {
 
 const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
   return (
+    <NextLink href={href ?? '#'} passHref>
     <Link
-      href={href}
       role={"group"}
       display={"block"}
       p={2}
@@ -226,6 +232,7 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
         </Flex>
       </Stack>
     </Link>
+    </NextLink>
   );
 };
 
@@ -289,9 +296,11 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
         >
           {children &&
             children.map((child) => (
-              <Link key={child.label} py={2} href={child.href}>
+              <NextLink key={child.label} passHref href={child.href ?? '#'}>
+              <Link py={2}>
                 {child.label}
               </Link>
+              </NextLink>
             ))}
         </Stack>
       </Collapse>
