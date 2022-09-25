@@ -26,8 +26,9 @@ import { BiDonateHeart } from "react-icons/bi";
 import AppContext from "../context/app-context";
 import logoDark from "../public/logo-dark.svg";
 import logoLight from "../public/logo.svg";
+import CustomAlert from "./Alert";
 import CurrencySelector from "./CurrencySelector";
-export default function Header() {
+export default function Header({status}: {status?: string}) {
   const logo = useColorModeValue(logoLight, logoDark);
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onToggle } = useDisclosure();
@@ -45,6 +46,7 @@ export default function Header() {
       top={0}
       zIndex={1}
     >
+      {status && status == 'cancelled' && <CustomAlert status="warning" title="Something went wrong" description="The transaction was cancelled. Please try again" />}
       <Box
         bg={useColorModeValue("gray.100", "gray.900")}
         w="full"
