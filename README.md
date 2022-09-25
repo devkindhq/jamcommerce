@@ -39,8 +39,8 @@ You will need to sign your account to the following services. Please make sure t
 ##### Clone the repo
 
 ``` 
-git clone https://github.com/rome2o/headlesscrowdfunding.git
-cd headlesscrowdfunding
+git clone https://github.com/rome2o/jamcommerce
+cd jamcommerce
 ```
 
 ##### Create your environment variables
