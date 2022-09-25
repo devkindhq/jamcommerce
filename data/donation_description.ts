@@ -14,11 +14,15 @@ A group of brothers and sisters who are mostly students are trying to do their b
 **How will the funds be utilised? **
 
 Our core focus is to provide the families with three time meals and cover basic medical and hygiene necessities of the children and adults.
-- One time food for a family - $10
-- Basic medical and hygiene for family - $20
-- Give a week’s ration for a family - $35
-- One month's meal, medical and basic hygiene for a family - $100
-- One month's meal, medical, tent and basic hygiene for a family - $200
+One time food for a family - $10
+
+Basic medical and hygiene for family - $20
+
+Give a week’s ration for a family - $35
+
+One month's meal, medical and basic hygiene for a family - $100
+
+One month's meal, medical, tent and basic hygiene for a family - $200
 
 In a country already battling an economic crisis and political instability, these unprecedented rains of summer 2022 have set our most vulnerable people back in the most unfathomable way.
 
