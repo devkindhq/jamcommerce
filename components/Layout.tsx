@@ -1,4 +1,4 @@
-import { Box, useBreakpointValue } from '@chakra-ui/react'
+import { Box, ColorModeScript, theme, useBreakpointValue } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { ReactNode, useCallback, useContext, useEffect } from 'react'
 import AppContext from '../context/app-context'
@@ -18,7 +18,6 @@ const Layout = ({
 }: Props) => {
   const { query } = useRouter();
   const {currency, status} = query;
-  debugger;
   const app = useContext(AppContext);
   // This will read the currency from the params.
   const changedCurrency  = useCallback(() => app.changeCurrency(currency as string), [query]);
@@ -30,6 +29,7 @@ const Layout = ({
 
   return(<>
     <Head title={title} />
+    <ColorModeScript initialColorMode={theme.config.initialColorMode} />
     <Header status={status as string} />
     <Box pt={useBreakpointValue({base: '0px', md: '100px'})}>
       {children}
