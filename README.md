@@ -55,7 +55,7 @@ nano .env
 ```
 ```
 # Supabase database URL
-DATABASE_URL=postgres://postgres:[YOUR-PASSWORD]@db.phrcxeiqklfccoulvjly.supabase.co:6543/postgres
+DATABASE_URL=postgres://postgres:[YOUR-PASSWORD]@db.abc.supabase.co:[PORT]/postgres
 ```
 
 ##### Push the database schema
@@ -124,7 +124,7 @@ Once you have access to [the environment variables you'll need](#required-config
   - Custom Amount Donation with redirect to Stripe Checkout:
     - Frontend: [pages/donate-with-checkout.tsx](pages/donate-with-checkout.tsx)
     - Backend: [pages/api/checkout_sessions/](pages/api/checkout_sessions/)
-    - Checkout payment result page that uses [SWR](https://github.com/vercel/swr) hooks to fetch the CheckoutSession status from the API route: [pages/result.tsx](pages/result.tsx).
+    - Checkout payment result page that uses [SWR](https://github.com/vercel/swr) hooks to fetch the CheckoutSession status from the API route: [pages/thank-you.tsx](pages/thank-you.tsx).
 - Stripe Elements
   - Custom Amount Donation with Stripe Elements & PaymentIntents (no redirect):
     - Frontend: [pages/donate-with-elements.tsx](pages/donate-with-elements.tsx)
