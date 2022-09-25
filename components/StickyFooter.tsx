@@ -15,9 +15,9 @@ export default function StickyCTA(){
         <Box position={'relative'} zIndex={1}>
         <Slide direction='bottom' in={show}>
         <Flex gridGap={4} px={4} py={4}  position="relative" bottom={0} borderTop="1px solid" borderColor={useColorModeValue("white","gray.800")} right={0} bg={useColorModeValue("white","gray.700")} w="full">
-            <Button w="full" flex={0} px={12} variant="outline" colorScheme="blue" size="lg" leftIcon={<BiShare />}>
+            {/* <Button w="full" flex={0} px={12} variant="outline" colorScheme="blue" size="lg" leftIcon={<BiShare />}>
                 Share
-            </Button>
+            </Button> */}
             <Button w="full" flex={1} colorScheme="yellow" rightIcon={<BiDonateHeart />} size="lg" onClick={() => app.onPopupOpen()}>
                 Donate
             </Button>
