@@ -1,10 +1,13 @@
 import { EmailIcon } from "@chakra-ui/icons";
-import { FaFacebook, FaFacebookMessenger, FaLinkedin, FaSms, FaTelegram, FaWhatsapp } from "react-icons/fa";
-import { EmailShareButton, FacebookMessengerShareButton, FacebookShareButton, LinkedinShareButton, TelegramShareButton, WhatsappShareButton } from "react-share";
+import { FaFacebook, FaLinkedin, FaTelegram, FaWhatsapp } from "react-icons/fa";
+import { EmailShareButton, FacebookShareButton, LinkedinShareButton, TelegramShareButton, WhatsappShareButton } from "react-share";
+import banner from "../public/banner.png";
 
-const share_url = "https://shahulzeenat.org"
-const share_body = "Pakistan's%20Sindh%20Province%20has%20been%20the%20hardest%20hit%20with%20almost%2015%20million%20people%20homeless%20and%20half%20of%20the%20province%20underwater.%20We%20request%20everyone%20to%20join%20hands.%0A%0AVisit%20the%20URL%20below%20%F0%9F%91%87%20to%20make%20your%20donations%20%0Ahttps%3A%2F%2Fshahulzeenat.org"
-const share_subject = "Help a flood affected family today!"
+export const share_url = "https://shahulzeenat.org"
+export const share_body = "I request you to donate to help the ones affected by the flood. \n\n As you are aware, Pakistan is facing adverse climate change where the lives of more than 33 million people have been affected. Many have lost their home, cattle, crops, farms and also lives. Shahul & Zeenat Foundation is helping provide meals, shelter and medical aid to the affected in Sukkur and the nearby districts. \n \n Visit the link to donate. Each donation small or big is valuable.\n\n Find the link below  👇👇\n\n"
+export const share_subject = "Help a flood affected family today!"
+export const share_image = banner.src
+const email_subject = "I request you to help the people of Pakistan";
 export const social_links = [
 
   {
@@ -14,7 +17,7 @@ export const social_links = [
     background: "#3b5898",
     color: "white",
     label: "Share on Facebook",
-    icon: <FacebookShareButton url={share_url} style={{padding:'9px'}} className="facebook_button"><FaFacebook /></FacebookShareButton>,
+    icon: <FacebookShareButton url={share_url} style={{padding:'9px'}} className="facebook_button" quote="Test asdas" hashtag="#pakistanfloodrelief"><FaFacebook /></FacebookShareButton>,
     colorScheme: 'facebook'
   },
   {
@@ -41,7 +44,7 @@ export const social_links = [
   {
     outlet: "LinkedIn",
     href:
-      "https://www.linkedin.com/shareArticle?url=https://dev.to/dsasse07/beginner-s-guide-to-jest-testing-in-react-1nig&title=Beginner's%20Guide%20to%20Jest%20Testing%20in%20React",
+      `https://www.linkedin.com/shareArticle?url=${share_url}`,
     background: "#0a66c2",
     color: "white",
     label: "Share on Linkedin",
@@ -53,6 +56,6 @@ export const social_links = [
     background: "#dd4b39",
     color: "white",
     label: "Share via Email",
-    icon: <EmailShareButton subject={share_subject} body={share_body} url={share_url} style={{padding:'9px'}}><EmailIcon /></EmailShareButton>
+    icon: <EmailShareButton subject={email_subject} body={share_body} url={share_url} style={{padding:'9px'}}><EmailIcon /></EmailShareButton>
   }
 ]
