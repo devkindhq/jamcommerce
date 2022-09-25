@@ -1,5 +1,5 @@
 const description = `
-# People in Pakistan are looking for your help.
+## People in Pakistan are looking for your help.
 
 The floods in Pakistan have devastated the lives of many and killed and injured numerous people. Many of them have lost their homes, personal belongings, cattle and crops as a result of the havoc wreaked upon our lands.
 
