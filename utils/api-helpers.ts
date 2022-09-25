@@ -1,8 +1,6 @@
 export async function fetchGetJSON(url: string) {
   try {
     const data = await fetch(url).then((res) => res.json())
-    console.log('we here on get method');
-    console.log(data);
     return data
   } catch (err) {
     if (err instanceof Error) {
