@@ -180,7 +180,7 @@ export function GoodDeeds() {
             </Text>
             <Text fontSize="md">
               {" "}
-              Most people add little at least 20% extra.{" "}
+              Most people add little at least 20% extra. Drag the smiley to adjust.
             </Text>
           </Box>
           {/** TODO: Implement currency here. Add the currency symbol as well */}
@@ -197,10 +197,15 @@ export function GoodDeeds() {
               onContextMenu={(e) => e.preventDefault()}
               colorScheme="blue"
               fontSize={'6xl'}
+              sx={{
+                '@media (max-width: 410px)': {
+                  display: 'none',
+                },
+              }}
             >
               <FaMinusCircle />
             </Button>
-            <InputGroup>
+            <InputGroup >
               <Input
                 {...input}
                 type=""
@@ -223,6 +228,11 @@ export function GoodDeeds() {
               onContextMenu={(e) => e.preventDefault()}
               colorScheme="blue"
               fontSize={'6xl'}
+              sx={{
+                '@media (max-width: 410px)': {
+                  display: 'none',
+                },
+              }}
             >
               <FaPlusCircle />
             </Button>
