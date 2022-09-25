@@ -193,6 +193,6 @@ To deploy your local project to Vercel, push it to GitHub/GitLab/Bitbucket and [
 This project is a fork a [Next.js example](https://github.com/vercel/next.js/tree/canary/examples/with-stripe-typescript). You can read related [documentation here](https://vercel.com/guides/getting-started-with-nextjs-typescript-stripe)
 ## Authors
 - [@rome2o](https://github.com/rome2o)
-- TODO: Add Ahmed's link here
+- [@ahmedgadit](https://github.com/ahmedgadit)
 - [@thorsten-stripe](https://twitter.com/thorwebdev)
 - [@lfades](https://twitter.com/luis_fades)
