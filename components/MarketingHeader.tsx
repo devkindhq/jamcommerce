@@ -9,6 +9,8 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
+import { useContext } from "react";
+import AuthContext from "../context/auth-context";
 import logoDark from "../public/logo-dark.svg";
 import logoLight from "../public/logo.svg";
 
@@ -20,6 +22,7 @@ const NAV_LINKS = [
 ];
 
 export default function MarketingHeader() {
+  const { user, loading } = useContext(AuthContext);
   const logo = useColorModeValue(logoLight, logoDark);
   const bg = useColorModeValue("white", "gray.800");
   const borderColor = useColorModeValue("gray.100", "gray.700");
@@ -58,16 +61,32 @@ export default function MarketingHeader() {
           </HStack>
 
           <HStack spacing={3}>
-            <NextLink href="#waitlist" passHref>
-              <Button
-                as="a"
-                size="sm"
-                colorScheme="yellow"
-                fontWeight="semibold"
-              >
-                Get started free
-              </Button>
-            </NextLink>
+            {!loading && user ? (
+              <NextLink href="/dashboard" passHref>
+                <Button as="a" size="sm" colorScheme="yellow" fontWeight="semibold">
+                  Dashboard
+                </Button>
+              </NextLink>
+            ) : (
+              <>
+                <NextLink href="/auth/signin" passHref>
+                  <Link
+                    fontSize="sm"
+                    fontWeight="medium"
+                    color={linkColor}
+                    display={{ base: "none", md: "block" }}
+                    _hover={{ color: "yellow.500", textDecoration: "none" }}
+                  >
+                    Sign in
+                  </Link>
+                </NextLink>
+                <NextLink href="/auth/signup" passHref>
+                  <Button as="a" size="sm" colorScheme="yellow" fontWeight="semibold">
+                    Get started free
+                  </Button>
+                </NextLink>
+              </>
+            )}
           </HStack>
         </Flex>
       </Container>

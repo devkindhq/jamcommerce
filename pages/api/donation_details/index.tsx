@@ -11,11 +11,21 @@ export default async function handler(
    
         const destination_currency = Array.isArray(req.query.destination_currency) ? req.query.destination_currency[0] : req.query.destination_currency
         if(!destination_currency) throw new Error("Destination currency not provided");
-        const result = await supabase.from('checkout_sessions').select('*').eq('payment_status', 'paid');
+
+        const campaign_id = Array.isArray(req.query.campaign_id)
+          ? req.query.campaign_id[0]
+          : req.query.campaign_id
+
+        let query = supabase.from('checkout_sessions').select('*').eq('payment_status', 'paid');
+        if (campaign_id) {
+          query = (query as any).filter('metadata->>campaign_id', 'eq', campaign_id)
+        }
+        const result = await query;
+
         const baseTotal = result.data?.map(transaction => transaction.base_currency_amount_total ).reduce((prev, current) => {
           return prev + current
-        });
-        const transactionTotal = result.data?.length;
+        }, 0) ?? 0;
+        const transactionTotal = result.data?.length ?? 0;
         const destinationTotal = await convertRate(destination_currency, baseTotal)
         const finalResult = {
             base_currency_total: baseTotal,

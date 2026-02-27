@@ -5,16 +5,19 @@ import { ChakraProvider } from '@chakra-ui/react'
 import '../styles.css'
 import ChakraTheme from '../theme'
 import AppProvider from '../providers/app-provider'
+import AuthProvider from '../providers/auth-provider'
 
 function MyApp({ Component, pageProps }: AppProps) {
 
   return (
-    <AppProvider>
-      <ChakraProvider theme={ChakraTheme}>
-        {/*** @ts-ignore */}
-        <Component {...pageProps} />
-      </ChakraProvider>
-    </AppProvider>
+    <AuthProvider>
+      <AppProvider>
+        <ChakraProvider theme={ChakraTheme}>
+          {/*** @ts-ignore */}
+          <Component {...pageProps} />
+        </ChakraProvider>
+      </AppProvider>
+    </AuthProvider>
   )
 }
 

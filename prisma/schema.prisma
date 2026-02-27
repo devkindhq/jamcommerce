@@ -51,3 +51,23 @@ model currency_rates {
   currency   String?   @db.VarChar
   status     Boolean?
 }
+
+model campaigns {
+  id           BigInt    @id @default(autoincrement())
+  created_at   DateTime? @default(now()) @db.Timestamptz(6)
+  user_id      String    @db.VarChar
+  slug         String    @unique @db.VarChar
+  title        String    @db.VarChar
+  description  String?
+  goal_amount  Decimal   @db.Decimal
+  currency     String    @db.VarChar @default("AUD")
+  end_date     DateTime? @db.Timestamptz(6)
+  status       String    @db.VarChar @default("active")
+  banner_url   String?   @db.VarChar
+}
+
+model waitlist {
+  id         BigInt    @id @default(autoincrement())
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  email      String    @unique @db.VarChar
+}
